@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="horizontal"
+    android:weightSum="3.0"
+    android:gravity="center"
+    android:fitsSystemWindows="true"
+    tools:context="com.hairfie.hairfie.SplashActivity">
+
+    <LinearLayout
+        android:layout_width="0dip"
+        android:layout_weight="2.0"
+        android:gravity="center"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="3.0">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="2.0"
+            android:scaleType="centerInside"
+            android:src="@drawable/splash"
+            />
+    </LinearLayout>
+</LinearLayout>
