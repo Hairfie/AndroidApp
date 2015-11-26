@@ -9,4 +9,16 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="login_with_facebook">Login with Facebook</string>
+    <string name="signup">Sign up</string>
+    <string name="login">Login</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="intro_text_1"><![CDATA[Find Haircuts & Hairstyles and take inspiration from people like you]]></string>
+    <string name="intro_text_2">Find and book the Hairdresser you need. Anywhere. Anytime.</string>
+    <string name="intro_text_3"><![CDATA[Keep & Share inspiring Hairfies]]></string>
+    <string name="or_skip_for_now">or skip for now</string>
+    <string name="title_activity_signup">SignupActivity</string>
+
 </resources>

@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/defaultBackgroundColor</item>
+        <item name="apcStyles">@style/AppPageControlStyle</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -23,5 +24,24 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
+    <style name="AppButton">
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:textAllCaps">false</item>
 
+    </style>
+
+    <style name="AppPageControlStyle">
+        <!-- To change indicator size -->
+        <item name="apc_indicatorSize">4dp</item>
+        <!-- To change distance between indicators -->
+        <item name="apc_indicatorDistance">4dp</item>
+        <!-- To change current item indicator size -->
+        <item name="apc_currentIndicatorSize">4dp</item>
+        <!-- To change indicator colors -->
+        <item name="apc_colorCurrentDefault">#ffffffff</item>
+        <item name="apc_colorCurrentPressed">#ffffffff</item>
+        <item name="apc_colorNormalDefault">#55ffffff</item>
+        <item name="apc_colorNormalPressed">#55ffffff</item>
+    </style>
 </resources>

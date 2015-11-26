@@ -27,10 +27,14 @@
         </activity>
         <activity
             android:name=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".IntroActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".IntroActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+        <activity
+            android:name=".SignupActivity"
+            android:label="@string/title_activity_signup"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

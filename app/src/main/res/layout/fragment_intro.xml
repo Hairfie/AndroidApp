@@ -1,0 +1,25 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.hairfie.hairfie.IntroFragment">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="190dp"
+        android:scaleType="centerCrop"
+        android:id="@+id/image"/>
+    
+    <TextView
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:id="@+id/text"
+        android:gravity="center_vertical"
+        android:textAlignment="center"
+        android:textColor="#FFcccccc"
+        android:textSize="16sp"
+        />
+</FrameLayout>
