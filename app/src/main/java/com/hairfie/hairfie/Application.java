@@ -16,6 +16,8 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import pl.aprilapps.easyphotopicker.EasyImage;
+
 /**
  * Created by stephh on 24/11/15.
  */
@@ -26,6 +28,11 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+
+        // Easy image configuration (for profile pictures)
+        EasyImage.configuration(this)
+                .saveInAppExternalFilesDir();
+
     }
 
     @NonNull

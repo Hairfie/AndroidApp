@@ -28,5 +28,7 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.6.0'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.github.ksoichiro:androidpagecontrol:0.1.1'
-//    compile 'com.android.support:leanback-v17:23.1.0'
+    compile 'com.github.jkwiecien:EasyImage:1.1.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    // compile 'com.android.support:leanback-v17:23.1.0'
 }

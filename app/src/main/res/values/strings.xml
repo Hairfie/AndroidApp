@@ -19,4 +19,8 @@
     <string name="validate">Validate</string>
     <string name="add_photo">Add Photo</string>
 
+    <array name="image_picker_options">
+        <item>Take Picture</item>
+        <item>Choose From Gallery</item>
+    </array>
 </resources>
