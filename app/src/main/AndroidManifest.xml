@@ -34,6 +34,7 @@
         <activity
             android:name=".SignupActivity"
             android:label="@string/title_activity_signup"
+            android:parentActivityName=".IntroActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
