@@ -8,8 +8,6 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/defaultBackgroundColor</item>
         <item name="apcStyles">@style/AppPageControlStyle</item>
-        <item name="android:textColor">#ff333333</item>
-        <item name="android:editTextColor">#ff333333</item>
         <item name="android:buttonStyle">@style/AppTheme.ButtonStyle</item>
         <item name="android:editTextStyle">@style/AppTheme.EditTextStyle</item>
         <item name="android:textViewStyle">@style/AppTheme.TextViewStyle</item>

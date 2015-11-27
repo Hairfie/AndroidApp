@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * Created by stephh on 25/11/15.
  */
 public class HttpClient extends OkHttpClient {
-    public static final MediaType JSON_MEDIA_TYPE = MediaType.parse("application/json");
+    public static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json");
 
     private static HttpClient sIntance = new HttpClient();
     public static  HttpClient getInstance() {

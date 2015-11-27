@@ -25,6 +25,8 @@
     <string name="password">Password</string>
     <string name="subscribe_to_the_newsletter">Subscribe to the newsletter</string>
     <string name="please_choose">Please choose</string>
+    <string name="retry">Retry</string>
+    <string name="sending">Sending</string>
 
     <array name="image_picker_options">
         <item>Take Picture</item>

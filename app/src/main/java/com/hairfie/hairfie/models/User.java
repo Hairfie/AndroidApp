@@ -1,6 +1,7 @@
 package com.hairfie.hairfie.models;
 
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -10,7 +11,9 @@ import com.hairfie.hairfie.Application;
 import com.hairfie.hairfie.Config;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.MultipartBuilder;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
@@ -18,6 +21,7 @@ import com.squareup.okhttp.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
@@ -71,7 +75,7 @@ public class User {
 
         Request request = new Request.Builder()
                 .url(Config.instance.getAPIRoot() + "users/logout")
-                .post(RequestBody.create(HttpClient.JSON_MEDIA_TYPE, ""))
+                .post(RequestBody.create(HttpClient.MEDIA_TYPE_JSON, ""))
                 .header("Authorization", accessToken)
                 .build();
         Call result = HttpClient.getInstance().newCall(request);
@@ -112,7 +116,7 @@ public class User {
             parameters.put("password", password);
             Request request = new Request.Builder()
                     .url(Config.instance.getAPIRoot() + "users/login")
-                    .post(RequestBody.create(HttpClient.JSON_MEDIA_TYPE, parameters.toString()))
+                    .post(RequestBody.create(HttpClient.MEDIA_TYPE_JSON, parameters.toString()))
                     .build();
 
             Call result = HttpClient.getInstance().newCall(request);
@@ -158,6 +162,67 @@ public class User {
             Log.e(Application.TAG, "Error logging in", e);
             return null;
         }
+    }
+
+
+
+    public Call signup(JSONObject parameters, final Callbacks.SingleObjectCallback<User> callback) {
+
+        Request request = new Request.Builder()
+                .url(Config.instance.getAPIRoot() + "users/")
+                .post(RequestBody.create(HttpClient.MEDIA_TYPE_JSON, parameters.toString()))
+                .build();
+
+
+        Call result = HttpClient.getInstance().newCall(request);
+        result.enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                if (null != callback)
+                    callback.onComplete(null, new Callbacks.Error(e));
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+
+                try {
+                    JSONObject json = new JSONObject(response.body().string());
+
+                    if (response.isSuccessful()) {
+                        String accessToken = null, userId = null;
+
+                        JSONObject accessTokenJSON = json.optJSONObject("accessToken");
+                        if (accessTokenJSON != null) {
+                            accessToken = accessTokenJSON.optString("id");
+                            userId = accessTokenJSON.optString("userId");
+                        }
+
+                        if (null != accessToken && null != userId) {
+                            setCredentials(accessToken, userId);
+                        }
+
+                        if (null != callback)
+                            callback.onComplete(User.this, null);
+                    } else {
+
+                        Callbacks.Error error = new Callbacks.Error(json.getJSONObject("error"));
+                        if (null != callback)
+                            callback.onComplete(null, error);
+                    }
+
+                } catch (JSONException e) {
+                    if (callback != null)
+                        callback.onComplete(null, new Callbacks.Error(e));
+                }
+
+
+            }
+        });
+        return result;
+    }
+
+    public Call uploadPicture(File pictureFile, Callbacks.SingleObjectCallback<Picture> callback) {
+        return Picture.upload(pictureFile, "users", callback);
     }
 
 }
