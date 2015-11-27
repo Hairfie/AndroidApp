@@ -27,6 +27,7 @@
     <string name="please_choose">Please choose</string>
     <string name="retry">Retry</string>
     <string name="sending">Sending</string>
+    <string name="all_fields_are_mandatory">All fields are mandatory</string>
 
     <array name="image_picker_options">
         <item>Take Picture</item>

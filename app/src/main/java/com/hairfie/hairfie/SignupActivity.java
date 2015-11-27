@@ -69,6 +69,9 @@ public class SignupActivity extends AppCompatActivity {
     @Nullable
     ProgressDialog mProgressDialog;
 
+    @NonNull
+    View mSignupContainer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +88,7 @@ public class SignupActivity extends AppCompatActivity {
         mLastNameEditText = (EditText) findViewById(R.id.last_name);
         mEmailEditText = (EditText) findViewById(R.id.email);
         mPasswordEditText = (EditText) findViewById(R.id.password);
-
+        mSignupContainer = findViewById(R.id.signup_container);
 
     }
 
@@ -167,6 +170,11 @@ public class SignupActivity extends AppCompatActivity {
 
     public void touchSignup(View v) {
 
+        String error = mForm.getError();
+        if (null != error) {
+            showAlert(error, null, null);
+            return;
+        }
 
         startSpinning(getString(R.string.sending));
 
@@ -273,6 +281,16 @@ public class SignupActivity extends AppCompatActivity {
             return editable != null ? editable.toString() : null;
         }
 
+        boolean isValid(String s) {
+            return s != null && s.length() > 0;
+        }
+        public String getError() {
+
+            if (gender != null && isValid(getFirstName()) && isValid(getLastName()) && isValid(getEmail()) && isValid(getPassword()))
+                return null;
+
+            return getString(R.string.all_fields_are_mandatory);
+        }
         @Override
         public String toString() {
             return String.format(Locale.ENGLISH, "Gender:%s Subscribe:%s First name:%s Last name:%s Email:%s Password:%s", gender == Gender.Male ? "Man" : gender == Gender.Female ? "Woman" : "Undefined",
@@ -310,7 +328,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     void showAlert(String message, String action, View.OnClickListener listener) {
-        Snackbar.make(mSubscribeButton, message, Snackbar.LENGTH_LONG)
+        Snackbar.make(mSignupContainer, message, Snackbar.LENGTH_LONG)
                 .setAction(action, listener).show();
     }
 
