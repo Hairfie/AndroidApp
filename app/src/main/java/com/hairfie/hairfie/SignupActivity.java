@@ -197,6 +197,7 @@ public class SignupActivity extends AppCompatActivity {
                             if (null != user && user.isAuthenticated()) {
                                 Intent intent = new Intent(SignupActivity.this, MainActivity.class);
                                 startActivity(intent);
+                                finish();
                             }
 
                         }
