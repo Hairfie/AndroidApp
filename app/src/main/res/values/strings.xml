@@ -8,7 +8,7 @@
 
     <string name="title_activity_splash">SplashActivity</string>
     <string name="login_with_facebook">Login with Facebook</string>
-    <string name="signup">Sign up</string>
+    <string name="signup">Sign Up</string>
     <string name="login">Login</string>
 
     <string name="intro_text_1"><![CDATA[Find Haircuts & Hairstyles and take inspiration from people like you]]></string>
@@ -18,9 +18,20 @@
     <string name="title_activity_signup">SIGN UP</string>
     <string name="validate">Validate</string>
     <string name="add_photo">Add Photo</string>
+    <string name="civility">Civility</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="subscribe_to_the_newsletter">Subscribe to the newsletter</string>
+    <string name="please_choose">Please choose</string>
 
     <array name="image_picker_options">
         <item>Take Picture</item>
         <item>Choose From Gallery</item>
+    </array>
+    <array name="gender_options">
+        <item>Woman</item>
+        <item>Man</item>
     </array>
 </resources>

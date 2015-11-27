@@ -8,6 +8,25 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/defaultBackgroundColor</item>
         <item name="apcStyles">@style/AppPageControlStyle</item>
+        <item name="android:textColor">#ff333333</item>
+        <item name="android:editTextColor">#ff333333</item>
+        <item name="android:buttonStyle">@style/AppTheme.ButtonStyle</item>
+        <item name="android:editTextStyle">@style/AppTheme.EditTextStyle</item>
+        <item name="android:textViewStyle">@style/AppTheme.TextViewStyle</item>
+    </style>
+
+    <style name="AppTheme.TextViewStyle" parent="android:style/Widget.TextView">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AppTheme.EditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AppTheme.ButtonStyle" parent="android:style/Widget.Button">
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

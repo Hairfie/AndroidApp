@@ -43,6 +43,176 @@
                 android:onClick="touchPhoto"/>
         </FrameLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/table_background"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:weightSum="4">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="#FFcccccc"
+                    android:gravity="center_vertical|left"
+                    android:text="@string/civility"/>
+                <Button
+                    android:id="@+id/gender"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:text="@string/please_choose"
+                    android:textAllCaps="false"
+                    android:onClick="touchGender"
+                    android:background="@null"/>
+
+            </LinearLayout>
+            <View android:layout_width="match_parent" android:layout_height="1px" android:background="#FFcccccc" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:weightSum="4">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="#FFcccccc"
+                    android:gravity="center_vertical|left"
+                    android:text="@string/first_name"/>
+                <EditText
+                    android:id="@+id/first_name"
+                    android:inputType="textCapWords"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:background="@null"
+                    style="@style/AppTheme.EditTextStyle"/>
+
+            </LinearLayout>
+            <View android:layout_width="match_parent" android:layout_height="1px" android:background="#FFcccccc" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:weightSum="4">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="#FFcccccc"
+                    android:gravity="center_vertical|left"
+                    android:text="@string/last_name"/>
+                <EditText
+                    android:id="@+id/last_name"
+                    android:inputType="textCapWords"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:background="@null"
+                    style="@style/AppTheme.EditTextStyle"/>
+
+            </LinearLayout>
+            <View android:layout_width="match_parent" android:layout_height="1px" android:background="#FFcccccc" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:weightSum="4">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="#FFcccccc"
+                    android:gravity="center_vertical|left"
+                    android:text="@string/email"/>
+                <EditText
+                    android:id="@+id/email"
+                    android:inputType="textEmailAddress"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:background="@null"
+                    style="@style/AppTheme.EditTextStyle"/>
+
+            </LinearLayout>
+            <View android:layout_width="match_parent" android:layout_height="1px" android:background="#FFcccccc" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:weightSum="4">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="#FFcccccc"
+                    android:gravity="center_vertical|left"
+                    android:text="@string/password"/>
+                <EditText
+                    android:id="@+id/password"
+                    android:inputType="textPassword"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:background="@null"
+                    style="@style/AppTheme.EditTextStyle"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/subscribe"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/subscribe_to_the_newsletter"
+            android:drawableLeft="@drawable/checkbox"
+            android:textAllCaps="false"
+            android:gravity="left|center_vertical"
+            android:textColor="#FF777777"
+            android:background="@null"
+            android:drawablePadding="10dp"
+            android:onClick="touchSubscribe"
+            android:layout_marginTop="20dip"
+            android:textSize="16sp"/>
+
+
+        <Button
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:text="@string/signup"
+            android:onClick="touchSignup"
+            style="@style/AppRedButton"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:layout_marginTop="3dp"
+            android:textColor="#FFcccccc"
+            android:text="By clicking here, I accept terms and conditions."
+            android:gravity="center" />
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>
