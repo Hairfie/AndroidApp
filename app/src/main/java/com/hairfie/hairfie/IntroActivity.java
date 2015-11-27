@@ -26,7 +26,7 @@ import java.util.Arrays;
 
 public class IntroActivity extends AppCompatActivity {
 
-    CallbackManager mCallbackManager;
+    CallbackManager mCallbackManager = CallbackManager.Factory.create();
 
     ViewPager mViewPager;
 
@@ -44,7 +44,6 @@ public class IntroActivity extends AppCompatActivity {
         pageControl.setViewPager(viewPager);
         pageControl.setPosition(0);
 
-        mCallbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {

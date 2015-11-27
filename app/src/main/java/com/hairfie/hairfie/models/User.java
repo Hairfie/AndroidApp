@@ -42,7 +42,7 @@ public class User {
     }
 
     public boolean isAuthenticated() {
-        return false;//getAccessToken() != null;
+        return getAccessToken() != null;
     }
 
     @Nullable
@@ -261,7 +261,7 @@ public class User {
             @Override
             public void onResponse(Response response) throws IOException {
                 String body = response.body().string();
-                
+
                 try {
 
                     JSONObject json = new JSONObject(body);
