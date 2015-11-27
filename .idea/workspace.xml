@@ -48,10 +48,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="SignupActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SignupActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/hairfie/hairfie/SignupActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.36090225">
+            <state vertical-scroll-proportion="-5.3333335">
               <caret line="305" column="29" selection-start-line="305" selection-start-column="24" selection-end-line="305" selection-end-column="29" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -74,6 +74,18 @@
                 <element signature="e#7713#7714#0" expanded="true" />
                 <element signature="e#7912#7913#0" expanded="true" />
                 <element signature="e#7972#7973#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SplashActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/hairfie/hairfie/SplashActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.57746476">
+              <caret line="27" column="25" selection-start-line="27" selection-start-column="25" selection-end-line="27" selection-end-column="25" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -186,16 +198,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="10.388889">
               <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="table_background.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/table_background.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="5" column="32" selection-start-line="5" selection-start-column="32" selection-end-line="5" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -1802,7 +1804,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_splash.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values-v21/styles.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/hairfie/hairfie/SplashActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/button_background.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/hairfie/hairfie/IntroFragment.java" />
@@ -1829,6 +1830,7 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/hairfie/hairfie/SignupActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/hairfie/hairfie/models/Picture.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/hairfie/hairfie/models/User.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/hairfie/hairfie/SplashActivity.java" />
       </list>
     </option>
   </component>
@@ -2344,16 +2346,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/hairfie/hairfie/SplashActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="25" column="132" selection-start-line="25" selection-start-column="132" selection-end-line="25" selection-end-column="132" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2771,7 +2763,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/hairfie/hairfie/SignupActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36090225">
+        <state vertical-scroll-proportion="-5.3333335">
           <caret line="305" column="29" selection-start-line="305" selection-start-column="24" selection-end-line="305" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -2794,6 +2786,16 @@
             <element signature="e#7713#7714#0" expanded="true" />
             <element signature="e#7912#7913#0" expanded="true" />
             <element signature="e#7972#7973#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/hairfie/hairfie/SplashActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.57746476">
+          <caret line="27" column="25" selection-start-line="27" selection-start-column="25" selection-end-line="27" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
