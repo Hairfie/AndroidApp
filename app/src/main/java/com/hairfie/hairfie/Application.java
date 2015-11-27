@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.facebook.FacebookSdk;
 import com.hairfie.hairfie.models.HttpClient;
 import com.hairfie.hairfie.models.User;
 import com.squareup.okhttp.Interceptor;
@@ -33,6 +34,8 @@ public class Application extends android.app.Application {
         EasyImage.configuration(this)
                 .saveInAppExternalFilesDir();
 
+        // Facebook
+        FacebookSdk.sdkInitialize(getApplicationContext());
     }
 
     @NonNull

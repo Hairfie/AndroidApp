@@ -1,17 +1,34 @@
 package com.hairfie.hairfie;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.androidpagecontrol.PageControl;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.hairfie.hairfie.models.Callbacks;
+import com.hairfie.hairfie.models.User;
+
+import java.util.Arrays;
 
 public class IntroActivity extends AppCompatActivity {
+
+    CallbackManager mCallbackManager;
+
+    ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,16 +36,38 @@ public class IntroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_intro);
 
         PagerAdapter adapter = new PagerAdapter(this.getSupportFragmentManager());
-        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(adapter);
+        mViewPager = viewPager;
 
         final PageControl pageControl = (PageControl) findViewById(R.id.page_control);
         pageControl.setViewPager(viewPager);
         pageControl.setPosition(0);
+
+        mCallbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+                loginWithFacebookAccessToken(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Snackbar.make(viewPager, error.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void touchSkip(View v) {
 
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     public void touchLogin(View v) {
@@ -37,6 +76,7 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     public void touchFacebook(View v) {
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
 
     }
 
@@ -74,5 +114,30 @@ public class IntroActivity extends AppCompatActivity {
         public int getCount() {
             return 3;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    void loginWithFacebookAccessToken(AccessToken accessToken) {
+        User.getCurrentUser().loginWithFacebook(accessToken, new Callbacks.SingleObjectCallback<User>() {
+            @Override
+            public void onComplete(@Nullable User user, @Nullable Callbacks.Error error) {
+
+                if (null != error) {
+                    Snackbar.make(mViewPager, error.message, Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (user.isAuthenticated()) {
+                    Intent intent = new Intent(IntroActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
     }
 }

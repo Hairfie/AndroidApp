@@ -6,9 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.facebook.AccessToken;
 import com.google.gson.Gson;
 import com.hairfie.hairfie.Application;
 import com.hairfie.hairfie.Config;
+import com.hairfie.hairfie.R;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Headers;
@@ -40,7 +42,7 @@ public class User {
     }
 
     public boolean isAuthenticated() {
-        return getAccessToken() != null;
+        return false;//getAccessToken() != null;
     }
 
     @Nullable
@@ -223,6 +225,70 @@ public class User {
 
     public Call uploadPicture(File pictureFile, Callbacks.SingleObjectCallback<Picture> callback) {
         return Picture.upload(pictureFile, "users", callback);
+    }
+
+    public Call loginWithFacebook(AccessToken accessToken, final Callbacks.SingleObjectCallback<User> callback) {
+
+        if (!accessToken.getPermissions().contains("email")) {
+            if (null != callback)
+                callback.onComplete(null, new Callbacks.Error(Application.getInstance().getString(R.string.email_permission_required)));
+            return null;
+        }
+
+        JSONObject parameters = new JSONObject();
+        try {
+            parameters.put("access_token", accessToken.getToken());
+        } catch (JSONException e) {
+            if (null != callback)
+                callback.onComplete(null, new Callbacks.Error(e));
+            return null;
+        }
+
+        Request request = new Request.Builder()
+                .url(Config.instance.getAPIRoot() + "auth/facebook/token/")
+                .post(RequestBody.create(HttpClient.MEDIA_TYPE_JSON, parameters.toString()))
+                .build();
+
+
+        Call result = HttpClient.getInstance().newCall(request);
+        result.enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                if (null != callback)
+                    callback.onComplete(null, new Callbacks.Error(e));
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                String body = response.body().string();
+                
+                try {
+
+                    JSONObject json = new JSONObject(body);
+                    if (response.isSuccessful()) {
+                        String accessToken = json.getString("id");
+                        String userId = json.getString("userId");
+                        if (null != accessToken && null != userId) {
+                            setCredentials(accessToken, userId);
+                        }
+
+                        if (null != callback)
+                            callback.onComplete(User.this, null);
+                    } else {
+
+                        Callbacks.Error error = new Callbacks.Error(json.getJSONObject("error"));
+                        if (null != callback)
+                            callback.onComplete(null, error);
+                    }
+
+                } catch (JSONException e) {
+                    if (callback != null)
+                        callback.onComplete(null, new Callbacks.Error(e));
+                }
+            }
+        });
+        return result;
+
     }
 
 }

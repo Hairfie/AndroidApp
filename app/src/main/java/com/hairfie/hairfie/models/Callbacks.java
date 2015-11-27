@@ -13,8 +13,12 @@ import java.util.List;
  */
 public abstract class Callbacks {
     public static class Error {
+        @NonNull
         public String message;
+
+        @Nullable
         public String code;
+
         public int status;
 
         public transient Throwable cause;
@@ -26,6 +30,10 @@ public abstract class Callbacks {
         public Error(Throwable cause) {
             this.cause = cause;
             this.message = cause.getLocalizedMessage();
+        }
+
+        public Error(String message) {
+            this.message = message;
         }
     }
     public interface SimpleCallback {

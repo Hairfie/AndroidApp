@@ -29,6 +29,8 @@
     <string name="sending">Sending</string>
     <string name="all_fields_are_mandatory">All fields are mandatory</string>
 
+    <string name="facebook_app_id" translatable="false">981217328606486</string>
+    <string name="email_permission_required">We need your E-mail address to log you into Hairfie!</string>
     <array name="image_picker_options">
         <item>Take Picture</item>
         <item>Choose From Gallery</item>
