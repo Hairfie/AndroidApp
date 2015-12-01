@@ -37,6 +37,7 @@
     <string name="dont_worry_facebook">Don\'t worry, we don\'t publish anything automatically</string>
     <string name="please_enter_email">Please enter your E-mail and your password!</string>
     <string name="logging_in">Logging in</string>
+    <string name="filter_your_search">Filter your search</string>
     <array name="image_picker_options">
         <item>Take Picture</item>
         <item>Choose From Gallery</item>
