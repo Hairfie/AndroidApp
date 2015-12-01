@@ -12,23 +12,26 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:id="@+id/nav_header_image_view"
+        android:layout_width="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="100dp"
+        android:paddingTop="25dp"
         android:src="@android:drawable/sym_def_app_icon" />
 
     <TextView
+        android:id="@+id/nav_header_line1"
         android:layout_width="match_parent"
+        android:textAlignment="center"
+        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Android Studio"
+        android:paddingTop="5dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="android.studio@android.com" />
+        android:id="@+id/nav_header_line2"
+        android:layout_width="match_parent"
+        android:textAlignment="center"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

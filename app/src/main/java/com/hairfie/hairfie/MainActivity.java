@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -25,17 +26,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.facebook.appevents.AppEventsLogger;
 import com.hairfie.hairfie.dummy.DummyContent;
+import com.hairfie.hairfie.helpers.CircleTransform;
 import com.hairfie.hairfie.models.Callbacks;
+import com.hairfie.hairfie.models.Picture;
 import com.hairfie.hairfie.models.User;
+import com.squareup.picasso.Picasso;
+
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HairfieGridFragment.OnHairfieGridFragmentInteractionListener, CategoryPictoFragment.OnCategoryPictoFragmentInteractionListener {
 
     ViewPager mViewPager;
     PagerTitleStrip mPagerTitleStrip;
+    NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +54,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mPagerTitleStrip = (PagerTitleStrip) findViewById(R.id.pager_title_strip);
 
@@ -69,7 +79,26 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // Navigation header
+        setupNavigationHeader();
+
+        // Profile updated
+        LocalBroadcastManager.getInstance(Application.getInstance()).registerReceiver(mProfileUpdatedBroadcastReceiver, new IntentFilter(User.PROFILE_UPDATED_BROADCAST_INTENT));
+
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(Application.getInstance()).unregisterReceiver(mProfileUpdatedBroadcastReceiver);
+    }
+
+    BroadcastReceiver mProfileUpdatedBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            setupNavigationHeader();
+        }
+    };
 
     @Override
     protected void onResume() {
@@ -122,7 +151,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        switch(id) {
+        switch (id) {
             case R.id.nav_home:
                 break;
             case R.id.nav_logout:
@@ -146,6 +175,7 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
 
     }
+
     @Override
     public void onTouchCategoryPicto(DummyContent.DummyItem item) {
 
@@ -165,8 +195,10 @@ public class MainActivity extends AppCompatActivity
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0: return CategoryPictoFragment.newInstance();
-                case 1: return HairfieGridFragment.newInstance(2);
+                case 0:
+                    return CategoryPictoFragment.newInstance();
+                case 1:
+                    return HairfieGridFragment.newInstance(2);
             }
             return null;
         }
@@ -179,10 +211,39 @@ public class MainActivity extends AppCompatActivity
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0: return getString(R.string.book);
-                case 1: return getString(R.string.hairfies);
+                case 0:
+                    return getString(R.string.book);
+                case 1:
+                    return getString(R.string.hairfies);
             }
             return null;
         }
+    }
+
+
+    private void setupNavigationHeader() {
+        User.Profile profile = User.getCurrentUser().getProfile();
+        View headerView = mNavigationView.getHeaderView(0);
+        Picture picture = profile != null ? profile.picture : null;
+
+        ImageView image = (ImageView) headerView.findViewById(R.id.nav_header_image_view);
+        if (picture != null && picture.url != null) {
+
+            Log.d(Application.TAG, Uri.parse(picture.url).toString());
+            // Show
+            Picasso.with(this).load(Uri.parse(picture.url)).fit().centerCrop().transform(new CircleTransform()).into(image);
+
+        } else {
+            image.invalidate();
+            image.setImageBitmap(null);
+        }
+
+        TextView line1 = (TextView)headerView.findViewById(R.id.nav_header_line1);
+        TextView line2 = (TextView)headerView.findViewById(R.id.nav_header_line2);
+
+        line1.setText(profile != null ? profile.getFullname() : null);
+        int numHairfies = profile != null ? profile.numHairfies : 0;
+
+        line2.setText(profile != null ? numHairfies == 1 ? "1 hairfie" : String.format(Locale.getDefault(), "%d hairfies", numHairfies) : null);
     }
 }

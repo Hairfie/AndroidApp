@@ -17,10 +17,13 @@ import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -330,6 +333,16 @@ public class User {
 
         public String toString() {
             return String.format(Locale.ENGLISH, "<User id=%s email=%s>", id, email);
+        }
+
+        public String getFullname() {
+            List<String> tokens = new ArrayList<String>();
+            if (null != firstName)
+                tokens.add(firstName);
+            if (null != lastName)
+                tokens.add(lastName);
+
+            return StringUtils.join(tokens, " ");
         }
     }
 
