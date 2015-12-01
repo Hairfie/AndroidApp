@@ -99,7 +99,7 @@ public class User {
                 .build();
         Call result = HttpClient.getInstance().newCall(request);
 
-        result.enqueue(null == callback ? null : callback.okHttpCallback(new Callbacks.StringDeserializer<Void>() {
+        result.enqueue((null == callback ? new Callbacks.EmptyCallback<Void>() : callback).okHttpCallback(new Callbacks.StringDeserializer<Void>() {
             @Override
             public Void deserialize(String s) throws Exception {
                 return null;
@@ -121,7 +121,7 @@ public class User {
                     .build();
 
             Call result = HttpClient.getInstance().newCall(request);
-            result.enqueue(callback == null ? null : new FetchProfileWrapperCallback(callback).okHttpCallback(new Callbacks.JSONObjectDeserializer<User>() {
+            result.enqueue(new FetchProfileWrapperCallback(null == callback ? new Callbacks.EmptyCallback<User>() : callback).okHttpCallback(new Callbacks.JSONObjectDeserializer<User>() {
                 @Override
                 public User deserialize(JSONObject json) throws JSONException {
                     String accessToken = json.getString("id");
@@ -153,7 +153,7 @@ public class User {
 
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue(null == callback ? null : new FetchProfileWrapperCallback(callback).okHttpCallback(new Callbacks.JSONObjectDeserializer<User>() {
+        result.enqueue(new FetchProfileWrapperCallback(null == callback ? new Callbacks.EmptyCallback<User>() : callback).okHttpCallback(new Callbacks.JSONObjectDeserializer<User>() {
             @Override
             public User deserialize(JSONObject json) throws Exception {
                 String accessToken = null, userId = null;
@@ -192,7 +192,7 @@ public class User {
 
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue(null == callback ? null : callback.okHttpCallback(new Callbacks.StringDeserializer<Void>() {
+        result.enqueue((null == callback ? new Callbacks.EmptyCallback<Void>() : callback).okHttpCallback(new Callbacks.StringDeserializer<Void>() {
             @Override
             public Void deserialize(String s) throws Exception {
                 return null;
@@ -230,7 +230,7 @@ public class User {
 
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue(null == callback ? null : new FetchProfileWrapperCallback(callback).okHttpCallback(new Callbacks.JSONObjectDeserializer<User>() {
+        result.enqueue(new FetchProfileWrapperCallback((null == callback ? new Callbacks.EmptyCallback<User>() : callback)).okHttpCallback(new Callbacks.JSONObjectDeserializer<User>() {
             @Override
             public User deserialize(JSONObject json) throws Exception {
                 String accessToken = json.getString("id");
@@ -259,7 +259,7 @@ public class User {
 
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue(null == callback ? null : callback.okHttpCallback(new Callbacks.StringDeserializer<User>() {
+        result.enqueue((null == callback ? new Callbacks.EmptyCallback<User>() : callback).okHttpCallback(new Callbacks.StringDeserializer<User>() {
             @Override
             public User deserialize(String s) throws Exception {
                 Profile profile = sGson.fromJson(s, Profile.class);

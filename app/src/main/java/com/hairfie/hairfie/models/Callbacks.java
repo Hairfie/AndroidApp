@@ -134,4 +134,12 @@ public abstract class Callbacks {
         }
     }
 
+    public static class EmptyCallback<T> extends ObjectCallback<T> {
+
+        @Override
+        public void onComplete(@Nullable T object, @Nullable Error error) {
+
+        }
+    }
+
 }
