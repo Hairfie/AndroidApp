@@ -31,11 +31,13 @@ import android.widget.TextView;
 
 import com.facebook.appevents.AppEventsLogger;
 import com.hairfie.hairfie.dummy.DummyContent;
+import com.hairfie.hairfie.helpers.BlurTransform;
 import com.hairfie.hairfie.helpers.CircleTransform;
 import com.hairfie.hairfie.models.Callbacks;
 import com.hairfie.hairfie.models.Picture;
 import com.hairfie.hairfie.models.User;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import java.util.Locale;
 
@@ -227,15 +229,18 @@ public class MainActivity extends AppCompatActivity
         Picture picture = profile != null ? profile.picture : null;
 
         ImageView image = (ImageView) headerView.findViewById(R.id.nav_header_image_view);
+        ImageView background = (ImageView) headerView.findViewById(R.id.nav_header_background_image_view);
         if (picture != null && picture.url != null) {
 
             Log.d(Application.TAG, Uri.parse(picture.url).toString());
             // Show
-            Picasso.with(this).load(Uri.parse(picture.url)).fit().centerCrop().transform(new CircleTransform()).into(image);
+
+            Picasso.with(this).load(Uri.parse(picture.url)).placeholder(R.drawable.default_user_picture).fit().centerCrop().transform(new BlurTransform(1.0f, 40)).into(background);
+            Picasso.with(this).load(Uri.parse(picture.url)).placeholder(R.drawable.default_user_picture_bg).fit().centerCrop().transform(new CircleTransform()).into(image);
 
         } else {
-            image.invalidate();
-            image.setImageBitmap(null);
+            Picasso.with(this).load(R.drawable.default_user_picture).fit().centerCrop().transform(new BlurTransform(1.0f, 40)).into(background);
+            Picasso.with(this).load(R.drawable.default_user_picture_bg).fit().centerCrop().transform(new CircleTransform()).into(image);
         }
 
         TextView line1 = (TextView)headerView.findViewById(R.id.nav_header_line1);
