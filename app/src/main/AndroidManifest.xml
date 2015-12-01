@@ -58,6 +58,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".ForgotPasswordActivity"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/title_activity_forgot_password"
             android:parentActivityName=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
