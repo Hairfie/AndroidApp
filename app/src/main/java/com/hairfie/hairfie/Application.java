@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.facebook.FacebookSdk;
+import com.hairfie.hairfie.models.Callbacks;
 import com.hairfie.hairfie.models.HttpClient;
 import com.hairfie.hairfie.models.User;
 import com.squareup.okhttp.Interceptor;
@@ -36,6 +37,17 @@ public class Application extends android.app.Application {
 
         // Facebook
         FacebookSdk.sdkInitialize(getApplicationContext());
+
+        // Fetch current user profile
+        User.getCurrentUser().fetchProfile(new Callbacks.ObjectCallback<User>() {
+            @Override
+            public void onComplete(@Nullable User user, @Nullable Callbacks.Error error) {
+
+                // TODO: a notification here that the profile has been updated
+                User.Profile profile = user != null ? user.getProfile() : null;
+                Log.d(Application.TAG, "Updated user profile: " + (profile != null ? profile.toString() : "null"));
+            }
+        });
     }
 
     @NonNull

@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.Locale;
 
 /**
  * Created by stephh on 24/11/15.
@@ -50,13 +51,6 @@ public class User {
     }
 
 
-    @Nullable
-    private Profile mProfile;
-
-    @Nullable
-    public Profile getProfile() {
-        return mProfile;
-    }
 
     private void setCredentials(@NonNull String accessToken, @NonNull String userId) {
 
@@ -66,12 +60,32 @@ public class User {
         editor.commit();
     }
 
+    @Nullable
+    public Profile getProfile() {
+        String savedJson =  Application.getInstance().getSharedPreferences().getString("user.profile", null);
+        if (null == savedJson)
+            return null;
+
+        return sGson.fromJson(savedJson, Profile.class);
+    }
+
+
+
+    private void setProfile(Profile profile) {
+        SharedPreferences.Editor editor = Application.getInstance().getSharedPreferences().edit();
+        if (null == profile) {
+            editor.remove("user.profile");
+        } else {
+            editor.putString("user.profile", sGson.toJson(profile));
+        }
+        editor.commit();
+    }
+
     public Call logout(final Callbacks.ObjectCallback<Void> callback) {
         String accessToken = getAccessToken();
 
         if (null == accessToken)
             return null;
-
 
         SharedPreferences.Editor editor = Application.getInstance().getSharedPreferences().edit();
         editor.remove("user.accesstoken");
@@ -233,6 +247,30 @@ public class User {
 
     }
 
+    public Call fetchProfile(final Callbacks.ObjectCallback<User> callback) {
+        String userId = getUserId();
+        if (null == userId) {
+            return null;
+        }
+
+        Request request = new Request.Builder()
+                .url(Config.instance.getAPIRoot() + "users/" + Uri.encode(userId))
+                .build();
+
+
+        Call result = HttpClient.getInstance().newCall(request);
+        result.enqueue(null == callback ? null : callback.okHttpCallback(new Callbacks.StringDeserializer<User>() {
+            @Override
+            public User deserialize(String s) throws Exception {
+                Profile profile = sGson.fromJson(s, Profile.class);
+                User.this.setProfile(profile);
+                return User.this;
+            }
+        }));
+        return result;
+
+    }
+
     private static class FetchProfileWrapperCallback extends Callbacks.ObjectCallback<User> {
 
         Callbacks.ObjectCallback<User> mCallback;
@@ -250,19 +288,7 @@ public class User {
                 return;
             }
 
-            String userId = user.getUserId();
-            Request request = new Request.Builder()
-                    .url(Config.instance.getAPIRoot() + "users/" + Uri.encode(userId))
-                    .build();
-
-            HttpClient.getInstance().newCall(request).enqueue(null == mCallback ? null : mCallback.okHttpCallback(new Callbacks.StringDeserializer<User>() {
-                @Override
-                public User deserialize(String s) throws Exception {
-                    Profile profile = sGson.fromJson(s, Profile.class);
-                    user.mProfile = profile;
-                    return user;
-                }
-            }));
+            user.fetchProfile(mCallback);
         }
     }
 
@@ -282,6 +308,10 @@ public class User {
         public Integer numHairfies;
         public Integer numBusinessReviews;
         public Picture picture;
+
+        public String toString() {
+            return String.format(Locale.ENGLISH, "<User id=%s email=%s>", id, email);
+        }
     }
 
 
