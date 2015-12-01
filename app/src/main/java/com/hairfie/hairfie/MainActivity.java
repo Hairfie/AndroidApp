@@ -1,5 +1,6 @@
 package com.hairfie.hairfie;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -44,11 +46,21 @@ public class MainActivity extends AppCompatActivity
 
         mViewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        boolean authenticated = User.getCurrentUser().isAuthenticated();
+
+        View loginButton = findViewById(R.id.login);
+        if (null != loginButton)
+            loginButton.setVisibility(authenticated ? View.GONE : View.VISIBLE);
+
+        if (authenticated) {
+
+            // Show drawer toggle
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.setDrawerListener(toggle);
+            toggle.syncState();
+        }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -127,6 +139,11 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    public void touchLogin(View view) {
+        Intent intent = new Intent(this, IntroActivity.class);
+        startActivity(intent);
+
+    }
     @Override
     public void onTouchCategoryPicto(DummyContent.DummyItem item) {
 

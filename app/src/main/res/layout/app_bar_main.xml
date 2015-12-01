@@ -14,24 +14,33 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
+
             android:layout_width="match_parent"
             android:logo="@drawable/hairffie_typo"
 
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            app:contentInsetStart="0dp"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
+                <ImageButton
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:src="@drawable/login_icon"
+                    android:background="@null"
+                    android:id="@+id/login"
+                    android:onClick="touchLogin"
+                    android:layout_gravity="left|center_vertical"/>
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:src="@drawable/hairffie_typo" />
-            </LinearLayout>
+            </FrameLayout>
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
