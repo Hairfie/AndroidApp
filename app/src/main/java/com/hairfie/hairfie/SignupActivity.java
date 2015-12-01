@@ -80,7 +80,7 @@ public class SignupActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         mPhotoButton = (ImageButton) findViewById(R.id.photo);
         mSubscribeButton = (Button) findViewById(R.id.subscribe);
         mGenderButton = (Button) findViewById(R.id.gender);

@@ -50,4 +50,8 @@
         <item>Woman</item>
         <item>Man</item>
     </array>
+    <string name="title_activity_forgot_password">Forgotten password</string>
+    <string name="enter_your_email_below">Enter your email below:</string>
+    <string name="reset_password">Reset password</string>
+    <string name="check_your_email">Check your email!</string>
 </resources>

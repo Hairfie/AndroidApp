@@ -1,5 +1,6 @@
 package com.hairfie.hairfie.models;
 
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -36,12 +37,37 @@ public abstract class Callbacks {
             this.message = message;
         }
     }
-    public interface SimpleCallback {
-        public void onComplete(@Nullable Error error);
+    public static abstract class SimpleCallback {
+        private Handler mHandler;
+        public SimpleCallback() {
+            mHandler = new Handler();
+        }
+        protected void onCompleteWrapper(@Nullable final Error error) {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    onComplete(error);
+                }
+            });
+        }
+        public abstract void onComplete(@Nullable Error error);
     }
 
-    public interface SingleObjectCallback<T> {
-        public void onComplete(@Nullable T object, @Nullable Error error);
+    public static abstract class SingleObjectCallback<T> {
+        private Handler mHandler;
+        public SingleObjectCallback() {
+            mHandler = new Handler();
+        }
+        protected void onCompleteWrapper(@Nullable final T object, @Nullable final Error error) {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    onComplete(object, error);
+                }
+            });
+        }
+
+        public abstract void onComplete(@Nullable T object, @Nullable Error error);
     }
 
     public interface ListCallback<T> {

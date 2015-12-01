@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mEmailEditText = (EditText) findViewById(R.id.email);
@@ -82,7 +82,8 @@ public class LoginActivity extends AppCompatActivity {
 
     }
     public void touchForgotten(View view) {
-        Log.d(Application.TAG, "Forgotten");
+        Intent intent = new Intent(this, ForgotPasswordActivity.class);
+        startActivity(intent);
     }
 
     @Override

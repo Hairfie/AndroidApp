@@ -86,23 +86,23 @@ public class User {
             @Override
             public void onFailure(Request request, IOException e) {
                 if (null != callback)
-                    callback.onComplete(new Callbacks.Error(e));
+                    callback.onCompleteWrapper(new Callbacks.Error(e));
             }
 
             @Override
             public void onResponse(Response response) throws IOException {
                 if (response.isSuccessful()) {
                     if (null != callback)
-                        callback.onComplete(null);
+                        callback.onCompleteWrapper(null);
                 } else {
                     try {
                         JSONObject json = new JSONObject(response.body().string());
                         Callbacks.Error error = new Callbacks.Error(json.getJSONObject("error"));
                         if (null != callback)
-                            callback.onComplete(error);
+                            callback.onCompleteWrapper(error);
                     } catch (JSONException e) {
                         if (null != callback)
-                            callback.onComplete(new Callbacks.Error(e));
+                            callback.onCompleteWrapper(new Callbacks.Error(e));
                     }
                 }
             }
@@ -126,7 +126,7 @@ public class User {
                 @Override
                 public void onFailure(Request request, IOException e) {
                     if (null != callback)
-                        callback.onComplete(null, new Callbacks.Error(e));
+                        callback.onCompleteWrapper(null, new Callbacks.Error(e));
                 }
 
                 @Override
@@ -142,17 +142,17 @@ public class User {
                             }
 
                             if (null != callback)
-                                callback.onComplete(User.this, null);
+                                callback.onCompleteWrapper(User.this, null);
                         } else {
 
                             Callbacks.Error error = new Callbacks.Error(json.getJSONObject("error"));
                             if (null != callback)
-                                callback.onComplete(null, error);
+                                callback.onCompleteWrapper(null, error);
                         }
 
                     } catch (JSONException e) {
                         if (callback != null)
-                            callback.onComplete(null, new Callbacks.Error(e));
+                            callback.onCompleteWrapper(null, new Callbacks.Error(e));
                     }
 
 
@@ -181,7 +181,7 @@ public class User {
             @Override
             public void onFailure(Request request, IOException e) {
                 if (null != callback)
-                    callback.onComplete(null, new Callbacks.Error(e));
+                    callback.onCompleteWrapper(null, new Callbacks.Error(e));
             }
 
             @Override
@@ -204,20 +204,69 @@ public class User {
                         }
 
                         if (null != callback)
-                            callback.onComplete(User.this, null);
+                            callback.onCompleteWrapper(User.this, null);
                     } else {
 
                         Callbacks.Error error = new Callbacks.Error(json.getJSONObject("error"));
                         if (null != callback)
-                            callback.onComplete(null, error);
+                            callback.onCompleteWrapper(null, error);
                     }
 
                 } catch (JSONException e) {
                     if (callback != null)
-                        callback.onComplete(null, new Callbacks.Error(e));
+                        callback.onCompleteWrapper(null, new Callbacks.Error(e));
                 }
 
 
+            }
+        });
+        return result;
+    }
+
+    public Call resetPassword(CharSequence email, final Callbacks.SimpleCallback callback) {
+
+        JSONObject parameters = new JSONObject();
+        try {
+            parameters.put("email", email);
+        } catch (JSONException e) {
+            Log.e(Application.TAG, "Could not reset password", e);
+            return null;
+        }
+
+        Request request = new Request.Builder()
+                .url(Config.instance.getAPIRoot() + "users/reset")
+                .post(RequestBody.create(HttpClient.MEDIA_TYPE_JSON, parameters.toString()))
+                .build();
+
+
+        Call result = HttpClient.getInstance().newCall(request);
+        result.enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                if (null != callback)
+                    callback.onCompleteWrapper(new Callbacks.Error(e));
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+
+                String body = response.body().string();
+                Log.d(Application.TAG, body);
+
+                if (response.isSuccessful()) {
+                    if (null != callback)
+                        callback.onCompleteWrapper(null);
+                } else {
+                    try {
+                        JSONObject json = new JSONObject(body);
+                        Callbacks.Error error = new Callbacks.Error(json.getJSONObject("error"));
+                        if (null != callback)
+                            callback.onCompleteWrapper(error);
+                    } catch (JSONException e) {
+                        if (null != callback)
+                            callback.onCompleteWrapper(new Callbacks.Error(e));
+                    }
+                }
             }
         });
         return result;
@@ -231,7 +280,7 @@ public class User {
 
         if (!accessToken.getPermissions().contains("email")) {
             if (null != callback)
-                callback.onComplete(null, new Callbacks.Error(Application.getInstance().getString(R.string.email_permission_required)));
+                callback.onCompleteWrapper(null, new Callbacks.Error(Application.getInstance().getString(R.string.email_permission_required)));
             return null;
         }
 
@@ -240,7 +289,7 @@ public class User {
             parameters.put("access_token", accessToken.getToken());
         } catch (JSONException e) {
             if (null != callback)
-                callback.onComplete(null, new Callbacks.Error(e));
+                callback.onCompleteWrapper(null, new Callbacks.Error(e));
             return null;
         }
 
@@ -255,7 +304,7 @@ public class User {
             @Override
             public void onFailure(Request request, IOException e) {
                 if (null != callback)
-                    callback.onComplete(null, new Callbacks.Error(e));
+                    callback.onCompleteWrapper(null, new Callbacks.Error(e));
             }
 
             @Override
@@ -273,17 +322,17 @@ public class User {
                         }
 
                         if (null != callback)
-                            callback.onComplete(User.this, null);
+                            callback.onCompleteWrapper(User.this, null);
                     } else {
 
                         Callbacks.Error error = new Callbacks.Error(json.getJSONObject("error"));
                         if (null != callback)
-                            callback.onComplete(null, error);
+                            callback.onCompleteWrapper(null, error);
                     }
 
                 } catch (JSONException e) {
                     if (callback != null)
-                        callback.onComplete(null, new Callbacks.Error(e));
+                        callback.onCompleteWrapper(null, new Callbacks.Error(e));
                 }
             }
         });

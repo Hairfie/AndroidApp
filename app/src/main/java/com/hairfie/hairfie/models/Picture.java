@@ -53,7 +53,7 @@ public class Picture {
             @Override
             public void onFailure(Request request, IOException e) {
                 if (null != callback)
-                    callback.onComplete(null, new Callbacks.Error(e));
+                    callback.onCompleteWrapper(null, new Callbacks.Error(e));
             }
 
             @Override
@@ -78,17 +78,17 @@ public class Picture {
 
                         Picture picture = null != id && null != container ? new Picture(id, container) : null;
                         if (null != callback)
-                            callback.onComplete(picture, null);
+                            callback.onCompleteWrapper(picture, null);
                     } else {
 
                         Callbacks.Error error = new Callbacks.Error(json.getJSONObject("error"));
                         if (null != callback)
-                            callback.onComplete(null, error);
+                            callback.onCompleteWrapper(null, error);
                     }
 
                 } catch (JSONException e) {
                     if (callback != null)
-                        callback.onComplete(null, new Callbacks.Error(e));
+                        callback.onCompleteWrapper(null, new Callbacks.Error(e));
                 }
 
 
