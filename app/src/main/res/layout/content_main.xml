@@ -39,6 +39,7 @@
             android:layout_gravity="top"
             android:background="@color/colorAccent"
             android:textColor="#fff"
+            android:padding="10dp"
             android:paddingTop="4dp"
             android:paddingBottom="4dp" />
 

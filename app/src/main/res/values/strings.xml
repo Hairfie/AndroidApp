@@ -38,6 +38,8 @@
     <string name="please_enter_email">Please enter your E-mail and your password!</string>
     <string name="logging_in">Logging in</string>
     <string name="filter_your_search">Filter your search</string>
+    <string name="book">Book</string>
+    <string name="hairfies">Hairfies</string>
     <array name="image_picker_options">
         <item>Take Picture</item>
         <item>Choose From Gallery</item>

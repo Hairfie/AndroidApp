@@ -22,11 +22,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.facebook.appevents.AppEventsLogger;
+import com.hairfie.hairfie.dummy.DummyContent;
 import com.hairfie.hairfie.models.Callbacks;
 import com.hairfie.hairfie.models.User;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, HairfieGridFragment.OnHairfieGridFragmentInteractionListener, CategoryPictoFragment.OnCategoryPictoFragmentInteractionListener {
 
     ViewPager mViewPager;
     PagerTitleStrip mPagerTitleStrip;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mPagerTitleStrip = (PagerTitleStrip) findViewById(R.id.pager_title_strip);
 
+        mViewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -125,6 +127,16 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    public void onTouchCategoryPicto(DummyContent.DummyItem item) {
+
+    }
+
+    @Override
+    public void onTouchHairfie(DummyContent.DummyItem item) {
+
+    }
+
     public class PagerAdapter extends FragmentPagerAdapter {
 
         public PagerAdapter(FragmentManager fm) {
@@ -133,12 +145,25 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public Fragment getItem(int position) {
+            switch (position) {
+                case 0: return CategoryPictoFragment.newInstance();
+                case 1: return HairfieGridFragment.newInstance(2);
+            }
             return null;
         }
 
         @Override
         public int getCount() {
-            return 0;
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0: return getString(R.string.book);
+                case 1: return getString(R.string.hairfies);
+            }
+            return null;
         }
     }
 }
