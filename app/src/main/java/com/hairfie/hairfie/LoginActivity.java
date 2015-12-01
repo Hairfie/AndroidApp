@@ -1,6 +1,5 @@
 package com.hairfie.hairfie;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.Nullable;
@@ -8,7 +7,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +17,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.hairfie.hairfie.models.Callbacks;
 import com.hairfie.hairfie.models.User;
 
@@ -107,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
         progress.setIndeterminate(true);
         progress.show();
 
-        User.getCurrentUser().login(email.toString(), password.toString(), new Callbacks.SingleObjectCallback<User>() {
+        User.getCurrentUser().login(email.toString(), password.toString(), new Callbacks.ObjectCallback<User>() {
             @Override
             public void onComplete(@Nullable User user, @Nullable Callbacks.Error error) {
 
@@ -128,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     void loginWithFacebookAccessToken(AccessToken accessToken) {
-        User.getCurrentUser().loginWithFacebook(accessToken, new Callbacks.SingleObjectCallback<User>() {
+        User.getCurrentUser().loginWithFacebook(accessToken, new Callbacks.ObjectCallback<User>() {
             @Override
             public void onComplete(@Nullable User user, @Nullable Callbacks.Error error) {
 

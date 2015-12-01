@@ -1,10 +1,8 @@
 package com.hairfie.hairfie;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -67,9 +65,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         }
 
 
-        if (null != User.getCurrentUser().resetPassword(email, new Callbacks.SimpleCallback() {
+        if (null != User.getCurrentUser().resetPassword(email, new Callbacks.ObjectCallback<Void>() {
             @Override
-            public void onComplete(@Nullable Callbacks.Error error) {
+            public void onComplete(@Nullable Void object, @Nullable Callbacks.Error error) {
                 progress.dismiss();
                 if (error != null) {
                     Snackbar.make(mButton, error.message, Snackbar.LENGTH_LONG).show();

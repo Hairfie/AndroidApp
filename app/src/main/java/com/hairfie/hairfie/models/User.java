@@ -1,7 +1,6 @@
 package com.hairfie.hairfie.models;
 
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -13,9 +12,6 @@ import com.hairfie.hairfie.Config;
 import com.hairfie.hairfie.R;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.Headers;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.MultipartBuilder;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
@@ -25,7 +21,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 
 /**
  * Created by stephh on 24/11/15.
@@ -63,7 +58,7 @@ public class User {
         editor.commit();
     }
 
-    public Call logout(final Callbacks.SimpleCallback callback) {
+    public Call logout(final Callbacks.ObjectCallback<Void> callback) {
         String accessToken = getAccessToken();
 
         if (null == accessToken)
@@ -82,36 +77,18 @@ public class User {
                 .build();
         Call result = HttpClient.getInstance().newCall(request);
 
-        result.enqueue(new Callback() {
+        result.enqueue(null == callback ? null : callback.okHttpCallback(new Callbacks.StringDeserializer<Void>() {
             @Override
-            public void onFailure(Request request, IOException e) {
-                if (null != callback)
-                    callback.onCompleteWrapper(new Callbacks.Error(e));
+            public Void deserialize(String s) throws Exception {
+                return null;
             }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    if (null != callback)
-                        callback.onCompleteWrapper(null);
-                } else {
-                    try {
-                        JSONObject json = new JSONObject(response.body().string());
-                        Callbacks.Error error = new Callbacks.Error(json.getJSONObject("error"));
-                        if (null != callback)
-                            callback.onCompleteWrapper(error);
-                    } catch (JSONException e) {
-                        if (null != callback)
-                            callback.onCompleteWrapper(new Callbacks.Error(e));
-                    }
-                }
-            }
-        });
+        }));
+        
         return result;
 
     }
 
-    public Call login(@NonNull String email, @NonNull String password, @Nullable final Callbacks.SingleObjectCallback<User> callback) {
+    public Call login(@NonNull String email, @NonNull String password, @Nullable final Callbacks.ObjectCallback<User> callback) {
         try {
             JSONObject parameters = new JSONObject();
             parameters.put("email", email);
@@ -122,42 +99,19 @@ public class User {
                     .build();
 
             Call result = HttpClient.getInstance().newCall(request);
-            result.enqueue(new Callback() {
+            result.enqueue(callback == null ? null : callback.okHttpCallback(new Callbacks.JSONObjectDeserializer<User>() {
                 @Override
-                public void onFailure(Request request, IOException e) {
-                    if (null != callback)
-                        callback.onCompleteWrapper(null, new Callbacks.Error(e));
-                }
-
-                @Override
-                public void onResponse(Response response) throws IOException {
-
-                    try {
-                        JSONObject json = new JSONObject(response.body().string());
-                        if (response.isSuccessful()) {
-                            String accessToken = json.getString("id");
-                            String userId = json.getString("userId");
-                            if (null != accessToken && null != userId) {
-                                setCredentials(accessToken, userId);
-                            }
-
-                            if (null != callback)
-                                callback.onCompleteWrapper(User.this, null);
-                        } else {
-
-                            Callbacks.Error error = new Callbacks.Error(json.getJSONObject("error"));
-                            if (null != callback)
-                                callback.onCompleteWrapper(null, error);
-                        }
-
-                    } catch (JSONException e) {
-                        if (callback != null)
-                            callback.onCompleteWrapper(null, new Callbacks.Error(e));
+                public User deserialize(JSONObject json) throws JSONException {
+                    String accessToken = json.getString("id");
+                    String userId = json.getString("userId");
+                    if (null != accessToken && null != userId) {
+                        setCredentials(accessToken, userId);
                     }
-
-
+                    return User.this;
                 }
-            });
+            }));
+
+
             return result;
 
         } catch (JSONException e) {
@@ -168,7 +122,7 @@ public class User {
 
 
 
-    public Call signup(JSONObject parameters, final Callbacks.SingleObjectCallback<User> callback) {
+    public Call signup(JSONObject parameters, final Callbacks.ObjectCallback<User> callback) {
 
         Request request = new Request.Builder()
                 .url(Config.instance.getAPIRoot() + "users/")
@@ -177,53 +131,29 @@ public class User {
 
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue(new Callback() {
+        result.enqueue(null == callback ? null : callback.okHttpCallback(new Callbacks.JSONObjectDeserializer<User>() {
             @Override
-            public void onFailure(Request request, IOException e) {
-                if (null != callback)
-                    callback.onCompleteWrapper(null, new Callbacks.Error(e));
-            }
+            public User deserialize(JSONObject json) throws Exception {
+                String accessToken = null, userId = null;
 
-            @Override
-            public void onResponse(Response response) throws IOException {
-
-                try {
-                    JSONObject json = new JSONObject(response.body().string());
-
-                    if (response.isSuccessful()) {
-                        String accessToken = null, userId = null;
-
-                        JSONObject accessTokenJSON = json.optJSONObject("accessToken");
-                        if (accessTokenJSON != null) {
-                            accessToken = accessTokenJSON.optString("id");
-                            userId = accessTokenJSON.optString("userId");
-                        }
-
-                        if (null != accessToken && null != userId) {
-                            setCredentials(accessToken, userId);
-                        }
-
-                        if (null != callback)
-                            callback.onCompleteWrapper(User.this, null);
-                    } else {
-
-                        Callbacks.Error error = new Callbacks.Error(json.getJSONObject("error"));
-                        if (null != callback)
-                            callback.onCompleteWrapper(null, error);
-                    }
-
-                } catch (JSONException e) {
-                    if (callback != null)
-                        callback.onCompleteWrapper(null, new Callbacks.Error(e));
+                JSONObject accessTokenJSON = json.optJSONObject("accessToken");
+                if (accessTokenJSON != null) {
+                    accessToken = accessTokenJSON.optString("id");
+                    userId = accessTokenJSON.optString("userId");
                 }
 
+                if (null != accessToken && null != userId) {
+                    setCredentials(accessToken, userId);
+                }
 
+                return User.this;
             }
-        });
+        }));
+
         return result;
     }
 
-    public Call resetPassword(CharSequence email, final Callbacks.SimpleCallback callback) {
+    public Call resetPassword(CharSequence email, final Callbacks.ObjectCallback<Void> callback) {
 
         JSONObject parameters = new JSONObject();
         try {
@@ -240,43 +170,21 @@ public class User {
 
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue(new Callback() {
+        result.enqueue(null == callback ? null : callback.okHttpCallback(new Callbacks.StringDeserializer<Void>() {
             @Override
-            public void onFailure(Request request, IOException e) {
-                if (null != callback)
-                    callback.onCompleteWrapper(new Callbacks.Error(e));
+            public Void deserialize(String s) throws Exception {
+                return null;
             }
+        }));
 
-            @Override
-            public void onResponse(Response response) throws IOException {
-
-                String body = response.body().string();
-                Log.d(Application.TAG, body);
-
-                if (response.isSuccessful()) {
-                    if (null != callback)
-                        callback.onCompleteWrapper(null);
-                } else {
-                    try {
-                        JSONObject json = new JSONObject(body);
-                        Callbacks.Error error = new Callbacks.Error(json.getJSONObject("error"));
-                        if (null != callback)
-                            callback.onCompleteWrapper(error);
-                    } catch (JSONException e) {
-                        if (null != callback)
-                            callback.onCompleteWrapper(new Callbacks.Error(e));
-                    }
-                }
-            }
-        });
         return result;
     }
 
-    public Call uploadPicture(File pictureFile, Callbacks.SingleObjectCallback<Picture> callback) {
+    public Call uploadPicture(File pictureFile, Callbacks.ObjectCallback<Picture> callback) {
         return Picture.upload(pictureFile, "users", callback);
     }
 
-    public Call loginWithFacebook(AccessToken accessToken, final Callbacks.SingleObjectCallback<User> callback) {
+    public Call loginWithFacebook(AccessToken accessToken, final Callbacks.ObjectCallback<User> callback) {
 
         if (!accessToken.getPermissions().contains("email")) {
             if (null != callback)
@@ -300,42 +208,19 @@ public class User {
 
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue(new Callback() {
+        result.enqueue(null == callback ? null : callback.okHttpCallback(new Callbacks.JSONObjectDeserializer<User>() {
             @Override
-            public void onFailure(Request request, IOException e) {
-                if (null != callback)
-                    callback.onCompleteWrapper(null, new Callbacks.Error(e));
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-                String body = response.body().string();
-
-                try {
-
-                    JSONObject json = new JSONObject(body);
-                    if (response.isSuccessful()) {
-                        String accessToken = json.getString("id");
-                        String userId = json.getString("userId");
-                        if (null != accessToken && null != userId) {
-                            setCredentials(accessToken, userId);
-                        }
-
-                        if (null != callback)
-                            callback.onCompleteWrapper(User.this, null);
-                    } else {
-
-                        Callbacks.Error error = new Callbacks.Error(json.getJSONObject("error"));
-                        if (null != callback)
-                            callback.onCompleteWrapper(null, error);
-                    }
-
-                } catch (JSONException e) {
-                    if (callback != null)
-                        callback.onCompleteWrapper(null, new Callbacks.Error(e));
+            public User deserialize(JSONObject json) throws Exception {
+                String accessToken = json.getString("id");
+                String userId = json.getString("userId");
+                if (null != accessToken && null != userId) {
+                    setCredentials(accessToken, userId);
                 }
+
+                return User.this;
             }
-        });
+        }));
+
         return result;
 
     }

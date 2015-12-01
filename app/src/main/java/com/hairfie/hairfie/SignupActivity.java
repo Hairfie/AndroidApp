@@ -3,8 +3,6 @@ package com.hairfie.hairfie;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,8 +11,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -187,7 +183,7 @@ public class SignupActivity extends AppCompatActivity {
                         body.put("picture", mPicture.toJson());
                     }
 
-                    User.getCurrentUser().signup(body, new Callbacks.SingleObjectCallback<User>() {
+                    User.getCurrentUser().signup(body, new Callbacks.ObjectCallback<User>() {
                         @Override
                         public void onComplete(@Nullable User user, @Nullable Callbacks.Error error) {
 
@@ -224,7 +220,7 @@ public class SignupActivity extends AppCompatActivity {
         // Do not upload the same picture file twice, rather reuse a successful upload
         if (null == mPicture && null != mPictureFile) {
 
-            User.getCurrentUser().uploadPicture(mPictureFile, new Callbacks.SingleObjectCallback<Picture>() {
+            User.getCurrentUser().uploadPicture(mPictureFile, new Callbacks.ObjectCallback<Picture>() {
                 @Override
                 public void onComplete(@Nullable Picture picture, @Nullable Callbacks.Error error) {
 

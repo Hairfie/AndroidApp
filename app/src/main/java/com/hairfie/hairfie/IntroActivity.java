@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.androidpagecontrol.PageControl;
@@ -124,7 +123,7 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     void loginWithFacebookAccessToken(AccessToken accessToken) {
-        User.getCurrentUser().loginWithFacebook(accessToken, new Callbacks.SingleObjectCallback<User>() {
+        User.getCurrentUser().loginWithFacebook(accessToken, new Callbacks.ObjectCallback<User>() {
             @Override
             public void onComplete(@Nullable User user, @Nullable Callbacks.Error error) {
 

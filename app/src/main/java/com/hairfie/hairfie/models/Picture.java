@@ -33,7 +33,7 @@ public class Picture {
         mContainer = container;
     }
 
-    public static Call upload(@NonNull File file, String container, @Nullable final Callbacks.SingleObjectCallback<Picture> callback) {
+    public static Call upload(@NonNull File file, String container, @Nullable final Callbacks.ObjectCallback<Picture> callback) {
 
         String mimeType = Application.getInstance().getContentResolver().getType(Uri.fromFile(file));
         RequestBody requestBody = new MultipartBuilder()
