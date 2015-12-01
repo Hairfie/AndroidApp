@@ -179,7 +179,7 @@ public class SignupActivity extends AppCompatActivity {
                 try {
                     JSONObject body = mForm.toJson();
                     if (null != mPicture) {
-                        body.put("picture", mPicture.toJson());
+                        body.put("picture", mPicture.name);
                     }
 
                     if (null != User.getCurrentUser().signup(body, new Callbacks.ObjectCallback<User>() {

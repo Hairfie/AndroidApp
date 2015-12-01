@@ -25,12 +25,13 @@ import java.io.IOException;
  */
 public class Picture {
 
-    String mId;
-    String mContainer;
-    public Picture(String id, String container) {
+    public String name;
+    public String container;
+    public String url;
+    public Picture(String name, String container) {
 
-        mId = id;
-        mContainer = container;
+        this.name = name;
+        this.container = container;
     }
 
     public static Call upload(@NonNull File file, String container, @Nullable final Callbacks.ObjectCallback<Picture> callback) {
@@ -49,58 +50,27 @@ public class Picture {
                 .build();
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue(new Callback() {
+        result.enqueue(callback == null ? null : callback.okHttpCallback(new Callbacks.JSONObjectDeserializer<Picture>() {
             @Override
-            public void onFailure(Request request, IOException e) {
-                if (null != callback)
-                    callback.onCompleteWrapper(null, new Callbacks.Error(e));
-            }
+            public Picture deserialize(JSONObject json) throws Exception {
+                String container = null, id = null;
 
-            @Override
-            public void onResponse(Response response) throws IOException {
-
-                try {
-                    JSONObject json = new JSONObject(response.body().string());
-                    if (response.isSuccessful()) {
-                        String container = null, id = null;
-
-                        JSONObject result = json.optJSONObject("result");
-                        if (null != result) {
-                            JSONObject files = result.optJSONObject("files");
-                            if (null != files) {
-                                JSONObject fileJson = files.optJSONObject("file");
-                                if (null != fileJson) {
-                                    id = fileJson.optString("name");
-                                    container = fileJson.optString("container");
-                                }
-                            }
+                JSONObject result = json.optJSONObject("result");
+                if (null != result) {
+                    JSONObject files = result.optJSONObject("files");
+                    if (null != files) {
+                        JSONObject fileJson = files.optJSONObject("file");
+                        if (null != fileJson) {
+                            id = fileJson.optString("name");
+                            container = fileJson.optString("container");
                         }
-
-                        Picture picture = null != id && null != container ? new Picture(id, container) : null;
-                        if (null != callback)
-                            callback.onCompleteWrapper(picture, null);
-                    } else {
-
-                        Callbacks.Error error = new Callbacks.Error(json.getJSONObject("error"));
-                        if (null != callback)
-                            callback.onCompleteWrapper(null, error);
                     }
-
-                } catch (JSONException e) {
-                    if (callback != null)
-                        callback.onCompleteWrapper(null, new Callbacks.Error(e));
                 }
 
-
+                return null != id && null != container ? new Picture(id, container) : null;
             }
-        });
-        return result;
-    }
+        }));
 
-    public JSONObject toJson() throws  JSONException {
-        JSONObject result = new JSONObject();
-        result.put("id", mId);
-        result.put("container", mContainer);
         return result;
     }
 }

@@ -1,6 +1,7 @@
 package com.hairfie.hairfie.models;
 
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -11,22 +12,20 @@ import com.hairfie.hairfie.Application;
 import com.hairfie.hairfie.Config;
 import com.hairfie.hairfie.R;
 import com.squareup.okhttp.Call;
-import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by stephh on 24/11/15.
  */
 public class User {
-    private static Gson gson = new Gson();
+
+    private static final Gson sGson = new Gson();
 
     @NonNull
     private static final User sCurrentUser = new User();
@@ -48,6 +47,15 @@ public class User {
     @Nullable
     public String getUserId() {
         return Application.getInstance().getSharedPreferences().getString("user.userid", null);
+    }
+
+
+    @Nullable
+    private Profile mProfile;
+
+    @Nullable
+    public Profile getProfile() {
+        return mProfile;
     }
 
     private void setCredentials(@NonNull String accessToken, @NonNull String userId) {
@@ -99,7 +107,7 @@ public class User {
                     .build();
 
             Call result = HttpClient.getInstance().newCall(request);
-            result.enqueue(callback == null ? null : callback.okHttpCallback(new Callbacks.JSONObjectDeserializer<User>() {
+            result.enqueue(callback == null ? null : new FetchProfileWrapperCallback(callback).okHttpCallback(new Callbacks.JSONObjectDeserializer<User>() {
                 @Override
                 public User deserialize(JSONObject json) throws JSONException {
                     String accessToken = json.getString("id");
@@ -131,7 +139,7 @@ public class User {
 
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue(null == callback ? null : callback.okHttpCallback(new Callbacks.JSONObjectDeserializer<User>() {
+        result.enqueue(null == callback ? null : new FetchProfileWrapperCallback(callback).okHttpCallback(new Callbacks.JSONObjectDeserializer<User>() {
             @Override
             public User deserialize(JSONObject json) throws Exception {
                 String accessToken = null, userId = null;
@@ -208,7 +216,7 @@ public class User {
 
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue(null == callback ? null : callback.okHttpCallback(new Callbacks.JSONObjectDeserializer<User>() {
+        result.enqueue(null == callback ? null : new FetchProfileWrapperCallback(callback).okHttpCallback(new Callbacks.JSONObjectDeserializer<User>() {
             @Override
             public User deserialize(JSONObject json) throws Exception {
                 String accessToken = json.getString("id");
@@ -224,5 +232,57 @@ public class User {
         return result;
 
     }
+
+    private static class FetchProfileWrapperCallback extends Callbacks.ObjectCallback<User> {
+
+        Callbacks.ObjectCallback<User> mCallback;
+        FetchProfileWrapperCallback(Callbacks.ObjectCallback<User> callback) {
+            super();
+            mCallback = callback;
+        }
+        @Override
+        public void onComplete(@Nullable final User user, @Nullable Callbacks.Error error) {
+
+            // Yield on error or missing user ID
+            if (null != error || null == user.getUserId()) {
+                if (null != mCallback)
+                    mCallback.onCompleteWrapper(user, error);
+                return;
+            }
+
+            String userId = user.getUserId();
+            Request request = new Request.Builder()
+                    .url(Config.instance.getAPIRoot() + "users/" + Uri.encode(userId))
+                    .build();
+
+            HttpClient.getInstance().newCall(request).enqueue(null == mCallback ? null : mCallback.okHttpCallback(new Callbacks.StringDeserializer<User>() {
+                @Override
+                public User deserialize(String s) throws Exception {
+                    Profile profile = sGson.fromJson(s, Profile.class);
+                    user.mProfile = profile;
+                    return user;
+                }
+            }));
+        }
+    }
+
+    // Example:
+    // {"id":"23041225-f559-4626-9aa8-5d05025e219c","href":"http:\/\/api-staging.hairfie.com\/v1.1\/users\/23041225-f559-4626-9aa8-5d05025e219c","gender":"FEMALE","firstName":"Yjf","lastName":"Tjr","picture":{"container":"users","name":"db7bf3ce-dad2-4bb3-a4f5-ec83d3fff763","url":"http:\/\/d3fkjxim4dbfwn.cloudfront.net\/v1.1\/containers\/users\/download\/db7bf3ce-dad2-4bb3-a4f5-ec83d3fff763"},"numHairfies":0,"numBusinessReviews":0,"email":"e@e.com","locale":"fr","newsletter":true,"language":"fr"}
+
+    public static class Profile {
+
+        public String id;
+        public String gender;
+        public String firstName;
+        public String lastName;
+        public String email;
+        public String locale;
+        public String language;
+        public boolean newsletter;
+        public Integer numHairfies;
+        public Integer numBusinessReviews;
+        public Picture picture;
+    }
+
 
 }
