@@ -54,4 +54,7 @@
     <string name="enter_your_email_below">Enter your email below:</string>
     <string name="reset_password">Reset password</string>
     <string name="check_your_email">Check your email!</string>
+    <string name="home">Home</string>
+    <string name="logout">Logout</string>
+    <string name="copyright_version">© Hairfie 2015 v1.0</string>
 </resources>

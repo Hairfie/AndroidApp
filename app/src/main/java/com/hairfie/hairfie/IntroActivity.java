@@ -1,5 +1,6 @@
 package com.hairfie.hairfie;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -123,10 +124,16 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     void loginWithFacebookAccessToken(AccessToken accessToken) {
-        User.getCurrentUser().loginWithFacebook(accessToken, new Callbacks.ObjectCallback<User>() {
+
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setMessage(getString(R.string.logging_in));
+        progress.setIndeterminate(true);
+
+        if (null != User.getCurrentUser().loginWithFacebook(accessToken, new Callbacks.ObjectCallback<User>() {
             @Override
             public void onComplete(@Nullable User user, @Nullable Callbacks.Error error) {
-
+                progress.dismiss();
+                
                 if (null != error) {
                     Snackbar.make(mViewPager, error.message, Snackbar.LENGTH_LONG).show();
                     return;
@@ -138,6 +145,8 @@ public class IntroActivity extends AppCompatActivity {
                     finish();
                 }
             }
-        });
+        })) {
+            progress.show();
+        }
     }
 }
