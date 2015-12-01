@@ -1,9 +1,11 @@
 package com.hairfie.hairfie.models;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.facebook.AccessToken;
@@ -25,6 +27,8 @@ import java.util.Locale;
  * Created by stephh on 24/11/15.
  */
 public class User {
+
+    public static final String PROFILE_UPDATED_BROADCAST_INTENT = "PROFILE_UPDATED_BROADCAST_INTENT";
 
     private static final Gson sGson = new Gson();
 
@@ -72,13 +76,27 @@ public class User {
 
 
     private void setProfile(Profile profile) {
+        String oldValue = Application.getInstance().getSharedPreferences().getString("user.profile", null);
+        String newValue = profile == null ? null : sGson.toJson(profile);
+
+        if (oldValue == null && newValue == null) {
+            return;
+        }
+        if (oldValue != null && newValue != null && oldValue.equals(newValue)) {
+            return;
+        }
+
         SharedPreferences.Editor editor = Application.getInstance().getSharedPreferences().edit();
-        if (null == profile) {
+        if (null == newValue) {
             editor.remove("user.profile");
         } else {
-            editor.putString("user.profile", sGson.toJson(profile));
+            editor.putString("user.profile", newValue);
         }
         editor.commit();
+
+        // Send a broadcast
+        Intent intent = new Intent(PROFILE_UPDATED_BROADCAST_INTENT);
+        LocalBroadcastManager.getInstance(Application.getInstance()).sendBroadcast(intent);
     }
 
     public Call logout(final Callbacks.ObjectCallback<Void> callback) {
@@ -90,6 +108,7 @@ public class User {
         SharedPreferences.Editor editor = Application.getInstance().getSharedPreferences().edit();
         editor.remove("user.accesstoken");
         editor.remove("user.userid");
+        editor.remove("user.profile");
         editor.commit();
 
         Request request = new Request.Builder()
