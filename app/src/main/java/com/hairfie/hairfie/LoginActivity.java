@@ -102,9 +102,8 @@ public class LoginActivity extends AppCompatActivity {
         final ProgressDialog progress = new ProgressDialog(this);
         progress.setMessage(getString(R.string.logging_in));
         progress.setIndeterminate(true);
-        progress.show();
 
-        User.getCurrentUser().login(email.toString(), password.toString(), new Callbacks.ObjectCallback<User>() {
+        if (null != User.getCurrentUser().login(email.toString(), password.toString(), new Callbacks.ObjectCallback<User>() {
             @Override
             public void onComplete(@Nullable User user, @Nullable Callbacks.Error error) {
 
@@ -120,15 +119,22 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             }
-        });
+        })) {
+            progress.show();
+        }
 
     }
 
     void loginWithFacebookAccessToken(AccessToken accessToken) {
-        User.getCurrentUser().loginWithFacebook(accessToken, new Callbacks.ObjectCallback<User>() {
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setMessage(getString(R.string.logging_in));
+        progress.setIndeterminate(true);
+
+        if (null != User.getCurrentUser().loginWithFacebook(accessToken, new Callbacks.ObjectCallback<User>() {
             @Override
             public void onComplete(@Nullable User user, @Nullable Callbacks.Error error) {
 
+                progress.dismiss();
                 if (null != error) {
                     Snackbar.make(mFacebookLoginButton, error.message, Snackbar.LENGTH_LONG).show();
                     return;
@@ -140,6 +146,8 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
                 }
             }
-        });
+        })) {
+            progress.show();
+        }
     }
 }

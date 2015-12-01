@@ -172,7 +172,6 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
-        startSpinning(getString(R.string.sending));
 
         final Runnable signupRunnable = new Runnable() {
             @Override
@@ -183,7 +182,7 @@ public class SignupActivity extends AppCompatActivity {
                         body.put("picture", mPicture.toJson());
                     }
 
-                    User.getCurrentUser().signup(body, new Callbacks.ObjectCallback<User>() {
+                    if (null != User.getCurrentUser().signup(body, new Callbacks.ObjectCallback<User>() {
                         @Override
                         public void onComplete(@Nullable User user, @Nullable Callbacks.Error error) {
 
@@ -205,7 +204,9 @@ public class SignupActivity extends AppCompatActivity {
                             }
 
                         }
-                    });
+                    })) {
+                        startSpinning(getString(R.string.sending));
+                    }
 
 
                 } catch (JSONException e) {
@@ -220,7 +221,7 @@ public class SignupActivity extends AppCompatActivity {
         // Do not upload the same picture file twice, rather reuse a successful upload
         if (null == mPicture && null != mPictureFile) {
 
-            User.getCurrentUser().uploadPicture(mPictureFile, new Callbacks.ObjectCallback<Picture>() {
+            if (null != User.getCurrentUser().uploadPicture(mPictureFile, new Callbacks.ObjectCallback<Picture>() {
                 @Override
                 public void onComplete(@Nullable Picture picture, @Nullable Callbacks.Error error) {
 
@@ -242,7 +243,9 @@ public class SignupActivity extends AppCompatActivity {
                     signupRunnable.run();
 
                 }
-            });
+            })) {
+                startSpinning(getString(R.string.sending));
+            }
 
         } else {
             signupRunnable.run();
@@ -307,8 +310,10 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     void startSpinning(String message) {
-        if (null != mProgressDialog)
+        if (null != mProgressDialog) {
+            mProgressDialog.setMessage(message);
             return;
+        }
 
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage(message);

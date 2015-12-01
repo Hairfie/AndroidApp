@@ -83,7 +83,7 @@ public class User {
                 return null;
             }
         }));
-        
+
         return result;
 
     }
