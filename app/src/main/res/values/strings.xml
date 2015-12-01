@@ -41,6 +41,7 @@
     <string name="book">Book</string>
     <string name="hairfies">Hairfies</string>
     <string name="new_hairfie">New Hairfie</string>
+    <string name="forgotten">forgotten?</string>
     <array name="image_picker_options">
         <item>Take Picture</item>
         <item>Choose From Gallery</item>

@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,10 +42,18 @@ public class LoginActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mEmailEditText = (EditText)findViewById(R.id.email);
-        mPasswordEditText = (EditText)findViewById(R.id.password);
+        mEmailEditText = (EditText) findViewById(R.id.email);
+        mPasswordEditText = (EditText) findViewById(R.id.password);
 
-        Button facebookLoginButton = (Button)findViewById(R.id.facebook_login);
+        final View forgottenButton = findViewById(R.id.forgotten);
+        if (null != forgottenButton)
+            mPasswordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    forgottenButton.setVisibility(hasFocus ? View.GONE : View.VISIBLE);
+                }
+            });
+        Button facebookLoginButton = (Button) findViewById(R.id.facebook_login);
         mFacebookLoginButton = facebookLoginButton;
 
         LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
@@ -71,6 +80,9 @@ public class LoginActivity extends AppCompatActivity {
 
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
 
+    }
+    public void touchForgotten(View view) {
+        Log.d(Application.TAG, "Forgotten");
     }
 
     @Override
