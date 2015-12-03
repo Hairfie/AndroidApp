@@ -23,6 +23,7 @@ public class Category {
     public String id;
     public String name;
     public Picture picture;
+    public int position;
 
     public Category() {
 

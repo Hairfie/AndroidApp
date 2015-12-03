@@ -20,6 +20,8 @@ import com.hairfie.hairfie.models.ResultCallback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -123,6 +125,17 @@ public class CategoryPictoFragment extends Fragment {
                     if (null != object) {
                         List<Category> newValues = new ArrayList<Category>();
                         newValues.addAll(object);
+                        Collections.sort(newValues, new Comparator<Category>() {
+                            @Override
+                            public int compare(Category lhs, Category rhs) {
+                                if (lhs.position < rhs.position) {
+                                    return -1;
+                                }
+                                if (lhs.position > rhs.position)
+                                    return 1;
+                                return 0;
+                            }
+                        });
                         mValues = newValues;
                         notifyDataSetChanged();
                     }
