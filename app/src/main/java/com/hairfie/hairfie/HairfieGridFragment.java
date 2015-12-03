@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hairfie.hairfie.helpers.CircleTransform;
 import com.hairfie.hairfie.models.Hairfie;
 import com.hairfie.hairfie.models.Picture;
 import com.hairfie.hairfie.models.ResultCallback;
@@ -23,6 +24,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A fragment representing a list of Items.
@@ -194,8 +196,13 @@ public class HairfieGridFragment extends Fragment {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             private final View mView;
+            private final TextView mAuthorNameTextView;
             private final ImageView mPictureImageView;
             private final ImageView mSecondaryPictureImageView;
+            private final ImageView mAuthorPicture;
+            private final View mLikeContainerView;
+            private final TextView mLikeCountTextView;
+            private final TextView mPriceTextView;
             private Hairfie mItem;
 
             public ViewHolder(View view) {
@@ -203,6 +210,12 @@ public class HairfieGridFragment extends Fragment {
                 mView = view;
                 mPictureImageView = (ImageView) view.findViewById(R.id.picture);
                 mSecondaryPictureImageView = (ImageView) view.findViewById(R.id.secondary_picture);
+                mAuthorPicture = (ImageView) view.findViewById(R.id.author_picture);
+                mAuthorNameTextView = (TextView) view.findViewById(R.id.author_name);
+                mLikeContainerView = view.findViewById(R.id.like_container);
+                mLikeCountTextView = (TextView) view.findViewById(R.id.like_count);
+                mPriceTextView = (TextView) view.findViewById(R.id.price);
+
             }
 
             public Hairfie getItem() {
@@ -212,15 +225,40 @@ public class HairfieGridFragment extends Fragment {
             public void setItem(Hairfie item) {
                 mItem = item;
                 if (item.pictures != null && item.pictures.length > 1) {
+                    mSecondaryPictureImageView.setVisibility(View.VISIBLE);
                     Picasso.with(Application.getInstance()).load(Uri.parse(item.pictures[0].url)).fit().centerCrop().into(mSecondaryPictureImageView);
                     Picasso.with(Application.getInstance()).load(Uri.parse(item.pictures[1].url)).fit().centerCrop().into(mPictureImageView);
                 } else if (item.picture != null) {
                     Picasso.with(Application.getInstance()).load(Uri.parse(item.picture.url)).fit().centerCrop().into(mPictureImageView);
-                    mSecondaryPictureImageView.setImageDrawable(null);
+                    mSecondaryPictureImageView.setVisibility(View.GONE);
                 } else {
-                    mSecondaryPictureImageView.setImageDrawable(null);
+                    mSecondaryPictureImageView.setVisibility(View.GONE);
                     mPictureImageView.setImageDrawable(null);
                 }
+
+                if (item.author != null && item.author.picture != null) {
+                    Picture authorPicture = item.author.picture;
+                    Picasso.with(Application.getInstance()).load(Uri.parse(authorPicture.url)).placeholder(R.drawable.default_user_picture_circle).fit().centerCrop().transform(new CircleTransform()).into(mAuthorPicture);
+
+                } else {
+                    mAuthorPicture.setImageBitmap(null);
+                }
+
+                mAuthorNameTextView.setText(item.author != null ? item.author.getFullname() : "");
+                if (item.numLikes > 0) {
+                    mLikeContainerView.setVisibility(View.VISIBLE);
+                    mLikeCountTextView.setText(String.format(Locale.getDefault(), "%d", item.numLikes));
+                } else {
+                    mLikeContainerView.setVisibility(View.GONE);
+                }
+
+                if (item.price != null) {
+                    mPriceTextView.setVisibility(View.VISIBLE);
+                    mPriceTextView.setText(item.price.localizedString());
+                } else {
+                    mPriceTextView.setVisibility(View.GONE);
+                }
+
             }
 
             @Override

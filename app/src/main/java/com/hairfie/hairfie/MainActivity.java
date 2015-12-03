@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mPagerTitleStrip = (PagerTitleStrip) findViewById(R.id.pager_title_strip);
-
         mViewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
 
         boolean authenticated = User.getCurrentUser().isAuthenticated();

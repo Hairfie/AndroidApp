@@ -7,7 +7,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="16dp"
-    android:paddingRight="-1dp"
+    android:paddingTop="-1dp"
+    android:paddingLeft="-1dp"
+    android:paddingRight="-12dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.hairfie.hairfie.HairfieGridFragment"
     tools:listitem="@layout/fragment_hairfie" />
