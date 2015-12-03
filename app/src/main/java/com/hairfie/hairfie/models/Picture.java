@@ -7,18 +7,14 @@ import android.support.annotation.Nullable;
 import com.hairfie.hairfie.Application;
 import com.hairfie.hairfie.Config;
 import com.squareup.okhttp.Call;
-import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.MultipartBuilder;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by stephh on 27/11/15.
@@ -34,7 +30,7 @@ public class Picture {
         this.container = container;
     }
 
-    public static Call upload(@NonNull File file, String container, @Nullable final Callbacks.ObjectCallback<Picture> callback) {
+    public static Call upload(@NonNull File file, String container, @Nullable final ResultCallback.Single<Picture> callback) {
 
         String mimeType = Application.getInstance().getContentResolver().getType(Uri.fromFile(file));
         RequestBody requestBody = new MultipartBuilder()
@@ -50,7 +46,7 @@ public class Picture {
                 .build();
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue(callback == null ? null : callback.okHttpCallback(new Callbacks.JSONObjectDeserializer<Picture>() {
+        result.enqueue(callback == null ? null : callback.okHttpCallback(new ResultCallback.JSONObjectDeserializer<Picture>() {
             @Override
             public Picture deserialize(JSONObject json) throws Exception {
                 String container = null, id = null;

@@ -13,7 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.hairfie.hairfie.models.Callbacks;
+import com.hairfie.hairfie.models.ResultCallback;
 import com.hairfie.hairfie.models.User;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
@@ -65,9 +65,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         }
 
 
-        if (null != User.getCurrentUser().resetPassword(email, new Callbacks.ObjectCallback<Void>() {
+        if (null != User.getCurrentUser().resetPassword(email, new ResultCallback.Single<Void>() {
             @Override
-            public void onComplete(@Nullable Void object, @Nullable Callbacks.Error error) {
+            public void onComplete(@Nullable Void object, @Nullable ResultCallback.Error error) {
                 progress.dismiss();
                 if (error != null) {
                     Snackbar.make(mButton, error.message, Snackbar.LENGTH_LONG).show();

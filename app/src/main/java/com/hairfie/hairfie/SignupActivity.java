@@ -17,7 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.hairfie.hairfie.helpers.CircleTransform;
-import com.hairfie.hairfie.models.Callbacks;
+import com.hairfie.hairfie.models.ResultCallback;
 import com.hairfie.hairfie.models.Picture;
 import com.hairfie.hairfie.models.User;
 import com.squareup.picasso.Picasso;
@@ -182,9 +182,9 @@ public class SignupActivity extends AppCompatActivity {
                         body.put("picture", mPicture.name);
                     }
 
-                    if (null != User.getCurrentUser().signup(body, new Callbacks.ObjectCallback<User>() {
+                    if (null != User.getCurrentUser().signup(body, new ResultCallback.Single<User>() {
                         @Override
-                        public void onComplete(@Nullable User user, @Nullable Callbacks.Error error) {
+                        public void onComplete(@Nullable User user, @Nullable ResultCallback.Error error) {
 
                             stopSpinning();
                             if (null != error) {
@@ -221,9 +221,9 @@ public class SignupActivity extends AppCompatActivity {
         // Do not upload the same picture file twice, rather reuse a successful upload
         if (null == mPicture && null != mPictureFile) {
 
-            if (null != User.getCurrentUser().uploadPicture(mPictureFile, new Callbacks.ObjectCallback<Picture>() {
+            if (null != User.getCurrentUser().uploadPicture(mPictureFile, new ResultCallback.Single<Picture>() {
                 @Override
-                public void onComplete(@Nullable Picture picture, @Nullable Callbacks.Error error) {
+                public void onComplete(@Nullable Picture picture, @Nullable ResultCallback.Error error) {
 
                     if (null != error) {
                         stopSpinning();

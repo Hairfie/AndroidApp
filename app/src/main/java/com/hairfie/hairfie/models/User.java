@@ -102,7 +102,7 @@ public class User {
         LocalBroadcastManager.getInstance(Application.getInstance()).sendBroadcast(intent);
     }
 
-    public Call logout(final Callbacks.ObjectCallback<Void> callback) {
+    public Call logout(final ResultCallback.Single<Void> callback) {
         String accessToken = getAccessToken();
 
         if (null == accessToken)
@@ -121,7 +121,7 @@ public class User {
                 .build();
         Call result = HttpClient.getInstance().newCall(request);
 
-        result.enqueue((null == callback ? new Callbacks.EmptyCallback<Void>() : callback).okHttpCallback(new Callbacks.StringDeserializer<Void>() {
+        result.enqueue((null == callback ? new ResultCallback.Void<Void>() : callback).okHttpCallback(new ResultCallback.StringDeserializer<Void>() {
             @Override
             public Void deserialize(String s) throws Exception {
                 return null;
@@ -132,7 +132,7 @@ public class User {
 
     }
 
-    public Call login(@NonNull String email, @NonNull String password, @Nullable final Callbacks.ObjectCallback<User> callback) {
+    public Call login(@NonNull String email, @NonNull String password, @Nullable final ResultCallback.Single<User> callback) {
         try {
             JSONObject parameters = new JSONObject();
             parameters.put("email", email);
@@ -143,7 +143,7 @@ public class User {
                     .build();
 
             Call result = HttpClient.getInstance().newCall(request);
-            result.enqueue(new FetchProfileWrapperCallback(null == callback ? new Callbacks.EmptyCallback<User>() : callback).okHttpCallback(new Callbacks.JSONObjectDeserializer<User>() {
+            result.enqueue(new FetchProfileWrapperCallback(null == callback ? new ResultCallback.Void<User>() : callback).okHttpCallback(new ResultCallback.JSONObjectDeserializer<User>() {
                 @Override
                 public User deserialize(JSONObject json) throws JSONException {
                     String accessToken = json.getString("id");
@@ -166,7 +166,7 @@ public class User {
 
 
 
-    public Call signup(JSONObject parameters, final Callbacks.ObjectCallback<User> callback) {
+    public Call signup(JSONObject parameters, final ResultCallback.Single<User> callback) {
 
         Request request = new Request.Builder()
                 .url(Config.instance.getAPIRoot() + "users/")
@@ -175,7 +175,7 @@ public class User {
 
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue(new FetchProfileWrapperCallback(null == callback ? new Callbacks.EmptyCallback<User>() : callback).okHttpCallback(new Callbacks.JSONObjectDeserializer<User>() {
+        result.enqueue(new FetchProfileWrapperCallback(null == callback ? new ResultCallback.Void<User>() : callback).okHttpCallback(new ResultCallback.JSONObjectDeserializer<User>() {
             @Override
             public User deserialize(JSONObject json) throws Exception {
                 String accessToken = null, userId = null;
@@ -197,7 +197,7 @@ public class User {
         return result;
     }
 
-    public Call resetPassword(CharSequence email, final Callbacks.ObjectCallback<Void> callback) {
+    public Call resetPassword(CharSequence email, final ResultCallback.Single<Void> callback) {
 
         JSONObject parameters = new JSONObject();
         try {
@@ -214,7 +214,7 @@ public class User {
 
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue((null == callback ? new Callbacks.EmptyCallback<Void>() : callback).okHttpCallback(new Callbacks.StringDeserializer<Void>() {
+        result.enqueue((null == callback ? new ResultCallback.Void<Void>() : callback).okHttpCallback(new ResultCallback.StringDeserializer<Void>() {
             @Override
             public Void deserialize(String s) throws Exception {
                 return null;
@@ -224,15 +224,15 @@ public class User {
         return result;
     }
 
-    public Call uploadPicture(File pictureFile, Callbacks.ObjectCallback<Picture> callback) {
+    public Call uploadPicture(File pictureFile, ResultCallback.Single<Picture> callback) {
         return Picture.upload(pictureFile, "users", callback);
     }
 
-    public Call loginWithFacebook(AccessToken accessToken, final Callbacks.ObjectCallback<User> callback) {
+    public Call loginWithFacebook(AccessToken accessToken, final ResultCallback.Single<User> callback) {
 
         if (!accessToken.getPermissions().contains("email")) {
             if (null != callback)
-                callback.onCompleteWrapper(null, new Callbacks.Error(Application.getInstance().getString(R.string.email_permission_required)));
+                callback.executeOnOriginalThread(null, new ResultCallback.Error(Application.getInstance().getString(R.string.email_permission_required)));
             return null;
         }
 
@@ -241,7 +241,7 @@ public class User {
             parameters.put("access_token", accessToken.getToken());
         } catch (JSONException e) {
             if (null != callback)
-                callback.onCompleteWrapper(null, new Callbacks.Error(e));
+                callback.executeOnOriginalThread(null, new ResultCallback.Error(e));
             return null;
         }
 
@@ -252,7 +252,7 @@ public class User {
 
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue(new FetchProfileWrapperCallback((null == callback ? new Callbacks.EmptyCallback<User>() : callback)).okHttpCallback(new Callbacks.JSONObjectDeserializer<User>() {
+        result.enqueue(new FetchProfileWrapperCallback((null == callback ? new ResultCallback.Void<User>() : callback)).okHttpCallback(new ResultCallback.JSONObjectDeserializer<User>() {
             @Override
             public User deserialize(JSONObject json) throws Exception {
                 String accessToken = json.getString("id");
@@ -269,7 +269,7 @@ public class User {
 
     }
 
-    public Call fetchProfile(final Callbacks.ObjectCallback<User> callback) {
+    public Call fetchProfile(final ResultCallback.Single<User> callback) {
         String userId = getUserId();
         if (null == userId) {
             return null;
@@ -281,7 +281,7 @@ public class User {
 
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue((null == callback ? new Callbacks.EmptyCallback<User>() : callback).okHttpCallback(new Callbacks.StringDeserializer<User>() {
+        result.enqueue((null == callback ? new ResultCallback.Void<User>() : callback).okHttpCallback(new ResultCallback.StringDeserializer<User>() {
             @Override
             public User deserialize(String s) throws Exception {
                 Profile profile = sGson.fromJson(s, Profile.class);
@@ -293,20 +293,20 @@ public class User {
 
     }
 
-    private static class FetchProfileWrapperCallback extends Callbacks.ObjectCallback<User> {
+    private static class FetchProfileWrapperCallback extends ResultCallback.Single<User> {
 
-        Callbacks.ObjectCallback<User> mCallback;
-        FetchProfileWrapperCallback(Callbacks.ObjectCallback<User> callback) {
+        ResultCallback.Single<User> mCallback;
+        FetchProfileWrapperCallback(ResultCallback.Single<User> callback) {
             super();
             mCallback = callback;
         }
         @Override
-        public void onComplete(@Nullable final User user, @Nullable Callbacks.Error error) {
+        public void onComplete(@Nullable final User user, @Nullable ResultCallback.Error error) {
 
             // Yield on error or missing user ID
             if (null != error || null == user.getUserId()) {
                 if (null != mCallback)
-                    mCallback.onCompleteWrapper(user, error);
+                    mCallback.executeOnOriginalThread(user, error);
                 return;
             }
 

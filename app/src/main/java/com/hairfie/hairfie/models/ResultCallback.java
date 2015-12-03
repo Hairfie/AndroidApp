@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -13,12 +12,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by stephh on 25/11/15.
  */
-public abstract class Callbacks {
+public abstract class ResultCallback {
     public static class Error {
         @NonNull
         public String message;
@@ -52,12 +50,13 @@ public abstract class Callbacks {
         public T deserialize(String s) throws Exception;
     }
 
-    public static abstract class ObjectCallback<T> {
+    public static abstract class Single<T> {
         private Handler mHandler;
-        public ObjectCallback() {
+        public Single() {
             mHandler = new Handler();
         }
-        protected void onCompleteWrapper(@Nullable final T object, @Nullable final Error error) {
+
+        public void executeOnOriginalThread(@Nullable final T object, @Nullable final Error error) {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -72,7 +71,7 @@ public abstract class Callbacks {
             return new Callback() {
                 @Override
                 public void onFailure(Request request, IOException e) {
-                    ObjectCallback.this.onCompleteWrapper(null, new Error(e));
+                    Single.this.executeOnOriginalThread(null, new Error(e));
                 }
 
                 @Override
@@ -80,14 +79,14 @@ public abstract class Callbacks {
                     String body = response.body().string();
                     try {
                         if (response.isSuccessful()) {
-                            ObjectCallback.this.onCompleteWrapper(deserializer.deserialize(body), null);
+                            Single.this.executeOnOriginalThread(deserializer.deserialize(body), null);
                         } else {
 
                             // Try to deserialize a json error
                             try {
                                 JSONObject errorJson = new JSONObject(body);
-                                Callbacks.Error error = new Callbacks.Error(errorJson.getJSONObject("error"));
-                                ObjectCallback.this.onCompleteWrapper(null, error);
+                                ResultCallback.Error error = new ResultCallback.Error(errorJson.getJSONObject("error"));
+                                Single.this.executeOnOriginalThread(null, error);
                                 return;
 
                             } catch (JSONException e) {
@@ -95,11 +94,11 @@ public abstract class Callbacks {
                             }
 
                             // Fallback to plain text
-                            Callbacks.Error error = new Callbacks.Error(body);
-                            ObjectCallback.this.onCompleteWrapper(null, error);
+                            ResultCallback.Error error = new ResultCallback.Error(body);
+                            Single.this.executeOnOriginalThread(null, error);
                         }
                     } catch (Exception e) {
-                        ObjectCallback.this.onCompleteWrapper(null, new Error(e));
+                        Single.this.executeOnOriginalThread(null, new Error(e));
                         return;
                     }
 
@@ -110,7 +109,7 @@ public abstract class Callbacks {
             return new Callback() {
                 @Override
                 public void onFailure(Request request, IOException e) {
-                    ObjectCallback.this.onCompleteWrapper(null, new Error(e));
+                    Single.this.executeOnOriginalThread(null, new Error(e));
                 }
 
                 @Override
@@ -119,13 +118,13 @@ public abstract class Callbacks {
                     try {
                         JSONObject json = new JSONObject(body);
                         if (response.isSuccessful()) {
-                            ObjectCallback.this.onCompleteWrapper(deserializer.deserialize(json), null);
+                            Single.this.executeOnOriginalThread(deserializer.deserialize(json), null);
                         } else {
-                            Callbacks.Error error = new Callbacks.Error(json.getJSONObject("error"));
-                            ObjectCallback.this.onCompleteWrapper(null, error);
+                            ResultCallback.Error error = new ResultCallback.Error(json.getJSONObject("error"));
+                            Single.this.executeOnOriginalThread(null, error);
                         }
                     } catch (Exception e) {
-                        ObjectCallback.this.onCompleteWrapper(null, new Error(e));
+                        Single.this.executeOnOriginalThread(null, new Error(e));
                         return;
                     }
 
@@ -134,7 +133,7 @@ public abstract class Callbacks {
         }
     }
 
-    public static class EmptyCallback<T> extends ObjectCallback<T> {
+    public static class Void<T> extends Single<T> {
 
         @Override
         public void onComplete(@Nullable T object, @Nullable Error error) {

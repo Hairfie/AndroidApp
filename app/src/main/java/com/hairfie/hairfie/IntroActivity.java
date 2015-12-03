@@ -19,7 +19,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.hairfie.hairfie.models.Callbacks;
+import com.hairfie.hairfie.models.ResultCallback;
 import com.hairfie.hairfie.models.User;
 
 import java.util.Arrays;
@@ -129,9 +129,9 @@ public class IntroActivity extends AppCompatActivity {
         progress.setMessage(getString(R.string.logging_in));
         progress.setIndeterminate(true);
 
-        if (null != User.getCurrentUser().loginWithFacebook(accessToken, new Callbacks.ObjectCallback<User>() {
+        if (null != User.getCurrentUser().loginWithFacebook(accessToken, new ResultCallback.Single<User>() {
             @Override
-            public void onComplete(@Nullable User user, @Nullable Callbacks.Error error) {
+            public void onComplete(@Nullable User user, @Nullable ResultCallback.Error error) {
                 progress.dismiss();
                 
                 if (null != error) {
