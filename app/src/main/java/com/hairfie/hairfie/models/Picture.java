@@ -48,7 +48,7 @@ public class Picture {
         Call result = HttpClient.getInstance().newCall(request);
         result.enqueue(callback == null ? null : callback.okHttpCallback(new ResultCallback.JSONObjectDeserializer<Picture>() {
             @Override
-            public Picture deserialize(JSONObject json) throws Exception {
+            public Picture fromJSONObject(JSONObject json) throws Exception {
                 String container = null, id = null;
 
                 JSONObject result = json.optJSONObject("result");

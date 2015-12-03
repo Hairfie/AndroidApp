@@ -17,5 +17,5 @@ public class Config {
         }
     }
 
-    public static final Config instance = new Debug();
+    public static final Config instance = new Config();//Debug();
 }

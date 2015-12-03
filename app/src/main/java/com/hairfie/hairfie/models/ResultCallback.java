@@ -3,15 +3,22 @@ package com.hairfie.hairfie.models;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
+import com.hairfie.hairfie.Application;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 /**
  * Created by stephh on 25/11/15.
@@ -42,14 +49,34 @@ public abstract class ResultCallback {
         }
     }
 
-    public interface JSONObjectDeserializer<T> {
-        public T deserialize(JSONObject json) throws Exception;
+    public interface Deserializer<T> {
+        public  T deserialize(String body) throws Exception;
+    }
+    public static abstract class JSONObjectDeserializer<T> implements Deserializer<T> {
+        public T deserialize(String s) throws Exception {
+            return fromJSONObject(new JSONObject(s));
+        }
+
+        public abstract T fromJSONObject(JSONObject json) throws Exception;
     }
 
-    public interface StringDeserializer<T> {
-        public T deserialize(String s) throws Exception;
+    public static abstract class JSONArrayDeserializer<T> implements Deserializer<T> {
+        public T deserialize(String s) throws Exception {
+            return fromJSONArray(new JSONArray(s));
+        }
+
+        public abstract T fromJSONArray(JSONArray json) throws Exception;
     }
 
+    public static class GsonDeserializer<T> implements Deserializer<T> {
+        TypeToken<T> token;
+        public GsonDeserializer(TypeToken<T> token) {
+            this.token = token;
+        }
+        public T deserialize(String s) throws Exception {
+            return Gson.sGson.fromJson(s, token.getType());
+        }
+    }
     public static abstract class Single<T> {
         private Handler mHandler;
         public Single() {
@@ -67,7 +94,7 @@ public abstract class ResultCallback {
 
         public abstract void onComplete(@Nullable T object, @Nullable Error error);
 
-        public Callback okHttpCallback(final StringDeserializer<T> deserializer) {
+        public Callback okHttpCallback(final Deserializer<T> deserializer) {
             return new Callback() {
                 @Override
                 public void onFailure(Request request, IOException e) {
@@ -105,32 +132,7 @@ public abstract class ResultCallback {
                 }
             };
         }
-        public Callback okHttpCallback(final JSONObjectDeserializer<T> deserializer) {
-            return new Callback() {
-                @Override
-                public void onFailure(Request request, IOException e) {
-                    Single.this.executeOnOriginalThread(null, new Error(e));
-                }
 
-                @Override
-                public void onResponse(Response response) throws IOException {
-                    String body = response.body().string();
-                    try {
-                        JSONObject json = new JSONObject(body);
-                        if (response.isSuccessful()) {
-                            Single.this.executeOnOriginalThread(deserializer.deserialize(json), null);
-                        } else {
-                            ResultCallback.Error error = new ResultCallback.Error(json.getJSONObject("error"));
-                            Single.this.executeOnOriginalThread(null, error);
-                        }
-                    } catch (Exception e) {
-                        Single.this.executeOnOriginalThread(null, new Error(e));
-                        return;
-                    }
-
-                }
-            };
-        }
     }
 
     public static class Void<T> extends Single<T> {

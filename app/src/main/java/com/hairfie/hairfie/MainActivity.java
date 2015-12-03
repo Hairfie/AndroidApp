@@ -29,6 +29,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.hairfie.hairfie.dummy.DummyContent;
 import com.hairfie.hairfie.helpers.BlurTransform;
 import com.hairfie.hairfie.helpers.CircleTransform;
+import com.hairfie.hairfie.models.Category;
 import com.hairfie.hairfie.models.Picture;
 import com.hairfie.hairfie.models.User;
 import com.squareup.picasso.Picasso;
@@ -173,7 +174,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTouchCategoryPicto(DummyContent.DummyItem item) {
+    public void onTouchCategoryPicto(Category item) {
 
     }
 
@@ -226,7 +227,6 @@ public class MainActivity extends AppCompatActivity
         ImageView background = (ImageView) headerView.findViewById(R.id.nav_header_background_image_view);
         if (picture != null && picture.url != null) {
 
-            Log.d(Application.TAG, Uri.parse(picture.url).toString());
             // Show
 
             Picasso.with(this).load(Uri.parse(picture.url)).placeholder(R.drawable.default_user_picture).fit().centerCrop().transform(new BlurTransform(1.0f, 40)).into(background);

@@ -1,19 +1,25 @@
 package com.hairfie.hairfie;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hairfie.hairfie.dummy.DummyContent;
-import com.hairfie.hairfie.dummy.DummyContent.DummyItem;
+import com.hairfie.hairfie.models.Category;
+import com.hairfie.hairfie.models.ResultCallback;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,8 +62,9 @@ public class CategoryPictoFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new CategoryPictoRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            LinearLayoutManager layout = new LinearLayoutManager(context);
+            recyclerView.setLayoutManager(layout);
+            recyclerView.setAdapter(new CategoryPictoRecyclerViewAdapter(mListener));
         }
         return view;
     }
@@ -92,18 +99,36 @@ public class CategoryPictoFragment extends Fragment {
      */
     public interface OnCategoryPictoFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onTouchCategoryPicto(DummyItem item);
+        void onTouchCategoryPicto(Category item);
     }
 
 
     public static class CategoryPictoRecyclerViewAdapter extends RecyclerView.Adapter<CategoryPictoRecyclerViewAdapter.ViewHolder> {
 
-        private final List<DummyItem> mValues;
+        private List<Category> mValues = new ArrayList<Category>();
         private final OnCategoryPictoFragmentInteractionListener mListener;
 
-        public CategoryPictoRecyclerViewAdapter(List<DummyItem> items, OnCategoryPictoFragmentInteractionListener listener) {
-            mValues = items;
+        public CategoryPictoRecyclerViewAdapter(OnCategoryPictoFragmentInteractionListener listener) {
             mListener = listener;
+            Category.fetchAll(new ResultCallback.Single<ArrayList<Category>>() {
+
+                @Override
+                public void onComplete(@Nullable ArrayList<Category> object, @Nullable ResultCallback.Error error) {
+                    // Ignore errors
+                    if (null != error) {
+                        Log.w(Application.TAG, "Could not fetch categories", error.cause);
+                        return;
+                    }
+
+                    if (null != object) {
+                        List<Category> newValues = new ArrayList<Category>();
+                        newValues.addAll(object);
+                        mValues = newValues;
+                        notifyDataSetChanged();
+                    }
+
+                }
+            });
         }
 
         @Override
@@ -115,9 +140,8 @@ public class CategoryPictoFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+            Category category = mValues.get(position);
+            holder.setItem(category);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -137,21 +161,28 @@ public class CategoryPictoFragment extends Fragment {
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            public final View mView;
-            public final TextView mIdView;
-            public final TextView mContentView;
-            public DummyItem mItem;
+            private final View mView;
+            private final ImageView mImageView;
+            private final TextView mNameView;
+            private Category mItem;
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
-                mIdView = (TextView) view.findViewById(R.id.id);
-                mContentView = (TextView) view.findViewById(R.id.content);
+                mImageView = (ImageView) view.findViewById(R.id.image);
+                mNameView = (TextView) view.findViewById(R.id.name);
             }
 
             @Override
             public String toString() {
-                return super.toString() + " '" + mContentView.getText() + "'";
+                return super.toString() + " '" + mNameView.getText() + "'";
+            }
+
+            public void setItem(Category category) {
+                mNameView.setText(category.name);
+                mItem = category;
+                Picasso.with(Application.getInstance()).load(Uri.parse(category.picture.url)).fit().centerCrop().into(mImageView);
+
             }
         }
     }

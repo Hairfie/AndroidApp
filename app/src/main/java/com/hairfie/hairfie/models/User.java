@@ -9,7 +9,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.facebook.AccessToken;
-import com.google.gson.Gson;
 import com.hairfie.hairfie.Application;
 import com.hairfie.hairfie.Config;
 import com.hairfie.hairfie.R;
@@ -32,8 +31,6 @@ import java.util.Locale;
 public class User {
 
     public static final String PROFILE_UPDATED_BROADCAST_INTENT = "PROFILE_UPDATED_BROADCAST_INTENT";
-
-    private static final Gson sGson = new Gson();
 
     @NonNull
     private static final User sCurrentUser = new User();
@@ -73,14 +70,14 @@ public class User {
         if (null == savedJson)
             return null;
 
-        return sGson.fromJson(savedJson, Profile.class);
+        return Gson.sGson.fromJson(savedJson, Profile.class);
     }
 
 
 
     private void setProfile(Profile profile) {
         String oldValue = Application.getInstance().getSharedPreferences().getString("user.profile", null);
-        String newValue = profile == null ? null : sGson.toJson(profile);
+        String newValue = profile == null ? null : Gson.sGson.toJson(profile);
 
         if (oldValue == null && newValue == null) {
             return;
@@ -121,7 +118,7 @@ public class User {
                 .build();
         Call result = HttpClient.getInstance().newCall(request);
 
-        result.enqueue((null == callback ? new ResultCallback.Void<Void>() : callback).okHttpCallback(new ResultCallback.StringDeserializer<Void>() {
+        result.enqueue((null == callback ? new ResultCallback.Void<Void>() : callback).okHttpCallback(new ResultCallback.Deserializer<Void>() {
             @Override
             public Void deserialize(String s) throws Exception {
                 return null;
@@ -145,7 +142,7 @@ public class User {
             Call result = HttpClient.getInstance().newCall(request);
             result.enqueue(new FetchProfileWrapperCallback(null == callback ? new ResultCallback.Void<User>() : callback).okHttpCallback(new ResultCallback.JSONObjectDeserializer<User>() {
                 @Override
-                public User deserialize(JSONObject json) throws JSONException {
+                public User fromJSONObject(JSONObject json) throws JSONException {
                     String accessToken = json.getString("id");
                     String userId = json.getString("userId");
                     if (null != accessToken && null != userId) {
@@ -177,7 +174,7 @@ public class User {
         Call result = HttpClient.getInstance().newCall(request);
         result.enqueue(new FetchProfileWrapperCallback(null == callback ? new ResultCallback.Void<User>() : callback).okHttpCallback(new ResultCallback.JSONObjectDeserializer<User>() {
             @Override
-            public User deserialize(JSONObject json) throws Exception {
+            public User fromJSONObject(JSONObject json) throws Exception {
                 String accessToken = null, userId = null;
 
                 JSONObject accessTokenJSON = json.optJSONObject("accessToken");
@@ -214,7 +211,7 @@ public class User {
 
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue((null == callback ? new ResultCallback.Void<Void>() : callback).okHttpCallback(new ResultCallback.StringDeserializer<Void>() {
+        result.enqueue((null == callback ? new ResultCallback.Void<Void>() : callback).okHttpCallback(new ResultCallback.Deserializer<Void>() {
             @Override
             public Void deserialize(String s) throws Exception {
                 return null;
@@ -254,7 +251,7 @@ public class User {
         Call result = HttpClient.getInstance().newCall(request);
         result.enqueue(new FetchProfileWrapperCallback((null == callback ? new ResultCallback.Void<User>() : callback)).okHttpCallback(new ResultCallback.JSONObjectDeserializer<User>() {
             @Override
-            public User deserialize(JSONObject json) throws Exception {
+            public User fromJSONObject(JSONObject json) throws Exception {
                 String accessToken = json.getString("id");
                 String userId = json.getString("userId");
                 if (null != accessToken && null != userId) {
@@ -281,10 +278,10 @@ public class User {
 
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue((null == callback ? new ResultCallback.Void<User>() : callback).okHttpCallback(new ResultCallback.StringDeserializer<User>() {
+        result.enqueue((null == callback ? new ResultCallback.Void<User>() : callback).okHttpCallback(new ResultCallback.Deserializer<User>() {
             @Override
             public User deserialize(String s) throws Exception {
-                Profile profile = sGson.fromJson(s, Profile.class);
+                Profile profile = Gson.sGson.fromJson(s, Profile.class);
                 User.this.setProfile(profile);
                 return User.this;
             }
