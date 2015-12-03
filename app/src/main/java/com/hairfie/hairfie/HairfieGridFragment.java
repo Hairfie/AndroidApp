@@ -1,19 +1,27 @@
 package com.hairfie.hairfie;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hairfie.hairfie.dummy.DummyContent;
-import com.hairfie.hairfie.dummy.DummyContent.DummyItem;
+import com.hairfie.hairfie.models.Hairfie;
+import com.hairfie.hairfie.models.Picture;
+import com.hairfie.hairfie.models.ResultCallback;
+import com.squareup.okhttp.Call;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +36,7 @@ public class HairfieGridFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 2;
-    private OnHairfieGridFragmentInteractionListener  mListener;
+    private OnHairfieGridFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -70,7 +78,7 @@ public class HairfieGridFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new HairfieRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new HairfieRecyclerViewAdapter(mListener));
         }
         return view;
     }
@@ -79,8 +87,8 @@ public class HairfieGridFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnHairfieGridFragmentInteractionListener  ) {
-            mListener = (OnHairfieGridFragmentInteractionListener  ) context;
+        if (context instanceof OnHairfieGridFragmentInteractionListener) {
+            mListener = (OnHairfieGridFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnHairfieGridFragmentInteractionListener  ");
@@ -103,19 +111,19 @@ public class HairfieGridFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnHairfieGridFragmentInteractionListener  {
+    public interface OnHairfieGridFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onTouchHairfie(DummyItem item);
+        void onTouchHairfie(Hairfie item);
     }
 
     public static class HairfieRecyclerViewAdapter extends RecyclerView.Adapter<HairfieRecyclerViewAdapter.ViewHolder> {
 
-        private final List<DummyItem> mValues;
-        private final OnHairfieGridFragmentInteractionListener  mListener;
+        private List<Hairfie> mValues = new ArrayList<Hairfie>();
+        private final OnHairfieGridFragmentInteractionListener mListener;
 
-        public HairfieRecyclerViewAdapter(List<DummyItem> items, OnHairfieGridFragmentInteractionListener listener) {
-            mValues = items;
+        public HairfieRecyclerViewAdapter(OnHairfieGridFragmentInteractionListener listener) {
             mListener = listener;
+            loadNextItems();
         }
 
         @Override
@@ -125,19 +133,55 @@ public class HairfieGridFragment extends Fragment {
             return new ViewHolder(view);
         }
 
+        private Call mCurrentCall;
+
+        private boolean mNoMoreItems;
+
+        public void reset() {
+            mNoMoreItems = false;
+            mValues = new ArrayList<Hairfie>();
+            notifyDataSetChanged();
+        }
+        private void loadNextItems() {
+            if (mNoMoreItems)
+                return;
+
+            if (mCurrentCall != null && !mCurrentCall.isCanceled()) {
+                mCurrentCall.cancel();
+            }
+            final int limit = 10;
+            mCurrentCall = Hairfie.latest(limit, mValues.size(), new ResultCallback.Single<List<Hairfie>>() {
+                @Override
+                public void onComplete(@Nullable List<Hairfie> object, @Nullable ResultCallback.Error error) {
+                    mCurrentCall = null;
+                    if (null != error) {
+                        Log.w(Application.TAG, "Could not get hairfies", error.cause);
+                        return;
+                    }
+
+                    if (object != null) {
+                        if (object.size() < limit)
+                            mNoMoreItems = true;
+                        mValues.addAll(object);
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+        }
+
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
-
+            if (position + 1 == mValues.size()) {
+                loadNextItems();
+            }
+            holder.setItem(mValues.get(position));
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (null != mListener) {
                         // Notify the active callbacks interface (the activity, if the
                         // fragment is attached to one) that an item has been selected.
-                        mListener.onTouchHairfie(holder.mItem);
+                        mListener.onTouchHairfie(holder.getItem());
                     }
                 }
             });
@@ -149,21 +193,33 @@ public class HairfieGridFragment extends Fragment {
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            public final View mView;
-            public final TextView mIdView;
-            public final TextView mContentView;
-            public DummyItem mItem;
+            private final View mView;
+            private final ImageView mPictureImageView;
+            private Hairfie mItem;
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
-                mIdView = (TextView) view.findViewById(R.id.id);
-                mContentView = (TextView) view.findViewById(R.id.content);
+                mPictureImageView = (ImageView) view.findViewById(R.id.picture);
+            }
+
+            public Hairfie getItem() {
+                return mItem;
+            }
+
+            public void setItem(Hairfie item) {
+                mItem = item;
+                if (item.pictures != null && item.pictures.length > 1)
+                    Picasso.with(Application.getInstance()).load(Uri.parse(item.pictures[1].url)).fit().centerCrop().into(mPictureImageView);
+                else if (item.picture != null)
+                    Picasso.with(Application.getInstance()).load(Uri.parse(item.picture.url)).fit().centerCrop().into(mPictureImageView);
+                else
+                    mPictureImageView.setImageDrawable(null);
             }
 
             @Override
             public String toString() {
-                return super.toString() + " '" + mContentView.getText() + "'";
+                return super.toString() + " '" + mItem.id + "'";
             }
         }
     }

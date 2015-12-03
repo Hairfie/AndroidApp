@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by stephh on 01/12/15.
@@ -28,7 +29,7 @@ public class Category {
     public Category() {
 
     }
-    public static Call fetchAll(ResultCallback.Single<ArrayList<Category>> callback) {
+    public static Call fetchAll(ResultCallback.Single<List<Category>> callback) {
 
 
         Request request = new Request.Builder()
@@ -37,7 +38,7 @@ public class Category {
 
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue((null == callback ? new ResultCallback.Void<ArrayList<Category>>() : callback).okHttpCallback(new ResultCallback.GsonDeserializer(new TypeToken<ArrayList<Category>>(){})));
+        result.enqueue((null == callback ? new ResultCallback.Void<List<Category>>() : callback).okHttpCallback(new ResultCallback.GsonDeserializer(new TypeToken<List<Category>>(){})));
         return result;
 
     }

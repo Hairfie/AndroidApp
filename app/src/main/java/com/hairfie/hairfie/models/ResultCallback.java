@@ -98,12 +98,14 @@ public abstract class ResultCallback {
             return new Callback() {
                 @Override
                 public void onFailure(Request request, IOException e) {
+                    Log.e(Application.TAG, "failure", e);
                     Single.this.executeOnOriginalThread(null, new Error(e));
                 }
 
                 @Override
                 public void onResponse(Response response) throws IOException {
                     String body = response.body().string();
+
                     try {
                         if (response.isSuccessful()) {
                             Single.this.executeOnOriginalThread(deserializer.deserialize(body), null);

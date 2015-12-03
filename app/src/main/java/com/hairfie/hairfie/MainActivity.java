@@ -26,10 +26,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.appevents.AppEventsLogger;
-import com.hairfie.hairfie.dummy.DummyContent;
 import com.hairfie.hairfie.helpers.BlurTransform;
 import com.hairfie.hairfie.helpers.CircleTransform;
 import com.hairfie.hairfie.models.Category;
+import com.hairfie.hairfie.models.Hairfie;
 import com.hairfie.hairfie.models.Picture;
 import com.hairfie.hairfie.models.User;
 import com.squareup.picasso.Picasso;
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTouchHairfie(DummyContent.DummyItem item) {
+    public void onTouchHairfie(Hairfie item) {
 
     }
 

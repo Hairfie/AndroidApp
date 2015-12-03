@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.hairfie.hairfie.models.Category;
 import com.hairfie.hairfie.models.ResultCallback;
+import com.squareup.okhttp.Call;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -110,12 +111,16 @@ public class CategoryPictoFragment extends Fragment {
         private List<Category> mValues = new ArrayList<Category>();
         private final OnCategoryPictoFragmentInteractionListener mListener;
 
+        private Call mCurrentCall;
         public CategoryPictoRecyclerViewAdapter(OnCategoryPictoFragmentInteractionListener listener) {
             mListener = listener;
-            Category.fetchAll(new ResultCallback.Single<ArrayList<Category>>() {
+            if (null != mCurrentCall && !mCurrentCall.isCanceled())
+                mCurrentCall.cancel();
+
+            mCurrentCall = Category.fetchAll(new ResultCallback.Single<List<Category>>() {
 
                 @Override
-                public void onComplete(@Nullable ArrayList<Category> object, @Nullable ResultCallback.Error error) {
+                public void onComplete(@Nullable List<Category> object, @Nullable ResultCallback.Error error) {
                     // Ignore errors
                     if (null != error) {
                         Log.w(Application.TAG, "Could not fetch categories", error.cause);
