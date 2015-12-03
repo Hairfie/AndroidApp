@@ -226,10 +226,10 @@ public class HairfieGridFragment extends Fragment {
                 mItem = item;
                 if (item.pictures != null && item.pictures.length > 1) {
                     mSecondaryPictureImageView.setVisibility(View.VISIBLE);
-                    Picasso.with(Application.getInstance()).load(Uri.parse(item.pictures[0].url)).fit().centerCrop().into(mSecondaryPictureImageView);
-                    Picasso.with(Application.getInstance()).load(Uri.parse(item.pictures[1].url)).fit().centerCrop().into(mPictureImageView);
+                    Application.getPicasso().load(Uri.parse(item.pictures[0].url)).fit().centerCrop().into(mSecondaryPictureImageView);
+                    Application.getPicasso().load(Uri.parse(item.pictures[1].url)).fit().centerCrop().into(mPictureImageView);
                 } else if (item.picture != null) {
-                    Picasso.with(Application.getInstance()).load(Uri.parse(item.picture.url)).fit().centerCrop().into(mPictureImageView);
+                    Application.getPicasso().load(Uri.parse(item.picture.url)).fit().centerCrop().into(mPictureImageView);
                     mSecondaryPictureImageView.setVisibility(View.GONE);
                 } else {
                     mSecondaryPictureImageView.setVisibility(View.GONE);
@@ -237,11 +237,12 @@ public class HairfieGridFragment extends Fragment {
                 }
 
                 if (item.author != null && item.author.picture != null) {
+                    mAuthorPicture.setVisibility(View.VISIBLE);
                     Picture authorPicture = item.author.picture;
-                    Picasso.with(Application.getInstance()).load(Uri.parse(authorPicture.url)).placeholder(R.drawable.default_user_picture_circle).fit().centerCrop().transform(new CircleTransform()).into(mAuthorPicture);
+                    Application.getPicasso().load(Uri.parse(authorPicture.url)).placeholder(R.drawable.default_user_picture_circle).fit().centerCrop().transform(new CircleTransform()).into(mAuthorPicture);
 
                 } else {
-                    mAuthorPicture.setImageBitmap(null);
+                    mAuthorPicture.setVisibility(View.GONE);
                 }
 
                 mAuthorNameTextView.setText(item.author != null ? item.author.getFullname() : "");

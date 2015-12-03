@@ -135,7 +135,7 @@ public class SignupActivity extends AppCompatActivity {
         mPicture = null;
 
         // Show
-        Picasso.with(this).load(photo).fit().centerCrop().transform(new CircleTransform()).into(mPhotoButton);
+        Application.getPicasso().load(photo).fit().centerCrop().transform(new CircleTransform()).into(mPhotoButton);
 
     }
 

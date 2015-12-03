@@ -228,12 +228,12 @@ public class MainActivity extends AppCompatActivity
 
             // Show
 
-            Picasso.with(this).load(Uri.parse(picture.url)).placeholder(R.drawable.default_user_picture).fit().centerCrop().transform(new BlurTransform(1.0f, 40)).into(background);
-            Picasso.with(this).load(Uri.parse(picture.url)).placeholder(R.drawable.default_user_picture_bg).fit().centerCrop().transform(new CircleTransform()).into(image);
+            Application.getPicasso().load(Uri.parse(picture.url)).placeholder(R.drawable.default_user_picture).fit().centerCrop().transform(new BlurTransform(1.0f, 40)).into(background);
+            Application.getPicasso().load(Uri.parse(picture.url)).placeholder(R.drawable.default_user_picture_bg).fit().centerCrop().transform(new CircleTransform()).into(image);
 
         } else {
-            Picasso.with(this).load(R.drawable.default_user_picture).fit().centerCrop().transform(new BlurTransform(1.0f, 40)).into(background);
-            Picasso.with(this).load(R.drawable.default_user_picture_bg).fit().centerCrop().transform(new CircleTransform()).into(image);
+            Application.getPicasso().load(R.drawable.default_user_picture).fit().centerCrop().transform(new BlurTransform(1.0f, 40)).into(background);
+            Application.getPicasso().load(R.drawable.default_user_picture_bg).fit().centerCrop().transform(new CircleTransform()).into(image);
         }
 
         TextView line1 = (TextView)headerView.findViewById(R.id.nav_header_line1);

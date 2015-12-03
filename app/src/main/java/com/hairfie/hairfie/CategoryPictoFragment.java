@@ -199,7 +199,7 @@ public class CategoryPictoFragment extends Fragment {
             public void setItem(Category category) {
                 mNameView.setText(category.name);
                 mItem = category;
-                Picasso.with(Application.getInstance()).load(Uri.parse(category.picture.url)).fit().centerCrop().into(mImageView);
+                Application.getPicasso().load(Uri.parse(category.picture.url)).fit().centerCrop().into(mImageView);
 
             }
         }

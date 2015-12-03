@@ -9,19 +9,30 @@ import android.util.Log;
 import com.facebook.FacebookSdk;
 import com.hairfie.hairfie.models.ResultCallback;
 import com.hairfie.hairfie.models.User;
+import com.squareup.picasso.LruCache;
+import com.squareup.picasso.Picasso;
 
 import pl.aprilapps.easyphotopicker.EasyImage;
-
+import com.squareup.picasso.OkHttpDownloader;
 /**
  * Created by stephh on 24/11/15.
  */
 public class Application extends android.app.Application {
     public static final String TAG = "Hairfie";
-
+    private static Picasso sPicasso;
     @Override
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+
+        sPicasso = new Picasso.Builder(this)
+                .downloader(new OkHttpDownloader(this, 128 * 1024 * 1024))
+                .build();
+        sPicasso.setIndicatorsEnabled(true);
+        sPicasso.setLoggingEnabled(true);
+        Picasso.setSingletonInstance(sPicasso);
+
+
 
         // Easy image configuration (for profile pictures)
         EasyImage.configuration(this)
@@ -52,6 +63,10 @@ public class Application extends android.app.Application {
 
     public SharedPreferences getSharedPreferences() {
         return getSharedPreferences(TAG, Context.MODE_PRIVATE);
+    }
+
+    public static Picasso getPicasso() {
+        return sPicasso;
     }
 
 }
