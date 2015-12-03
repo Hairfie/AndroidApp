@@ -28,8 +28,8 @@ public class Application extends android.app.Application {
         sPicasso = new Picasso.Builder(this)
                 .downloader(new OkHttpDownloader(this, 128 * 1024 * 1024))
                 .build();
-        sPicasso.setIndicatorsEnabled(true);
-        sPicasso.setLoggingEnabled(true);
+//        sPicasso.setIndicatorsEnabled(true);
+//        sPicasso.setLoggingEnabled(true);
         Picasso.setSingletonInstance(sPicasso);
 
 
