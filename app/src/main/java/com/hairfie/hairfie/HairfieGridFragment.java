@@ -195,12 +195,14 @@ public class HairfieGridFragment extends Fragment {
         public class ViewHolder extends RecyclerView.ViewHolder {
             private final View mView;
             private final ImageView mPictureImageView;
+            private final ImageView mSecondaryPictureImageView;
             private Hairfie mItem;
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
                 mPictureImageView = (ImageView) view.findViewById(R.id.picture);
+                mSecondaryPictureImageView = (ImageView) view.findViewById(R.id.secondary_picture);
             }
 
             public Hairfie getItem() {
@@ -209,12 +211,16 @@ public class HairfieGridFragment extends Fragment {
 
             public void setItem(Hairfie item) {
                 mItem = item;
-                if (item.pictures != null && item.pictures.length > 1)
+                if (item.pictures != null && item.pictures.length > 1) {
+                    Picasso.with(Application.getInstance()).load(Uri.parse(item.pictures[0].url)).fit().centerCrop().into(mSecondaryPictureImageView);
                     Picasso.with(Application.getInstance()).load(Uri.parse(item.pictures[1].url)).fit().centerCrop().into(mPictureImageView);
-                else if (item.picture != null)
+                } else if (item.picture != null) {
                     Picasso.with(Application.getInstance()).load(Uri.parse(item.picture.url)).fit().centerCrop().into(mPictureImageView);
-                else
+                    mSecondaryPictureImageView.setImageDrawable(null);
+                } else {
+                    mSecondaryPictureImageView.setImageDrawable(null);
                     mPictureImageView.setImageDrawable(null);
+                }
             }
 
             @Override
