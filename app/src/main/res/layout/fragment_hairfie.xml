@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.hairfie.hairfie.AspectRatioFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:layout_width="wrap_content"
     android:layout_height="100dp"
+    app:aspectRatio="82%"
     android:orientation="horizontal">
 
 
@@ -9,4 +12,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/picture"/>
-</LinearLayout>
+</com.hairfie.hairfie.AspectRatioFrameLayout>
