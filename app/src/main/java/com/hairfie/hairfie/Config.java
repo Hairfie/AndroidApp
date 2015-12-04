@@ -10,10 +10,15 @@ public class Config {
     public String getAPIRoot() {
         return "http://api.hairfie.com/api/";
     }
-
+    public String getGoogleAPIKey() {
+        return "";
+    }
     private static class Debug extends Config {
         public String getAPIRoot() {
             return "http://api-staging.hairfie.com/api/";
+        }
+        public String getGoogleAPIKey() {
+            return "AIzaSyAbX3wVdcLamLcB_QkmegusXGhUUu-swi4";
         }
     }
 
