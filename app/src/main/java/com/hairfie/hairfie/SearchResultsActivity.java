@@ -14,6 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.hairfie.hairfie.models.Business;
 import com.hairfie.hairfie.models.Category;
 import com.hairfie.hairfie.models.GeoPoint;
@@ -23,13 +29,14 @@ import com.hairfie.hairfie.models.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchResultsActivity extends AppCompatActivity {
+public class SearchResultsActivity extends AppCompatActivity implements OnMapReadyCallback {
     public static final String EXTRA_CATEGORIES = "EXTRA_CATEGORIES";
     public static final String EXTRA_GEOPOINT= "EXTRA_GEOPOINT";
 
     List<Category> mCategories;
     String mQuery;
     GeoPoint mGeoPoint;
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +47,11 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         handleIntent(getIntent());
     }
@@ -89,7 +101,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             public void onComplete(@Nullable List<Business> object, @Nullable ResultCallback.Error error) {
 
                 if (null != error) {
-                    Log.e(Application.TAG, "Could not search businesses: "+(error.message != null ? error.message : "null"), error.cause);
+                    Log.e(Application.TAG, "Could not search businesses: " + (error.message != null ? error.message : "null"), error.cause);
                     finish();
                     return;
                 }
@@ -107,6 +119,16 @@ public class SearchResultsActivity extends AppCompatActivity {
             //use the query to search your data somehow
         }
         */
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng sydney = new LatLng(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
 }
