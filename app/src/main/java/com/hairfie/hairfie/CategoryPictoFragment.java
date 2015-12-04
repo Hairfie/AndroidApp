@@ -105,7 +105,6 @@ public class CategoryPictoFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnCategoryPictoFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onTouchCategoryPicto(Category item);
     }
 

@@ -1,13 +1,16 @@
 package com.hairfie.hairfie;
 
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -25,6 +28,7 @@ import com.hairfie.hairfie.models.Category;
 import com.hairfie.hairfie.models.GeoPoint;
 import com.hairfie.hairfie.models.ResultCallback;
 import com.hairfie.hairfie.models.User;
+import com.squareup.okhttp.Call;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +41,12 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
     String mQuery;
     GeoPoint mGeoPoint;
     private GoogleMap mMap;
+    private BusinessRecyclerViewAdapter mAdapter = new BusinessRecyclerViewAdapter(new BusinessFragment.OnListFragmentInteractionListener() {
+        @Override
+        public void onListFragmentInteraction(Business item) {
+            onTouchBusiness(item);
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +64,17 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
         mapFragment.getMapAsync(this);
 
         handleIntent(getIntent());
+
+        BusinessFragment businessFragment = (BusinessFragment) getSupportFragmentManager().findFragmentById(R.id.results);
+        businessFragment.setAdapter(mAdapter);
+
+        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                updateMap();
+            }
+        });
     }
 
     @Override
@@ -87,16 +108,36 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
 
         mCategories = intent.getParcelableArrayListExtra(EXTRA_CATEGORIES);
         mQuery = intent.getStringExtra(SearchManager.QUERY);
-        mGeoPoint = (GeoPoint)intent.getParcelableExtra(EXTRA_GEOPOINT);
-
-
+        mGeoPoint = (GeoPoint) intent.getParcelableExtra(EXTRA_GEOPOINT);
         if (null == mGeoPoint) {
             Location lastLocation = Application.getInstance().getLastLocation();
             if (null != lastLocation)
                 mGeoPoint = new GeoPoint(lastLocation);
         }
 
-        Business.listNearby(mGeoPoint, mQuery, mCategories, 100, new ResultCallback.Single<List<Business>>() {
+        if (null == mGeoPoint) {
+            // We have no location
+            new AlertDialog.Builder(this).setTitle("We can't locate you, please choose a location").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            }).show();
+        }
+        refresh();
+    }
+
+    Call mListBusinessesCall;
+    private void refresh() {
+
+        if (null == mGeoPoint)
+            return;
+
+        if (null != mListBusinessesCall && !mListBusinessesCall.isCanceled())
+            mListBusinessesCall.cancel();
+
+
+        mListBusinessesCall = Business.listNearby(mGeoPoint, mQuery, mCategories, 100, new ResultCallback.Single<List<Business>>() {
             @Override
             public void onComplete(@Nullable List<Business> object, @Nullable ResultCallback.Error error) {
 
@@ -107,7 +148,7 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
                 }
 
                 if (null != object) {
-
+                    mAdapter.addItems(object);
                 }
 
 
@@ -124,11 +165,14 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+    }
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    private void updateMap() {
+        Log.d(Application.TAG, "Update map");
+    }
+
+    private void onTouchBusiness(Business business) {
+        // TODO: code me
     }
 
 }
