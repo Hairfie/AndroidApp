@@ -128,6 +128,7 @@ public class Application extends android.app.Application implements GoogleApiCli
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+        mGoogleApiClient.connect();
     }
 
     @Override
