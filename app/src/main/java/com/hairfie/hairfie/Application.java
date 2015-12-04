@@ -110,8 +110,9 @@ public class Application extends android.app.Application implements GoogleApiCli
 
             if (null != newLastLocation)
                 mLastLocation = newLastLocation;
-            
+
             if (updated) {
+                Log.d(TAG, "Location updated: "+newLastLocation.toString());
                 getBroadcastManager().sendBroadcast(new Intent(LOCATION_UPDATED_BROADCAST_INTENT));
             }
 

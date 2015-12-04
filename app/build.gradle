@@ -36,6 +36,6 @@ dependencies {
     compile  'org.apache.commons:commons-lang3:3.0'
     compile 'com.android.support:percent:23.1.0'
     compile 'me.grantland:autofittextview:0.2.+'
-    compile 'com.google.android.gms:play-services:8.3.0'
+    compile 'com.google.android.gms:play-services-location:8.3.0'
 
 }
