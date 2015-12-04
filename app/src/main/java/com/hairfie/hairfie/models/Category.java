@@ -37,8 +37,12 @@ public class Category {
     private static List<Category> sCachedCategories;
 
     public static Call fetchAll(final ResultCallback.Single<List<Category>> callback) {
+        return fetchAll(callback, false);
+    }
+    public static Call fetchAll(final ResultCallback.Single<List<Category>> callback, boolean ignoreCache) {
 
-        if (sCachedCategories != null) {
+
+        if (sCachedCategories != null && !ignoreCache) {
             callback.executeOnOriginalThread(sCachedCategories, null);
             return null;
         }
@@ -52,7 +56,7 @@ public class Category {
         ResultCallback.Single<List<Category>> wrapperCallback = new ResultCallback.Single<List<Category>>() {
             @Override
             public void onComplete(@Nullable List<Category> object, @Nullable ResultCallback.Error error) {
-                if (null != object && null == error) {
+                if (null != object && null == error && !object.equals(sCachedCategories)) {
                     sCachedCategories = object;
                     // Send a broadcast
                     Intent intent = new Intent(CATEGORIES_UPDATED_BROADCAST_INTENT);
@@ -62,8 +66,18 @@ public class Category {
                     callback.executeOnOriginalThread(object, error);
             }
         };
-        result.enqueue(wrapperCallback.okHttpCallback(new ResultCallback.GsonDeserializer(new TypeToken<List<Category>>(){})));
+        result.enqueue(wrapperCallback.okHttpCallback(new ResultCallback.GsonDeserializer(new TypeToken<List<Category>>() {
+        })));
         return result;
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Category) {
+            Category other = (Category)o;
+            return other.id.equals(id);
+        }
+        return super.equals(o);
     }
 }

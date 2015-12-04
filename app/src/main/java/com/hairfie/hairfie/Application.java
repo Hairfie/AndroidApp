@@ -8,6 +8,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.facebook.FacebookSdk;
+import com.hairfie.hairfie.models.Category;
 import com.hairfie.hairfie.models.ResultCallback;
 import com.hairfie.hairfie.models.User;
 import com.squareup.picasso.LruCache;
@@ -52,6 +53,9 @@ public class Application extends android.app.Application {
                 Log.d(Application.TAG, "Updated user profile: " + (profile != null ? profile.toString() : "null"));
             }
         });
+
+        // Prepare category list
+        Category.fetchAll(null);
     }
 
     @NonNull
@@ -73,4 +77,5 @@ public class Application extends android.app.Application {
     public static LocalBroadcastManager getBroadcastManager() {
         return LocalBroadcastManager.getInstance(getInstance());
     }
+
 }
