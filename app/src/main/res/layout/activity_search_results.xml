@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.hairfie.hairfie.MainActivity">
+    tools:context="com.hairfie.hairfie.SearchResultsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -14,30 +14,27 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-
             android:layout_width="match_parent"
-            android:logo="@drawable/hairffie_typo"
-
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:contentInsetStart="0dp"
+            android:background="#ffe7e7e9"
             app:popupTheme="@style/AppTheme.PopupOverlay">
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/hairffie_typo" />
+                    android:textColor="#aaa"
+                    android:textSize="14sp"
+                    android:text="@string/find_your_hairdresser" />
             </FrameLayout>
+
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
-
+    <include layout="@layout/content_search_results" />
 
 </android.support.design.widget.CoordinatorLayout>

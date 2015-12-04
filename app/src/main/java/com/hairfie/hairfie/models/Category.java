@@ -2,6 +2,8 @@ package com.hairfie.hairfie.models;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.gson.*;
@@ -22,7 +24,7 @@ import java.util.List;
 /**
  * Created by stephh on 01/12/15.
  */
-public class Category {
+public class Category implements Parcelable {
 
     public static final String CATEGORIES_UPDATED_BROADCAST_INTENT = "CATEGORIES_UPDATED_BROADCAST_INTENT";
 
@@ -79,5 +81,30 @@ public class Category {
             return other.id.equals(id);
         }
         return super.equals(o);
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(Gson.sGson.toJson(this));
+    }
+    public static final Parcelable.Creator<Category> CREATOR
+            = new Parcelable.Creator<Category>() {
+        public Category createFromParcel(Parcel in) {
+            return new Category(in);
+        }
+
+        public Category[] newArray(int size) {
+            return new Category[size];
+        }
+    };
+
+    private Category(Parcel in) {
+        Category other = Gson.sGson.fromJson(in.readString(), Category.class);
+        id = other.id;
+        name = other.name;
+        picture = other.picture;
+        position = other.position;
     }
 }

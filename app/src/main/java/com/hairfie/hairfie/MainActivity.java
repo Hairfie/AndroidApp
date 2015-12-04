@@ -1,5 +1,6 @@
 package com.hairfie.hairfie;
 
+import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +35,7 @@ import com.hairfie.hairfie.models.Picture;
 import com.hairfie.hairfie.models.User;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
@@ -58,10 +60,6 @@ public class MainActivity extends AppCompatActivity
 
         boolean authenticated = User.getCurrentUser().isAuthenticated();
 
-        View loginButton = findViewById(R.id.login);
-        if (null != loginButton)
-            loginButton.setVisibility(authenticated ? View.GONE : View.VISIBLE);
-
         if (authenticated) {
 
             // Show drawer toggle
@@ -70,6 +68,8 @@ public class MainActivity extends AppCompatActivity
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.setDrawerListener(toggle);
             toggle.syncState();
+        } else {
+            toolbar.setNavigationIcon(R.drawable.login_icon);
         }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -133,6 +133,10 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        if (id == android.R.id.home && !User.getCurrentUser().isAuthenticated()) {
+            touchLogin(null);
+            return true;
+        }
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_take_picture) {
             return true;
@@ -175,6 +179,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onTouchCategoryPicto(Category item) {
 
+        Intent intent = new Intent(this, SearchResultsActivity.class);
+        ArrayList<Category> categories = new ArrayList<>();
+        categories.add(item);
+        intent.putExtra(SearchResultsActivity.EXTRA_CATEGORIES, categories);
+        startActivity(intent);
     }
 
     @Override
