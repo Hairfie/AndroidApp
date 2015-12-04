@@ -93,6 +93,14 @@ public class Application extends android.app.Application implements GoogleApiCli
     Location mLastLocation;
 
     public Location getLastLocation() {
+
+        /*
+        // FIXME: don't check me in
+        Location targetLocation = new Location("");
+        targetLocation.setLatitude(48.8567d);
+        targetLocation.setLongitude(2.3508d);
+        return targetLocation;
+        */
         return mLastLocation;
     }
 

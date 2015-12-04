@@ -77,6 +77,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         mQuery = intent.getStringExtra(SearchManager.QUERY);
         mGeoPoint = (GeoPoint)intent.getParcelableExtra(EXTRA_GEOPOINT);
 
+
         if (null == mGeoPoint) {
             Location lastLocation = Application.getInstance().getLastLocation();
             if (null != lastLocation)
@@ -86,6 +87,17 @@ public class SearchResultsActivity extends AppCompatActivity {
         Business.listNearby(mGeoPoint, mQuery, mCategories, 100, new ResultCallback.Single<List<Business>>() {
             @Override
             public void onComplete(@Nullable List<Business> object, @Nullable ResultCallback.Error error) {
+
+                if (null != error) {
+                    Log.e(Application.TAG, "Could not search businesses: "+(error.message != null ? error.message : "null"), error.cause);
+                    finish();
+                    return;
+                }
+
+                if (null != object) {
+
+                }
+
 
             }
         });
