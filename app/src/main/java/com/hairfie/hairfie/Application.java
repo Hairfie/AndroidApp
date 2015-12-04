@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.facebook.FacebookSdk;
@@ -69,4 +70,7 @@ public class Application extends android.app.Application {
         return sPicasso;
     }
 
+    public static LocalBroadcastManager getBroadcastManager() {
+        return LocalBroadcastManager.getInstance(getInstance());
+    }
 }

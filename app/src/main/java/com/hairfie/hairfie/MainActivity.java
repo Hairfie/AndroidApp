@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity
         setupNavigationHeader();
 
         // Profile updated
-        LocalBroadcastManager.getInstance(Application.getInstance()).registerReceiver(mProfileUpdatedBroadcastReceiver, new IntentFilter(User.PROFILE_UPDATED_BROADCAST_INTENT));
+        Application.getBroadcastManager().registerReceiver(mProfileUpdatedBroadcastReceiver, new IntentFilter(User.PROFILE_UPDATED_BROADCAST_INTENT));
 
     }
 

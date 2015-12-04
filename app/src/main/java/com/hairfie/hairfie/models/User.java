@@ -96,7 +96,7 @@ public class User {
 
         // Send a broadcast
         Intent intent = new Intent(PROFILE_UPDATED_BROADCAST_INTENT);
-        LocalBroadcastManager.getInstance(Application.getInstance()).sendBroadcast(intent);
+        Application.getBroadcastManager().sendBroadcast(intent);
     }
 
     public Call logout(final ResultCallback.Single<Void> callback) {

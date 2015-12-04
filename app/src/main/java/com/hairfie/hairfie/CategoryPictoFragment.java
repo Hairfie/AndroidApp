@@ -1,6 +1,9 @@
 package com.hairfie.hairfie;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +20,7 @@ import android.widget.TextView;
 
 import com.hairfie.hairfie.models.Category;
 import com.hairfie.hairfie.models.ResultCallback;
+import com.hairfie.hairfie.models.User;
 import com.squareup.okhttp.Call;
 import com.squareup.picasso.Picasso;
 
@@ -112,8 +116,31 @@ public class CategoryPictoFragment extends Fragment {
         private final OnCategoryPictoFragmentInteractionListener mListener;
 
         private Call mCurrentCall;
+        BroadcastReceiver mCategoriesUpdatedBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                updateCategories();
+            }
+        };
+
+        @Override
+        public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+            super.onAttachedToRecyclerView(recyclerView);
+            Application.getBroadcastManager().registerReceiver(mCategoriesUpdatedBroadcastReceiver, new IntentFilter(Category.CATEGORIES_UPDATED_BROADCAST_INTENT));
+        }
+
+        @Override
+        public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+            super.onDetachedFromRecyclerView(recyclerView);
+            Application.getBroadcastManager().unregisterReceiver(mCategoriesUpdatedBroadcastReceiver);
+        }
+
         public CategoryPictoRecyclerViewAdapter(OnCategoryPictoFragmentInteractionListener listener) {
             mListener = listener;
+            updateCategories();
+        }
+
+        private void updateCategories() {
             if (null != mCurrentCall && !mCurrentCall.isCanceled())
                 mCurrentCall.cancel();
 
