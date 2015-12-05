@@ -181,6 +181,7 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setMyLocationEnabled(true);
         View mapFragmentView = mMapFragment.getView();
         if (null != mapFragmentView) {
             mapFragmentView.setVisibility(View.INVISIBLE);
@@ -200,6 +201,15 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
 
     private void updateMap() {
 
+        if (0 >= mAdapter.getItemCount()) {
+            // Center map on user location
+            Location location = Application.getInstance().getLastLocation();
+            if (null != location)
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+            return;
+        }
+
+        mMap.clear();
         // Zoom map to bounds
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (int i = 0; i < mAdapter.getItemCount(); i++) {
@@ -215,7 +225,6 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_salon)));
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 20));
-        mMap.setMyLocationEnabled(true);
 
     }
 
