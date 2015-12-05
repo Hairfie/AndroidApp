@@ -45,6 +45,7 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
     String mQuery;
     GeoPoint mGeoPoint;
     private GoogleMap mMap;
+    private View mContainer;
     private BusinessRecyclerViewAdapter mAdapter = new BusinessRecyclerViewAdapter(new BusinessFragment.OnListFragmentInteractionListener() {
         @Override
         public void onListFragmentInteraction(Business item) {
@@ -77,8 +78,11 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
             public void onChanged() {
                 super.onChanged();
                 updateMap();
+                mContainer.setVisibility(View.VISIBLE);
             }
         });
+        mContainer = findViewById(R.id.container);
+        mContainer.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -193,6 +197,10 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void onTouchBusiness(Business business) {
+        // TODO: code me
+    }
+
+    public void touchModifyFilters(View v) {
         // TODO: code me
     }
 

@@ -61,4 +61,5 @@
     <string name="find_your_hairdresser">Find your hairdresser</string>
     <string name="one_hairfie">1 hairfie</string>
     <string name="x_hairfies">%d hairfies</string>
+    <string name="modify_filters">Modify filters</string>
 </resources>
