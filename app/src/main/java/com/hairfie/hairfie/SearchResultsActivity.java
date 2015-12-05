@@ -21,7 +21,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.hairfie.hairfie.models.Business;
 import com.hairfie.hairfie.models.Category;
@@ -168,7 +172,24 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void updateMap() {
-        Log.d(Application.TAG, "Update map");
+
+        // Zoom map to bounds
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (int i = 0; i < mAdapter.getItemCount(); i++) {
+            Business business = mAdapter.getItem(i);
+            if (null == business.gps)
+                continue;
+            LatLng latlng = new LatLng(business.gps.lat, business.gps.lng);
+            builder.include(latlng);
+
+            mMap.addMarker(new MarkerOptions()
+                    .position(latlng)
+                    .title(business.name)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_salon)));
+        }
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 20));
+        mMap.setMyLocationEnabled(true);
+
     }
 
     private void onTouchBusiness(Business business) {

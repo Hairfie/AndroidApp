@@ -26,6 +26,10 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
         mListener = listener;
     }
 
+    public Business getItem(int position) {
+        return mValues.get(position);
+    }
+
     public void addItems(List<Business> items) {
         mValues.addAll(items);
         notifyDataSetChanged();
