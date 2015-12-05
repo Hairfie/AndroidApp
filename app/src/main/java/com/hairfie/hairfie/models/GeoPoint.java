@@ -42,4 +42,11 @@ public class GeoPoint implements Parcelable {
         this.lat = other.lat;
         this.lng = other.lng;
     }
+
+    public Location toLocation() {
+        Location result = new Location("");
+        result.setLatitude(this.lat);
+        result.setLongitude(this.lng);
+        return result;
+    }
 }

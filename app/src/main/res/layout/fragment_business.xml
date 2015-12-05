@@ -1,20 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
+    android:paddingTop="20dp"
+    android:paddingLeft="17dp">
 
-    <TextView
-        android:id="@+id/id"
+    <ImageView
+        android:id="@+id/picture"
+        android:layout_width="60dp"
+        android:layout_height="70dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"/>
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
-
+        android:id="@+id/distance_icon"
+        android:src="@drawable/picto_list_nav"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"/>
     <TextView
-        android:id="@+id/content"
+        android:id="@+id/distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
-</LinearLayout>
+        android:textColor="#333"
+        android:textSize="11sp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/distance_icon"
+        android:layout_marginRight="10dp"/>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#333"
+        android:textSize="14sp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/picture"
+        android:layout_toLeftOf="@id/distance"
+        android:layout_marginRight="5dp"
+        android:maxLines="2"/>
+
+
+
+
+    <TextView
+        android:id="@+id/num_hairfies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#777"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        android:layout_toRightOf="@id/picture"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/name"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_toRightOf="@id/picture"
+        android:layout_below="@id/num_hairfies"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:id="@+id/star1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/not_selected_star" />
+
+        <ImageView
+            android:id="@+id/star2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/not_selected_star" />
+
+        <ImageView
+            android:id="@+id/star3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/not_selected_star" />
+
+        <ImageView
+            android:id="@+id/star4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/not_selected_star" />
+
+        <ImageView
+            android:id="@+id/star5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/not_selected_star" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ddd"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        />
+</RelativeLayout>
