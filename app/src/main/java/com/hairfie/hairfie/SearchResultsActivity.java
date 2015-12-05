@@ -1,8 +1,10 @@
 package com.hairfie.hairfie;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Point;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -45,6 +48,7 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
     String mQuery;
     GeoPoint mGeoPoint;
     private GoogleMap mMap;
+    private SupportMapFragment mMapFragment;
     private View mContainer;
     private BusinessRecyclerViewAdapter mAdapter = new BusinessRecyclerViewAdapter(new BusinessFragment.OnListFragmentInteractionListener() {
         @Override
@@ -67,6 +71,7 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        mMapFragment = mapFragment;
 
         handleIntent(getIntent());
 
@@ -79,6 +84,9 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
                 super.onChanged();
                 updateMap();
                 mContainer.setVisibility(View.VISIBLE);
+                View mapFragmentView = mMapFragment.getView();
+                if (mapFragmentView != null)
+                    mapFragmentView.setVisibility(View.VISIBLE);
             }
         });
         mContainer = findViewById(R.id.container);
@@ -173,6 +181,21 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        View mapFragmentView = mMapFragment.getView();
+        if (null != mapFragmentView) {
+            mapFragmentView.setVisibility(View.INVISIBLE);
+
+            // Setup the map to take 1/3rd of the screen
+            android.view.Display display = ((android.view.WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+            ViewGroup.LayoutParams layoutParams = mapFragmentView.getLayoutParams();
+            if (layoutParams != null) {
+                Point size = new Point();
+                display.getSize(size);
+                layoutParams.height = (int)(0.3f * (float)size.y);
+                mapFragmentView.setLayoutParams(layoutParams);
+            }
+
+        }
     }
 
     private void updateMap() {
