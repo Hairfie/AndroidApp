@@ -42,6 +42,8 @@ public abstract class ResultCallback {
         public Error(Throwable cause) {
             this.cause = cause;
             this.message = cause.getLocalizedMessage();
+            if (null == message)
+                message = cause.getMessage();
         }
 
         public Error(String message) {
