@@ -8,17 +8,22 @@ import android.graphics.Point;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -48,8 +53,7 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
     String mQuery;
     GeoPoint mGeoPoint;
     private GoogleMap mMap;
-    private SupportMapFragment mMapFragment;
-    private View mContainer;
+    private Layout mContainer;
     private BusinessRecyclerViewAdapter mAdapter = new BusinessRecyclerViewAdapter(new BusinessFragment.OnListFragmentInteractionListener() {
         @Override
         public void onListFragmentInteraction(Business item) {
@@ -71,7 +75,6 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        mMapFragment = mapFragment;
 
         handleIntent(getIntent());
 
@@ -84,14 +87,13 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
                 super.onChanged();
                 updateMap();
                 mContainer.setVisibility(View.VISIBLE);
-                View mapFragmentView = mMapFragment.getView();
-                if (mapFragmentView != null)
-                    mapFragmentView.setVisibility(View.VISIBLE);
             }
         });
-        mContainer = findViewById(R.id.container);
+        mContainer = (Layout)findViewById(R.id.container);
         mContainer.setVisibility(View.INVISIBLE);
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -182,21 +184,6 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
-        View mapFragmentView = mMapFragment.getView();
-        if (null != mapFragmentView) {
-            mapFragmentView.setVisibility(View.INVISIBLE);
-
-            // Setup the map to take 1/3rd of the screen
-            android.view.Display display = ((android.view.WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-            ViewGroup.LayoutParams layoutParams = mapFragmentView.getLayoutParams();
-            if (layoutParams != null) {
-                Point size = new Point();
-                display.getSize(size);
-                layoutParams.height = (int)(0.3f * (float)size.y);
-                mapFragmentView.setLayoutParams(layoutParams);
-            }
-
-        }
     }
 
     private void updateMap() {
@@ -236,4 +223,77 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
         // TODO: code me
     }
 
+
+    public static class Layout extends ViewGroup {
+
+        Button mButton;
+        RecyclerView mRecyclerView;
+        View mMapView;
+        public Layout(Context context, AttributeSet attrs) {
+            super(context, attrs);
+        }
+
+        private int dY = 0;
+        @Override
+        public void addView(View child, int index, LayoutParams params) {
+            super.addView(child, index, params);
+            if (child instanceof Button)
+                mButton = (Button)child;
+            else if (child instanceof RecyclerView) {
+                mRecyclerView = (RecyclerView) child;
+                mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                        super.onScrollStateChanged(recyclerView, newState);
+                    }
+
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+
+                        float buttonTop = mButton.getTop() + mButton.getTranslationY();
+                        if (buttonTop - dy < 0)
+                            dy = Math.round(buttonTop);
+
+                        float mapViewTop =  mMapView.getTop() + mMapView.getTranslationY();
+                        if (mapViewTop - dy > 0)
+                            dy = Math.round(mapViewTop);
+
+                        mButton.setTranslationY(mButton.getTranslationY() - dy);
+                        mMapView.setTranslationY(mMapView.getTranslationY()-dy);
+                    }
+                });
+            } else
+                mMapView = child;
+        }
+
+        @Override
+        protected void onLayout(boolean changed, int l, int t, int r, int b) {
+            if (null == mButton || null == mRecyclerView || null == mMapView) {
+                Log.e(Application.TAG, "SearchResultsActivity$Layout Refusing to layout as it is incomplete.");
+                return;
+            }
+            LayoutParams buttonLayoutParams = mButton.getLayoutParams();
+            int desiredButtonHeight =  buttonLayoutParams.height;
+
+
+
+            int height = getMeasuredHeight();
+            int thirdOfHeight = Math.round((float) height / 3.0f);
+            int desiredMapHeight = thirdOfHeight;
+            int width = getMeasuredWidth();
+
+            mMapView.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(desiredMapHeight, MeasureSpec.EXACTLY));
+            mButton.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(desiredButtonHeight, MeasureSpec.EXACTLY));
+            mRecyclerView.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
+
+            mMapView.layout(0,0,width,desiredMapHeight);
+            mButton.layout(0, desiredMapHeight, width, desiredMapHeight + desiredButtonHeight);
+            mRecyclerView.layout(0, 0, width, height);
+            mRecyclerView.setPadding(0, desiredButtonHeight + desiredMapHeight, 0, 0);
+        }
+    }
 }

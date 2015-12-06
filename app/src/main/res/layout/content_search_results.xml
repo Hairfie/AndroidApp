@@ -19,12 +19,30 @@
         android:layout_marginTop="30dp"
         android:indeterminate="true" />
 
-    <FrameLayout
+    <view class="com.hairfie.hairfie.SearchResultsActivity$Layout"
         android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:background="#fff"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/results"
+            android:name="com.hairfie.hairfie.BusinessFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp"
+
+            tools:context="com.hairfie.hairfie.SearchResultsActivity" />
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.hairfie.hairfie.SearchResultsActivity" />
 
         <Button
             android:layout_width="match_parent"
@@ -39,17 +57,7 @@
             android:textColor="#ff848995"
             android:textSize="17sp" />
 
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:map="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/results"
-            android:name="com.hairfie.hairfie.BusinessFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="50dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context="com.hairfie.hairfie.SearchResultsActivity" />
+    </view>
 
-    </FrameLayout>
 </FrameLayout>
 

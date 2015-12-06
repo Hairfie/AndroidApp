@@ -67,7 +67,8 @@ public class BusinessFragment extends Fragment {
             mRecyclerView = recyclerView;
 
             if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                LinearLayoutManager manager = new LinearLayoutManager(context);
+                recyclerView.setLayoutManager(manager);
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
