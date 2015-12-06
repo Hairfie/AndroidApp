@@ -55,6 +55,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         CharSequence email = mEmailEditText.getText();
         final ProgressDialog progress = new ProgressDialog(this);
         progress.setMessage(getString(R.string.sending));
+        progress.setCancelable(false);
         progress.setIndeterminate(true);
 
         // Hide keyboard

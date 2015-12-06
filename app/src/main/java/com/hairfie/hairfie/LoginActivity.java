@@ -102,6 +102,7 @@ public class LoginActivity extends AppCompatActivity {
         final ProgressDialog progress = new ProgressDialog(this);
         progress.setMessage(getString(R.string.logging_in));
         progress.setIndeterminate(true);
+        progress.setCancelable(false);
 
         if (null != User.getCurrentUser().login(email.toString(), password.toString(), new ResultCallback.Single<User>() {
             @Override
@@ -129,6 +130,7 @@ public class LoginActivity extends AppCompatActivity {
         final ProgressDialog progress = new ProgressDialog(this);
         progress.setMessage(getString(R.string.logging_in));
         progress.setIndeterminate(true);
+        progress.setCancelable(false);
 
         if (null != User.getCurrentUser().loginWithFacebook(accessToken, new ResultCallback.Single<User>() {
             @Override
