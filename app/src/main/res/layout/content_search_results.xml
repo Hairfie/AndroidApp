@@ -18,46 +18,36 @@
         android:layout_gravity="top|center_horizontal"
         android:layout_marginTop="30dp"
         android:indeterminate="true" />
-
-    <view class="com.hairfie.hairfie.SearchResultsActivity$Layout"
+    <android.support.v4.view.ViewPager
         android:id="@+id/container"
         android:background="#fff"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:map="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/results"
-            android:name="com.hairfie.hairfie.BusinessListFragment"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp">
+        <android.support.v4.view.PagerTitleStrip
+            android:id="@+id/pager_title_strip"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="50dp"
-
-            tools:context="com.hairfie.hairfie.SearchResultsActivity" />
-
-        <fragment
-            android:id="@+id/map"
-            android:name="com.hairfie.hairfie.BusinessMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="com.hairfie.hairfie.SearchResultsActivity" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="#ffececed"
-            android:drawableRight="@drawable/search_filters_icon"
-            android:gravity="left|center_vertical"
-            android:onClick="touchModifyFilters"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="@string/modify_filters"
-            android:textColor="#ff848995"
-            android:textSize="17sp" />
-
-    </view>
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@color/colorAccent"
+            android:textColor="#fff"
+            android:padding="10dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp" />
+    </android.support.v4.view.ViewPager>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:background="#ffececed"
+        android:drawableRight="@drawable/search_filters_icon"
+        android:gravity="left|center_vertical"
+        android:onClick="touchModifyFilters"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/modify_filters"
+        android:textColor="#ff848995"
+        android:textSize="17sp" />
 
 </FrameLayout>
 

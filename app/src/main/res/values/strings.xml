@@ -62,4 +62,6 @@
     <string name="one_hairfie">1 hairfie</string>
     <string name="x_hairfies">%d hairfies</string>
     <string name="modify_filters">Modify filters</string>
+    <string name="results">Results</string>
+    <string name="map">Map</string>
 </resources>
