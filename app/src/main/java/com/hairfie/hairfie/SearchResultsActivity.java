@@ -35,14 +35,13 @@ import com.squareup.okhttp.Call;
 
 import java.util.List;
 
-public class SearchResultsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class SearchResultsActivity extends AppCompatActivity {
     public static final String EXTRA_CATEGORIES = "EXTRA_CATEGORIES";
     public static final String EXTRA_GEOPOINT= "EXTRA_GEOPOINT";
 
     List<Category> mCategories;
     String mQuery;
     GeoPoint mGeoPoint;
-    private GoogleMap mMap;
     private Layout mContainer;
     private BusinessRecyclerViewAdapter mAdapter = new BusinessRecyclerViewAdapter(new BusinessListFragment.OnListFragmentInteractionListener() {
         @Override
@@ -62,9 +61,9 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        BusinessMapFragment mapFragment = (BusinessMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mapFragment.setAdapter(mAdapter);
 
         handleIntent(getIntent());
 
@@ -75,7 +74,6 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
             @Override
             public void onChanged() {
                 super.onChanged();
-                updateMap();
                 mContainer.setVisibility(View.VISIBLE);
             }
         });
@@ -170,40 +168,7 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
         */
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setMyLocationEnabled(true);
-    }
 
-    private void updateMap() {
-
-        if (0 >= mAdapter.getItemCount()) {
-            // Center map on user location
-            Location location = Application.getInstance().getLastLocation();
-            if (null != location)
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
-            return;
-        }
-
-        mMap.clear();
-        // Zoom map to bounds
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (int i = 0; i < mAdapter.getItemCount(); i++) {
-            Business business = mAdapter.getItem(i);
-            if (null == business.gps)
-                continue;
-            LatLng latlng = new LatLng(business.gps.lat, business.gps.lng);
-            builder.include(latlng);
-
-            mMap.addMarker(new MarkerOptions()
-                    .position(latlng)
-                    .title(business.name)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_salon)));
-        }
-        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 20));
-
-    }
 
     private void onTouchBusiness(Business business) {
         // TODO: code me
