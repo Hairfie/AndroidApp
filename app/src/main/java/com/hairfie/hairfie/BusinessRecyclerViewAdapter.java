@@ -28,6 +28,13 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
         return mValues.get(position);
     }
 
+    public Business findItemByName(String name) {
+        for (Business value : mValues)
+            if (value.name != null && value.name.equals(name))
+                return value;
+        return null;
+    }
+
     public void addItems(List<Business> items) {
         mValues.addAll(items);
         notifyDataSetChanged();

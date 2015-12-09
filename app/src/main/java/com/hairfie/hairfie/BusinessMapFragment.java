@@ -10,6 +10,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.hairfie.hairfie.models.Business;
 
@@ -19,6 +20,7 @@ import com.hairfie.hairfie.models.Business;
 public class BusinessMapFragment extends SupportMapFragment implements OnMapReadyCallback {
     boolean mMapReady;
     private BusinessRecyclerViewAdapter mAdapter;
+    private OnMapFragmentInteractionListener mInteractionListener;
 
     public BusinessMapFragment() {
         super();
@@ -45,6 +47,12 @@ public class BusinessMapFragment extends SupportMapFragment implements OnMapRead
     public void onMapReady(GoogleMap googleMap) {
         mMapReady = true;
         googleMap.setMyLocationEnabled(true);
+        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                touchMarker(marker);
+            }
+        });
         updateMap();
     }
 
@@ -85,6 +93,26 @@ public class BusinessMapFragment extends SupportMapFragment implements OnMapRead
         }
         map.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 20));
 
+    }
+
+    public void setInteractionListener(OnMapFragmentInteractionListener interactionListener) {
+        this.mInteractionListener = interactionListener;
+    }
+
+    public interface OnMapFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onMapFragmentInteraction(Business item);
+    }
+
+    private void touchMarker(Marker marker) {
+
+        if (mAdapter == null)
+            return;
+
+        Business business = mAdapter.findItemByName(marker.getTitle());
+        if (null != business && null != mInteractionListener) {
+            mInteractionListener.onMapFragmentInteraction(business);
+        }
     }
 
 }

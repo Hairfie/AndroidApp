@@ -19,14 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.hairfie.hairfie.models.Business;
 import com.hairfie.hairfie.models.Category;
 import com.hairfie.hairfie.models.GeoPoint;
@@ -64,6 +56,13 @@ public class SearchResultsActivity extends AppCompatActivity {
         BusinessMapFragment mapFragment = (BusinessMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.setAdapter(mAdapter);
+        mapFragment.setInteractionListener(new BusinessMapFragment.OnMapFragmentInteractionListener() {
+
+            @Override
+            public void onMapFragmentInteraction(Business item) {
+                onTouchBusiness(item);
+            }
+        });
 
         handleIntent(getIntent());
 
@@ -172,6 +171,7 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     private void onTouchBusiness(Business business) {
         // TODO: code me
+        Log.d(Application.TAG, "Touch "+business.name);
     }
 
     public void touchModifyFilters(View v) {
