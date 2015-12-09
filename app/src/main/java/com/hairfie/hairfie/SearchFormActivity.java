@@ -45,6 +45,7 @@ public class SearchFormActivity extends AppCompatActivity {
 
 
         mQueryEditText = (EditText) findViewById(R.id.query);
+        mLocationEditText = (EditText) findViewById(R.id.location);
 
         Intent intent = getIntent();
         if (null != intent) {
@@ -58,7 +59,6 @@ public class SearchFormActivity extends AppCompatActivity {
 
         }
 
-        mLocationEditText = (EditText) findViewById(R.id.location);
 
         final ListView listView = (ListView) findViewById(R.id.list);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
