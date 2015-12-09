@@ -1,5 +1,6 @@
 package com.hairfie.hairfie;
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class SearchResultsActivity extends AppCompatActivity {
+    private static final int REQUEST_CODE_SEARCH = 101;
     public static final String EXTRA_CATEGORIES = "EXTRA_CATEGORIES";
     public static final String EXTRA_GEOPOINT= "EXTRA_GEOPOINT";
     public static final String EXTRA_QUERY = SearchManager.QUERY;
@@ -121,7 +123,8 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     private void handleIntent(Intent intent) {
 
-        mQuery = intent.getCharSequenceExtra(EXTRA_QUERY).toString();
+        CharSequence query = intent.getCharSequenceExtra(EXTRA_QUERY);
+        mQuery = query != null ? query.toString() : null;
         mCategories = intent.getParcelableArrayListExtra(EXTRA_CATEGORIES);
         mGeoPoint = (GeoPoint) intent.getParcelableExtra(EXTRA_GEOPOINT);
         if (null == mGeoPoint) {
@@ -153,9 +156,14 @@ public class SearchResultsActivity extends AppCompatActivity {
 
 
         mAdapter.setReferenceLocation(mGeoPoint.toLocation());
+
+        mAdapter.resetItems();
+
+        setSpinning(true);
         mListBusinessesCall = Business.listNearby(mGeoPoint, mQuery, mCategories, 100, new ResultCallback.Single<List<Business>>() {
             @Override
             public void onComplete(@Nullable List<Business> object, @Nullable ResultCallback.Error error) {
+                setSpinning(false);
 
                 if (null != error) {
                     Log.e(Application.TAG, "Could not search businesses: " + (error.message != null ? error.message : "null"), error.cause);
@@ -186,9 +194,16 @@ public class SearchResultsActivity extends AppCompatActivity {
     }
 
     public void touchModifyFilters(View v) {
-        // TODO: code me
+        Intent intent = new Intent(this, SearchFormActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_SEARCH);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_SEARCH && RESULT_OK == resultCode)
+            handleIntent(data);
+    }
 
     FragmentPagerAdapter mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
 
@@ -216,4 +231,23 @@ public class SearchResultsActivity extends AppCompatActivity {
         }
 
     };
-}
+
+    ProgressDialog mSpinner;
+    void setSpinning(boolean spinning) {
+        if (spinning) {
+            if (mSpinner != null && mSpinner.isShowing()) {
+                return;
+            }
+
+            mSpinner = new ProgressDialog(this);
+            mSpinner.setIndeterminate(true);
+            mSpinner.setCancelable(false);
+            mSpinner.show();
+        } else {
+            if (mSpinner != null) {
+                mSpinner.dismiss();
+                mSpinner = null;
+            }
+
+        }
+    }}
