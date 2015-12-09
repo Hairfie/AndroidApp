@@ -70,4 +70,8 @@
     <string name="search_on_hairfie">Search Hairfie</string>
     <string name="nearby_current_location">Nearby current location</string>
     <string name="categories">Categories</string>
+    <string name="no_results">No results.</string>
+    <string name="cant_locate_name">We can\'t locate %s, please choose a different location</string>
+    <string name="cant_locate_you">We can\'t locate you, please choose a location</string>
+    <string name="ok">OK</string>
 </resources>

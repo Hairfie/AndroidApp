@@ -25,20 +25,23 @@ import com.hairfie.hairfie.models.GeoPoint;
 import com.hairfie.hairfie.models.ResultCallback;
 import com.squareup.okhttp.Call;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class SearchResultsActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_SEARCH = 101;
     public static final String EXTRA_CATEGORIES = "EXTRA_CATEGORIES";
-    public static final String EXTRA_GEOPOINT= "EXTRA_GEOPOINT";
+    public static final String EXTRA_LOCATION_NAME= "EXTRA_LOCATION_NAME";
     public static final String EXTRA_QUERY = SearchManager.QUERY;
 
     List<Category> mCategories;
     String mQuery;
     GeoPoint mGeoPoint;
+    CharSequence mLocationName;
     private ViewPager mContainer;
 
+    View mNoResults;
     BusinessMapFragment mMapFragment;
     BusinessListFragment mListFragment;
     private BusinessRecyclerViewAdapter mAdapter = new BusinessRecyclerViewAdapter(new BusinessListFragment.OnListFragmentInteractionListener() {
@@ -62,6 +65,9 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mContainer = (ViewPager)findViewById(R.id.container);
+        mNoResults = findViewById(R.id.no_results);
+        mNoResults.setVisibility(View.GONE);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mMapFragment = new BusinessMapFragment();
@@ -79,15 +85,6 @@ public class SearchResultsActivity extends AppCompatActivity {
         mListFragment = new BusinessListFragment();
         mListFragment.setAdapter(mAdapter);
 
-        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onChanged() {
-                super.onChanged();
-                mContainer.setVisibility(View.VISIBLE);
-            }
-        });
-        mContainer = (ViewPager)findViewById(R.id.container);
-        mContainer.setVisibility(View.INVISIBLE);
         mContainer.setAdapter(mPagerAdapter);
 
         Log.d(Application.TAG, String.format(Locale.ENGLISH, "Searching with query %s, location %s, categories %s", mQuery != null ? mQuery : "null", mGeoPoint != null ? mGeoPoint.toLocation().toString() : "null", mCategories != null ? mCategories.toString(): "null"));
@@ -126,22 +123,44 @@ public class SearchResultsActivity extends AppCompatActivity {
         CharSequence query = intent.getCharSequenceExtra(EXTRA_QUERY);
         mQuery = query != null ? query.toString() : null;
         mCategories = intent.getParcelableArrayListExtra(EXTRA_CATEGORIES);
-        mGeoPoint = (GeoPoint) intent.getParcelableExtra(EXTRA_GEOPOINT);
-        if (null == mGeoPoint) {
+        mLocationName = intent.getCharSequenceExtra(EXTRA_LOCATION_NAME);
+
+        if (null == mLocationName || mLocationName.length() == 0) {
             Location lastLocation = Application.getInstance().getLastLocation();
             if (null != lastLocation)
                 mGeoPoint = new GeoPoint(lastLocation);
+
+            if (null == mGeoPoint) {
+                // We have no location
+                new AlertDialog.Builder(this).setTitle(getString(R.string.cant_locate_you)).setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                }).show();
+            } else {
+                refresh();
+            }
+        } else {
+            GeoPoint.search(mLocationName.toString(), new ResultCallback.Single<GeoPoint>() {
+                @Override
+                public void onComplete(@Nullable GeoPoint object, @Nullable ResultCallback.Error error) {
+                    if (null == object) {
+                        // We have no location
+                        new AlertDialog.Builder(SearchResultsActivity.this).setTitle(String.format(Locale.getDefault(), getString(R.string.cant_locate_name), mLocationName)).setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        }).show();
+                    } else {
+                        mGeoPoint = object;
+                        refresh();
+                    }
+                }
+            });
         }
 
-        if (null == mGeoPoint) {
-            // We have no location
-            new AlertDialog.Builder(this).setTitle("We can't locate you, please choose a location").setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                }
-            }).show();
-        }
         refresh();
     }
 
@@ -160,6 +179,8 @@ public class SearchResultsActivity extends AppCompatActivity {
         mAdapter.resetItems();
 
         setSpinning(true);
+        mNoResults.setVisibility(View.GONE);
+
         mListBusinessesCall = Business.listNearby(mGeoPoint, mQuery, mCategories, 100, new ResultCallback.Single<List<Business>>() {
             @Override
             public void onComplete(@Nullable List<Business> object, @Nullable ResultCallback.Error error) {
@@ -172,6 +193,9 @@ public class SearchResultsActivity extends AppCompatActivity {
                 }
 
                 if (null != object) {
+                    if (object.size() == 0) {
+                        mNoResults.setVisibility(View.VISIBLE);
+                    }
                     mAdapter.addItems(object);
                 }
 
@@ -195,6 +219,13 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     public void touchModifyFilters(View v) {
         Intent intent = new Intent(this, SearchFormActivity.class);
+        if (null != mQuery)
+            intent.putExtra(EXTRA_QUERY, mQuery);
+        if (null != mCategories)
+            intent.putParcelableArrayListExtra(EXTRA_CATEGORIES, new ArrayList<Category>(mCategories));
+        if (null != mLocationName)
+            intent.putExtra(EXTRA_LOCATION_NAME, mLocationName);
+
         startActivityForResult(intent, REQUEST_CODE_SEARCH);
     }
 
@@ -232,22 +263,7 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     };
 
-    ProgressDialog mSpinner;
     void setSpinning(boolean spinning) {
-        if (spinning) {
-            if (mSpinner != null && mSpinner.isShowing()) {
-                return;
-            }
-
-            mSpinner = new ProgressDialog(this);
-            mSpinner.setIndeterminate(true);
-            mSpinner.setCancelable(false);
-            mSpinner.show();
-        } else {
-            if (mSpinner != null) {
-                mSpinner.dismiss();
-                mSpinner = null;
-            }
-
-        }
-    }}
+        mContainer.setVisibility(spinning ? View.INVISIBLE : View.VISIBLE);
+    }
+}

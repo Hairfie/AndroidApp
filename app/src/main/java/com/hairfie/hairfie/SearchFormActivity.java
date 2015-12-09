@@ -43,8 +43,22 @@ public class SearchFormActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mQueryEditText = (EditText)findViewById(R.id.query);
-        mLocationEditText = (EditText)findViewById(R.id.location);
+
+        mQueryEditText = (EditText) findViewById(R.id.query);
+
+        Intent intent = getIntent();
+        if (null != intent) {
+            mQueryEditText.setText(intent.getCharSequenceExtra(SearchResultsActivity.EXTRA_QUERY));
+
+            ArrayList<Category> categories = intent.getParcelableArrayListExtra(SearchResultsActivity.EXTRA_CATEGORIES);
+            if (null != categories)
+                mSelectedCategories.addAll(categories);
+
+            mLocationEditText.setText(intent.getCharSequenceExtra(SearchResultsActivity.EXTRA_LOCATION_NAME));
+
+        }
+
+        mLocationEditText = (EditText) findViewById(R.id.location);
 
         final ListView listView = (ListView) findViewById(R.id.list);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -106,34 +120,16 @@ public class SearchFormActivity extends AppCompatActivity {
     public void touchSearch(View v) {
 
 
-        CharSequence location = mLocationEditText.getText();
-        if (location != null && location.length() > 0) {
-            setSpinning(true);
-            GeoPoint.search(location.toString(), new ResultCallback.Single<GeoPoint>() {
-                @Override
-                public void onComplete(@Nullable GeoPoint object, @Nullable ResultCallback.Error error) {
-
-                    setSpinning(false);
-                    search(object);
-
-                }
-            });
-            return;
-        } else {
-            search(null);
-        }
-    }
-    void search(GeoPoint location) {
-
-
         Intent data = new Intent();
 
         if (null != mQueryEditText)
             data.putExtra(SearchResultsActivity.EXTRA_QUERY, mQueryEditText.getText());
 
+        CharSequence location = mLocationEditText.getText();
         if (null != location) {
-            data.putExtra(SearchResultsActivity.EXTRA_GEOPOINT, location);
+            data.putExtra(SearchResultsActivity.EXTRA_LOCATION_NAME, location);
         }
+
 
         data.putExtra(SearchResultsActivity.EXTRA_CATEGORIES, new ArrayList<Category>(mSelectedCategories));
 
@@ -153,10 +149,10 @@ public class SearchFormActivity extends AppCompatActivity {
             View result = super.getView(position, convertView, parent);
 
             Category category = getItem(position);
-            TextView label = (TextView)result.findViewById(R.id.category);
+            TextView label = (TextView) result.findViewById(R.id.category);
             label.setText(category.name);
 
-            ImageView image = (ImageView)result.findViewById(R.id.selector);
+            ImageView image = (ImageView) result.findViewById(R.id.selector);
             image.setImageResource(mSelectedCategories.contains(category) ? R.drawable.filter_selected : R.drawable.filter_not_selected);
 
             return result;
@@ -166,6 +162,7 @@ public class SearchFormActivity extends AppCompatActivity {
     }
 
     ProgressDialog mSpinner;
+
     void setSpinning(boolean spinning) {
         if (spinning) {
             if (mSpinner != null && mSpinner.isShowing()) {
