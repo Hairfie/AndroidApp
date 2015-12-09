@@ -109,6 +109,10 @@
         <activity
             android:name=".SearchFormActivity"
             android:label="@string/title_activity_search_form"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".BusinessActivity"
+            android:label="@string/title_activity_business"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

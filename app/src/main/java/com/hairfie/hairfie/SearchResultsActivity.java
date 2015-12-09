@@ -213,8 +213,9 @@ public class SearchResultsActivity extends AppCompatActivity {
 
 
     private void onTouchBusiness(Business business) {
-        // TODO: code me
-        Log.d(Application.TAG, "Touch "+business.name);
+        Intent intent = new Intent(this, BusinessActivity.class);
+        intent.putExtra(BusinessActivity.EXTRA_BUSINESS, business);
+        startActivity(intent);
     }
 
     public void touchModifyFilters(View v) {

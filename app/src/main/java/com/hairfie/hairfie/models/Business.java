@@ -1,6 +1,8 @@
 package com.hairfie.hairfie.models;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.gson.reflect.TypeToken;
@@ -17,7 +19,7 @@ import java.util.Locale;
 /**
  * Created by stephh on 04/12/15.
  */
-public class Business {
+public class Business implements Parcelable {
     public String id;
     public User.Profile owner;
     public String kind;
@@ -61,5 +63,39 @@ public class Business {
         result.enqueue((null == callback ? new ResultCallback.Void<ArrayList<Business>>() : callback).okHttpCallback(new ResultCallback.GsonDeserializer(new TypeToken<ArrayList<Business>>(){})));
         return result;
     }
+
+    public int describeContents() {
+        return 0;
+    }
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(Gson.sGson.toJson(this));
+    }
+    public static final Parcelable.Creator<Business> CREATOR
+            = new Parcelable.Creator<Business>() {
+        public Business createFromParcel(Parcel in) {
+            return new Business(in);
+        }
+
+        public Business[] newArray(int size) {
+            return new Business[size];
+        }
+    };
+
+    private Business(Parcel in) {
+        Business other = Gson.sGson.fromJson(in.readString(), Business.class);
+        id = other.id;
+        name = other.name;
+        owner = other.owner;
+        kind = other.kind;
+        gps = other.gps;
+        phoneNumber = other.phoneNumber;
+        address = other.address;
+        pictures = other.pictures;
+        thumbnail = other.thumbnail;
+        numHairfies = other.numHairfies;
+        numReviews = other.numReviews;
+        rating = other.rating;
+        facebookPage = other.facebookPage;
+   }
 
 }
