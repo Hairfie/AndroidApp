@@ -1,23 +1,29 @@
 package com.hairfie.hairfie;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hairfie.hairfie.models.Category;
+import com.hairfie.hairfie.models.GeoPoint;
 import com.hairfie.hairfie.models.ResultCallback;
 
 import java.util.ArrayList;
@@ -27,12 +33,18 @@ public class SearchFormActivity extends AppCompatActivity {
 
     List<Category> mSelectedCategories = new ArrayList<Category>();
 
+    EditText mQueryEditText;
+    EditText mLocationEditText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_form);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mQueryEditText = (EditText)findViewById(R.id.query);
+        mLocationEditText = (EditText)findViewById(R.id.location);
 
         final ListView listView = (ListView) findViewById(R.id.list);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -93,6 +105,40 @@ public class SearchFormActivity extends AppCompatActivity {
 
     public void touchSearch(View v) {
 
+
+        CharSequence location = mLocationEditText.getText();
+        if (location != null && location.length() > 0) {
+            setSpinning(true);
+            GeoPoint.search(location.toString(), new ResultCallback.Single<GeoPoint>() {
+                @Override
+                public void onComplete(@Nullable GeoPoint object, @Nullable ResultCallback.Error error) {
+
+                    setSpinning(false);
+                    search(object);
+
+                }
+            });
+            return;
+        } else {
+            search(null);
+        }
+    }
+    void search(GeoPoint location) {
+
+
+        Intent data = new Intent();
+
+        if (null != mQueryEditText)
+            data.putExtra(SearchResultsActivity.EXTRA_QUERY, mQueryEditText.getText());
+
+        if (null != location) {
+            data.putExtra(SearchResultsActivity.EXTRA_GEOPOINT, location);
+        }
+
+        data.putExtra(SearchResultsActivity.EXTRA_CATEGORIES, new ArrayList<Category>(mSelectedCategories));
+
+        setResult(RESULT_OK, data);
+        finish();
     }
 
     public class Adapter extends ArrayAdapter<Category> {
@@ -117,5 +163,25 @@ public class SearchFormActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    ProgressDialog mSpinner;
+    void setSpinning(boolean spinning) {
+        if (spinning) {
+            if (mSpinner != null && mSpinner.isShowing()) {
+                return;
+            }
+
+            mSpinner = new ProgressDialog(this);
+            mSpinner.setIndeterminate(true);
+            mSpinner.setCancelable(false);
+            mSpinner.show();
+        } else {
+            if (mSpinner != null) {
+                mSpinner.dismiss();
+                mSpinner = null;
+            }
+
+        }
     }
 }

@@ -40,6 +40,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HairfieGridFragment.OnHairfieGridFragmentInteractionListener, CategoryPictoFragment.OnCategoryPictoFragmentInteractionListener {
+    static final int REQUEST_CODE_SEARCH = 100;
 
     ViewPager mViewPager;
     PagerTitleStrip mPagerTitleStrip;
@@ -193,7 +194,17 @@ public class MainActivity extends AppCompatActivity
 
     public void touchFilterYourSearch(View view) {
         Intent intent = new Intent(this, SearchFormActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE_SEARCH);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_SEARCH && resultCode == RESULT_OK) {
+            Intent intent = new Intent(this, SearchResultsActivity.class);
+            intent.putExtras(data.getExtras());
+            startActivity(intent);
+        }
     }
 
     public class PagerAdapter extends FragmentPagerAdapter {
@@ -250,8 +261,8 @@ public class MainActivity extends AppCompatActivity
             Application.getPicasso().load(R.drawable.default_user_picture_bg).fit().centerCrop().transform(new CircleTransform()).into(image);
         }
 
-        TextView line1 = (TextView)headerView.findViewById(R.id.nav_header_line1);
-        TextView line2 = (TextView)headerView.findViewById(R.id.nav_header_line2);
+        TextView line1 = (TextView) headerView.findViewById(R.id.nav_header_line1);
+        TextView line2 = (TextView) headerView.findViewById(R.id.nav_header_line2);
 
         line1.setText(profile != null ? profile.getFullname() : null);
         int numHairfies = profile != null ? profile.numHairfies : 0;

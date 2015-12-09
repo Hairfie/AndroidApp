@@ -20,10 +20,19 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
     private final ArrayList<Business> mValues = new ArrayList<>();
     private final BusinessListFragment.OnListFragmentInteractionListener mListener;
 
+    private Location mReferenceLocation;
     public BusinessRecyclerViewAdapter(BusinessListFragment.OnListFragmentInteractionListener listener) {
-        mListener = listener;
+        this(null, listener);
     }
 
+    public BusinessRecyclerViewAdapter(Location referenceLocation, BusinessListFragment.OnListFragmentInteractionListener listener) {
+        mListener = listener;
+        mReferenceLocation = referenceLocation;
+    }
+
+    public void setReferenceLocation(Location location) {
+        mReferenceLocation = location;
+    }
     public Business getItem(int position) {
         return mValues.get(position);
     }
@@ -106,7 +115,7 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
             mNameTextView.setText(item.name);
 
             // Distance
-            Location lastLocation = Application.getInstance().getLastLocation();
+            Location lastLocation = mReferenceLocation;
             if (null != lastLocation && null != item.gps) {
                 float distanceKm = lastLocation.distanceTo(item.gps.toLocation()) / 1000.0f;
                 mDistanceTextView.setText(String.format(Locale.getDefault(), "%.1f km", distanceKm));

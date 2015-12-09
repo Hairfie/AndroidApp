@@ -52,7 +52,6 @@ public class Business {
             }
         }
         String url = Config.instance.getAPIRoot() + "businesses/nearby?"+ builder.toString();
-        Log.d(Application.TAG, url);
         Request request = new Request.Builder()
                 .url(url)
                 .build();

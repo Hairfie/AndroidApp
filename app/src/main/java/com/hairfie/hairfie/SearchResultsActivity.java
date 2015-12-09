@@ -25,10 +25,12 @@ import com.hairfie.hairfie.models.ResultCallback;
 import com.squareup.okhttp.Call;
 
 import java.util.List;
+import java.util.Locale;
 
 public class SearchResultsActivity extends AppCompatActivity {
     public static final String EXTRA_CATEGORIES = "EXTRA_CATEGORIES";
     public static final String EXTRA_GEOPOINT= "EXTRA_GEOPOINT";
+    public static final String EXTRA_QUERY = SearchManager.QUERY;
 
     List<Category> mCategories;
     String mQuery;
@@ -86,6 +88,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         mContainer.setVisibility(View.INVISIBLE);
         mContainer.setAdapter(mPagerAdapter);
 
+        Log.d(Application.TAG, String.format(Locale.ENGLISH, "Searching with query %s, location %s, categories %s", mQuery != null ? mQuery : "null", mGeoPoint != null ? mGeoPoint.toLocation().toString() : "null", mCategories != null ? mCategories.toString(): "null"));
     }
 
 
@@ -118,8 +121,8 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     private void handleIntent(Intent intent) {
 
+        mQuery = intent.getCharSequenceExtra(EXTRA_QUERY).toString();
         mCategories = intent.getParcelableArrayListExtra(EXTRA_CATEGORIES);
-        mQuery = intent.getStringExtra(SearchManager.QUERY);
         mGeoPoint = (GeoPoint) intent.getParcelableExtra(EXTRA_GEOPOINT);
         if (null == mGeoPoint) {
             Location lastLocation = Application.getInstance().getLastLocation();
@@ -149,6 +152,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             mListBusinessesCall.cancel();
 
 
+        mAdapter.setReferenceLocation(mGeoPoint.toLocation());
         mListBusinessesCall = Business.listNearby(mGeoPoint, mQuery, mCategories, 100, new ResultCallback.Single<List<Business>>() {
             @Override
             public void onComplete(@Nullable List<Business> object, @Nullable ResultCallback.Error error) {
