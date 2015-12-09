@@ -142,6 +142,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                 refresh();
             }
         } else {
+
             GeoPoint.search(mLocationName.toString(), new ResultCallback.Single<GeoPoint>() {
                 @Override
                 public void onComplete(@Nullable GeoPoint object, @Nullable ResultCallback.Error error) {
@@ -161,7 +162,6 @@ public class SearchResultsActivity extends AppCompatActivity {
             });
         }
 
-        refresh();
     }
 
     Call mListBusinessesCall;
