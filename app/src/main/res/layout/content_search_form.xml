@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.hairfie.hairfie.SearchFormActivity"
+    tools:showIn="@layout/activity_search_form">
+
+
+    <EditText
+        android:id="@+id/query"
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:background="@drawable/search_field_background"
+        android:drawableLeft="@drawable/query_search_field"
+        android:gravity="left|center_vertical"
+        android:drawablePadding="10dp"
+        android:textColor="#ff979ca0"
+        android:textAllCaps="false"
+        android:paddingLeft="10dp"
+        android:hint="@string/search_on_hairfie"
+        android:textSize="12sp"
+        android:textColorHint="#ddd"/>
+
+    <EditText
+        android:id="@+id/location"
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:background="@drawable/search_field_background"
+        android:drawableLeft="@drawable/location_search_field"
+        android:gravity="left|center_vertical"
+        android:drawablePadding="10dp"
+        android:textColor="#ff979ca0"
+        android:textAllCaps="false"
+        android:paddingLeft="10dp"
+        android:hint="@string/nearby_current_location"
+        android:textSize="12sp"
+        android:textColorHint="#ddd"/>
+
+
+    <TextView android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:text="@string/categories"
+        android:background="#fff6f1f1"
+        android:textColor="#ff838a97"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ffe5e5e5" />
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"></ListView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:text="@string/search"
+        android:onClick="touchSearch"
+        style="@style/AppRedButton"
+        android:background="@color/colorAccent"/>
+
+</LinearLayout>

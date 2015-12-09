@@ -64,4 +64,10 @@
     <string name="modify_filters">Modify filters</string>
     <string name="results">Results</string>
     <string name="map">Map</string>
+    <string name="title_activity_search_form">SearchFormActivity</string>
+    <string name="search">Search</string>
+    <string name="close">Close</string>
+    <string name="search_on_hairfie">Search Hairfie</string>
+    <string name="nearby_current_location">Nearby current location</string>
+    <string name="categories">Categories</string>
 </resources>

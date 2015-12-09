@@ -191,6 +191,11 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void touchFilterYourSearch(View view) {
+        Intent intent = new Intent(this, SearchFormActivity.class);
+        startActivity(intent);
+    }
+
     public class PagerAdapter extends FragmentPagerAdapter {
 
         public PagerAdapter(FragmentManager fm) {
