@@ -1,9 +1,7 @@
 package com.hairfie.hairfie;
 
 import android.location.Location;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +18,9 @@ import java.util.Locale;
 public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRecyclerViewAdapter.ViewHolder> {
 
     private final ArrayList<Business> mValues = new ArrayList<>();
-    private final BusinessFragment.OnListFragmentInteractionListener mListener;
+    private final BusinessListFragment.OnListFragmentInteractionListener mListener;
 
-    public BusinessRecyclerViewAdapter(BusinessFragment.OnListFragmentInteractionListener listener) {
+    public BusinessRecyclerViewAdapter(BusinessListFragment.OnListFragmentInteractionListener listener) {
         mListener = listener;
     }
 

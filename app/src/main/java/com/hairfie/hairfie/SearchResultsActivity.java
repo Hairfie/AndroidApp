@@ -4,13 +4,9 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Point;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -22,27 +18,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.hairfie.hairfie.models.Business;
 import com.hairfie.hairfie.models.Category;
 import com.hairfie.hairfie.models.GeoPoint;
 import com.hairfie.hairfie.models.ResultCallback;
-import com.hairfie.hairfie.models.User;
 import com.squareup.okhttp.Call;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchResultsActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -54,7 +44,7 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
     GeoPoint mGeoPoint;
     private GoogleMap mMap;
     private Layout mContainer;
-    private BusinessRecyclerViewAdapter mAdapter = new BusinessRecyclerViewAdapter(new BusinessFragment.OnListFragmentInteractionListener() {
+    private BusinessRecyclerViewAdapter mAdapter = new BusinessRecyclerViewAdapter(new BusinessListFragment.OnListFragmentInteractionListener() {
         @Override
         public void onListFragmentInteraction(Business item) {
             onTouchBusiness(item);
@@ -78,8 +68,8 @@ public class SearchResultsActivity extends AppCompatActivity implements OnMapRea
 
         handleIntent(getIntent());
 
-        BusinessFragment businessFragment = (BusinessFragment) getSupportFragmentManager().findFragmentById(R.id.results);
-        businessFragment.setAdapter(mAdapter);
+        BusinessListFragment businessListFragment = (BusinessListFragment) getSupportFragmentManager().findFragmentById(R.id.results);
+        businessListFragment.setAdapter(mAdapter);
 
         mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override

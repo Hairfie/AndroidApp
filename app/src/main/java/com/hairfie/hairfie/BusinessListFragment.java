@@ -11,15 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.hairfie.hairfie.models.Business;
 
-import java.util.List;
-
 /**
  * A fragment representing a list of Items.
  * <p/>
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class BusinessFragment extends Fragment {
+public class BusinessListFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -33,13 +31,13 @@ public class BusinessFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public BusinessFragment() {
+    public BusinessListFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static BusinessFragment newInstance(int columnCount) {
-        BusinessFragment fragment = new BusinessFragment();
+    public static BusinessListFragment newInstance(int columnCount) {
+        BusinessListFragment fragment = new BusinessListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
