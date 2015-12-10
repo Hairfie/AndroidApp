@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
@@ -123,7 +125,22 @@ public class BusinessActivity extends AppCompatActivity {
             public int getCount() {
                 return 3;
             }
+
         });
+
+
+        TabLayout tabs = (TabLayout)findViewById(R.id.tabs);
+        tabs.setupWithViewPager(viewPager);
+        for (int i = 0; i < tabs.getTabCount(); i++) {
+            int icon;
+            switch(i) {
+                case 0: icon = R.drawable.tab_business_infos; break;
+                case 1: icon = R.drawable.tab_business_hairfies; break;
+                case 2: icon = R.drawable.tab_business_reviews; break;
+                default: continue;
+            }
+            tabs.getTabAt(i).setIcon(icon);
+        }
     }
 
     @Override
