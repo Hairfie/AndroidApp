@@ -1,6 +1,7 @@
 package com.hairfie.hairfie;
 
 import android.content.Context;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,10 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.hairfie.hairfie.helpers.CircleTransform;
 import com.hairfie.hairfie.models.Address;
 import com.hairfie.hairfie.models.Business;
+import com.hairfie.hairfie.models.BusinessMember;
 import com.hairfie.hairfie.models.Timetable;
 
 import org.w3c.dom.Text;
@@ -130,6 +135,33 @@ public class BusinessInfoFragment extends Fragment {
 
                 }
             }
+        }
+
+        // Hairdressers
+        LinearLayout linearLayout = (LinearLayout)view.findViewById(R.id.linear_layout);
+        if (null != linearLayout ) {
+            TextView title = (TextView)view.findViewById(R.id.hairdressers_title);
+            if (null != title)
+                title.setVisibility(mBusiness.activeHairdressers.length > 0 ? View.VISIBLE : View.GONE);
+            for (int i = 0; i < mBusiness.activeHairdressers.length; i++) {
+                BusinessMember hairdresser = mBusiness.activeHairdressers[i];
+                View hairdresserView = inflater.inflate(R.layout.fragment_business_member, linearLayout , true);
+                ImageView imageView = (ImageView)hairdresserView.findViewById(R.id.picture);
+                if (null != imageView) {
+                    if (null != hairdresser.getPicture()) {
+                        imageView.setVisibility(View.VISIBLE);
+                        Application.getPicasso().load(hairdresser.getPicture().url).transform(new CircleTransform()).fit().centerCrop().into(imageView);
+                    } else
+                        imageView.setVisibility(View.INVISIBLE);
+                }
+
+                TextView textView = (TextView)hairdresserView.findViewById(R.id.name);
+                if (null != textView) {
+                    textView.setText(hairdresser.getFullname());
+                }
+
+            }
+
         }
         return view;
     }

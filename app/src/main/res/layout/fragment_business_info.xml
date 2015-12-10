@@ -8,6 +8,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
+        android:id="@+id/linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -22,7 +23,7 @@
             android:paddingLeft="34dp"
             android:textAllCaps="false"
             android:textSize="14sp"
-            android:textColor="#333"
+            android:textColor="@color/colorText"
             android:background="@drawable/address_background"
             />
         <Button
@@ -35,7 +36,7 @@
             android:paddingLeft="34dp"
             android:textAllCaps="false"
             android:textSize="14sp"
-            android:textColor="#333"
+            android:textColor="@color/colorText"
             android:background="@drawable/phone_background"
             />
         <Button
@@ -48,9 +49,18 @@
             android:paddingLeft="34dp"
             android:textAllCaps="false"
             android:textSize="14sp"
-            android:textColor="#333"
+            android:textColor="@color/colorText"
             android:background="@drawable/open_background"
             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:gravity="bottom|left"
+            android:textColor="@color/colorText"
+            android:text="Hairdressers"
+            android:paddingLeft="10dp"
+            android:textStyle="bold"
+            android:id="@+id/hairdressers_title"/>
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>
