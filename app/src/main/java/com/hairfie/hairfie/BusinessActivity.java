@@ -26,13 +26,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hairfie.hairfie.models.Business;
+import com.hairfie.hairfie.models.Hairfie;
 import com.hairfie.hairfie.models.User;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.util.Locale;
 
-public class BusinessActivity extends AppCompatActivity {
+public class BusinessActivity extends AppCompatActivity implements HairfieGridFragment.OnHairfieGridFragmentInteractionListener {
 
     public static final String EXTRA_BUSINESS = "EXTRA_BUSINESS";
 
@@ -107,7 +108,7 @@ public class BusinessActivity extends AppCompatActivity {
         // Info fragment
         final BusinessInfoFragment infoFragment = BusinessInfoFragment.newInstance(mBusiness);
         final BusinessReviewsFragment reviewsFragment = BusinessReviewsFragment.newInstance(mBusiness);
-        final BusinessHairfiesFragment hairfiesFragment = BusinessHairfiesFragment.newInstance(mBusiness);
+        final HairfieGridFragment hairfiesFragment = HairfieGridFragment.newInstance(2, mBusiness);
         // View pager
         ViewPager viewPager = (ViewPager)findViewById(R.id.view_pager);
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -159,5 +160,10 @@ public class BusinessActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onTouchHairfie(Hairfie item) {
+
     }
 }

@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hairfie.hairfie.helpers.CircleTransform;
+import com.hairfie.hairfie.models.Business;
 import com.hairfie.hairfie.models.Hairfie;
 import com.hairfie.hairfie.models.Picture;
 import com.hairfie.hairfie.models.ResultCallback;
@@ -36,8 +37,10 @@ public class HairfieGridFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
+    private static final String ARG_BUSINESS= "business";
     // TODO: Customize parameters
     private int mColumnCount = 2;
+    private Business mBusiness;
     private OnHairfieGridFragmentInteractionListener mListener;
 
     /**
@@ -49,10 +52,11 @@ public class HairfieGridFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static HairfieGridFragment newInstance(int columnCount) {
+    public static HairfieGridFragment newInstance(int columnCount, Business business) {
         HairfieGridFragment fragment = new HairfieGridFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putParcelable(ARG_BUSINESS, business);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,6 +67,7 @@ public class HairfieGridFragment extends Fragment {
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            mBusiness = (Business)getArguments().getParcelable(ARG_BUSINESS);
         }
     }
 
@@ -118,7 +123,7 @@ public class HairfieGridFragment extends Fragment {
         void onTouchHairfie(Hairfie item);
     }
 
-    public static class HairfieRecyclerViewAdapter extends RecyclerView.Adapter<HairfieRecyclerViewAdapter.ViewHolder> {
+    public class HairfieRecyclerViewAdapter extends RecyclerView.Adapter<HairfieRecyclerViewAdapter.ViewHolder> {
 
         private List<Hairfie> mValues = new ArrayList<Hairfie>();
         private final OnHairfieGridFragmentInteractionListener mListener;
@@ -152,7 +157,7 @@ public class HairfieGridFragment extends Fragment {
                 mCurrentCall.cancel();
             }
             final int limit = 10;
-            mCurrentCall = Hairfie.latest(limit, mValues.size(), new ResultCallback.Single<List<Hairfie>>() {
+            mCurrentCall = Hairfie.latest(mBusiness, limit, mValues.size(), new ResultCallback.Single<List<Hairfie>>() {
                 @Override
                 public void onComplete(@Nullable List<Hairfie> object, @Nullable ResultCallback.Error error) {
                     mCurrentCall = null;

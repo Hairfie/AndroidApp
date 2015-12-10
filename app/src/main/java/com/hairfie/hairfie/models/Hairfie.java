@@ -1,8 +1,10 @@
 package com.hairfie.hairfie.models;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.google.gson.reflect.TypeToken;
+import com.hairfie.hairfie.Application;
 import com.hairfie.hairfie.Config;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Request;
@@ -26,12 +28,30 @@ public class Hairfie {
     public Picture[] pictures;
 
     public static Call latest(int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
+        return latest((JSONObject)null, limit, skip, callback);
+    }
+
+    public static Call latest(Business business, int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
+        JSONObject where = new JSONObject();
+        if (null != business)
+            try {
+                where.put("businessId", business.id);
+            } catch (JSONException e) {
+                Log.e(Application.TAG, "Could not create JSON", e);
+                return null;
+            }
+        return latest(where, limit, skip, callback);
+    }
+
+    private static Call latest(JSONObject where, int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
         try {
             JSONObject filter = new JSONObject();
 
             filter.put("limit", limit);
             filter.put("skip", skip);
             filter.put("order", "createdAt DESC");
+            if (null != where)
+                filter.put("where", where);
 
             Request request = new Request.Builder()
                     .url(Config.instance.getAPIRoot() + "hairfies?filter="+ Uri.encode(filter.toString()))
