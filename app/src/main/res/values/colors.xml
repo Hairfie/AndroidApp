@@ -3,6 +3,8 @@
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#fc5d5e</color>
+    <color name="colorText">#ff777777</color>
+    <color name="colorGreen">#FF32b251</color>
     <color name="defaultBackgroundColor">#ffffff</color>
     <color name="black_overlay">#66000000</color>
     <color name="tab_background_selected">#fff6f7f9</color>

@@ -25,15 +25,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hairfie.hairfie.models.Address;
 import com.hairfie.hairfie.models.Business;
 import com.hairfie.hairfie.models.Hairfie;
+import com.hairfie.hairfie.models.Timetable;
 import com.hairfie.hairfie.models.User;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.util.Locale;
 
-public class BusinessActivity extends AppCompatActivity implements HairfieGridFragment.OnHairfieGridFragmentInteractionListener {
+public class BusinessActivity extends AppCompatActivity implements BusinessInfoFragment.OnFragmentInteractionListener, HairfieGridFragment.OnHairfieGridFragmentInteractionListener {
 
     public static final String EXTRA_BUSINESS = "EXTRA_BUSINESS";
 
@@ -116,8 +118,8 @@ public class BusinessActivity extends AppCompatActivity implements HairfieGridFr
             public Fragment getItem(int position) {
                 switch (position) {
                     case 0: return infoFragment;
-                    case 1: return hairfiesFragment;
-                    case 2: return reviewsFragment;
+                    case 1: return reviewsFragment;
+                    case 2: return hairfiesFragment;
                 }
                 return null;
             }
@@ -136,8 +138,8 @@ public class BusinessActivity extends AppCompatActivity implements HairfieGridFr
             int icon;
             switch(i) {
                 case 0: icon = R.drawable.tab_business_infos; break;
-                case 1: icon = R.drawable.tab_business_hairfies; break;
-                case 2: icon = R.drawable.tab_business_reviews; break;
+                case 1: icon = R.drawable.tab_business_reviews; break;
+                case 2: icon = R.drawable.tab_business_hairfies; break;
                 default: continue;
             }
             tabs.getTabAt(i).setIcon(icon);
@@ -164,6 +166,22 @@ public class BusinessActivity extends AppCompatActivity implements HairfieGridFr
 
     @Override
     public void onTouchHairfie(Hairfie item) {
+
+    }
+
+    @Override
+    public void onTouchAddress(Address address) {
+        Log.d(Application.TAG, "Touch address:"+address.toString());
+    }
+
+    @Override
+    public void onTouchPhone(String phoneNumber) {
+        Log.d(Application.TAG, "Touch phone:"+phoneNumber);
+    }
+
+    @Override
+    public void onTouchTimetable(Timetable timetable) {
+        Log.d(Application.TAG, "Touch timetable:"+timetable.toString());
 
     }
 }

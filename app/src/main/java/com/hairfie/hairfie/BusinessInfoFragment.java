@@ -4,11 +4,18 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
+import com.hairfie.hairfie.models.Address;
 import com.hairfie.hairfie.models.Business;
+import com.hairfie.hairfie.models.Timetable;
+
+import org.w3c.dom.Text;
 
 
 /**
@@ -61,15 +68,72 @@ public class BusinessInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_business_info, container, false);
+        View view = inflater.inflate(R.layout.fragment_business_info, container, false);
+
+        Button addressButton = (Button)view.findViewById(R.id.address);
+        if (null != addressButton) {
+            addressButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != mListener)
+                        mListener.onTouchAddress(mBusiness.address);
+                }
+            });
+            if (mBusiness.address != null) {
+                addressButton.setText(mBusiness.address.toString());
+                addressButton.setVisibility(View.VISIBLE);
+            } else
+                addressButton.setVisibility(View.GONE);
+
+        }
+
+        Button phoneButton = (Button)view.findViewById(R.id.phone);
+        if (null != phoneButton) {
+            phoneButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != mListener)
+                        mListener.onTouchPhone(mBusiness.phoneNumber);
+                }
+            });
+
+            if (null == mBusiness.phoneNumber) {
+                phoneButton.setVisibility(View.GONE);
+            } else {
+                phoneButton.setVisibility(View.VISIBLE);
+                phoneButton.setText(mBusiness.phoneNumber);
+            }
+        }
+        Button timetableButton = (Button)view.findViewById(R.id.timetable);
+        if (null != timetableButton) {
+            timetableButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != mListener)
+                        mListener.onTouchTimetable(mBusiness.timetable);
+                }
+            });
+
+            if (null == mBusiness.timetable) {
+                timetableButton.setVisibility(View.GONE);
+            } else {
+                timetableButton.setVisibility(View.VISIBLE);
+                if (mBusiness.timetable.isOpenToday()) {
+                    timetableButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorGreen));
+                    timetableButton.setText(R.string.open_today);
+                    timetableButton.setBackgroundResource(R.drawable.open_background);
+
+                } else {
+                    timetableButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorText));
+                    timetableButton.setText(R.string.closed_today);
+                    timetableButton.setBackgroundResource(R.drawable.closed_background);
+
+                }
+            }
+        }
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -99,7 +163,10 @@ public class BusinessInfoFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onTouchAddress(Address address);
+
+        void onTouchPhone(String phoneNumber);
+
+        void onTouchTimetable(Timetable timetable);
     }
 }

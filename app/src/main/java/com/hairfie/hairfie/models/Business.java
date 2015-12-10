@@ -33,6 +33,7 @@ public class Business implements Parcelable {
     public Integer numReviews;
     public Float rating;
     public FacebookPage facebookPage;
+    public Timetable timetable;
 
     public static Call listNearby(GeoPoint geoPoint, String query, List<Category> categories, int limit, ResultCallback.Single<List<Business>> callback) {
 
@@ -96,6 +97,7 @@ public class Business implements Parcelable {
         numReviews = other.numReviews;
         rating = other.rating;
         facebookPage = other.facebookPage;
+        timetable = other.timetable;
    }
 
 }

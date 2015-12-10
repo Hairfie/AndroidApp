@@ -76,6 +76,7 @@ public abstract class ResultCallback {
             this.token = token;
         }
         public T deserialize(String s) throws Exception {
+            Log.d(Application.TAG, s);
             return Gson.sGson.fromJson(s, token.getType());
         }
     }

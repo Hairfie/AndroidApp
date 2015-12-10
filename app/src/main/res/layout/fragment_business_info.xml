@@ -7,10 +7,50 @@
     tools:showIn="@layout/activity_business"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:text="@string/large_text" />
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/address"
+            android:lines="2"
+            android:maxLines="2"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="34dp"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:textColor="#333"
+            android:background="@drawable/address_background"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/phone"
+            android:lines="1"
+            android:maxLines="1"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="34dp"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:textColor="#333"
+            android:background="@drawable/phone_background"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/timetable"
+            android:lines="1"
+            android:maxLines="1"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="34dp"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:textColor="#333"
+            android:background="@drawable/open_background"
+            />
+    </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>
