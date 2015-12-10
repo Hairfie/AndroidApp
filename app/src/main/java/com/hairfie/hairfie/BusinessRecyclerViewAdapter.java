@@ -87,7 +87,7 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
         public TextView mNameTextView;
         public TextView mDistanceTextView;
         public TextView mNumHairfiesTextView;
-        public ImageView[] mStarImageViews;
+        public StarLayout mStarLayout;
 
         public ViewHolder(View view) {
             super(view);
@@ -96,12 +96,7 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
             mNameTextView = (TextView)view.findViewById(R.id.name);
             mDistanceTextView = (TextView)view.findViewById(R.id.distance);
             mNumHairfiesTextView = (TextView)view.findViewById(R.id.num_hairfies);
-            mStarImageViews = new ImageView[5];
-            mStarImageViews[0] = (ImageView)view.findViewById(R.id.star1);
-            mStarImageViews[1] = (ImageView)view.findViewById(R.id.star2);
-            mStarImageViews[2] = (ImageView)view.findViewById(R.id.star3);
-            mStarImageViews[3] = (ImageView)view.findViewById(R.id.star4);
-            mStarImageViews[4] = (ImageView)view.findViewById(R.id.star5);
+            mStarLayout = (StarLayout)view.findViewById(R.id.stars);
         }
 
         public void setItem(Business item) {
@@ -131,21 +126,10 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
 
             // Stars
             if (item.rating != null) {
-                Float ratingOn5 = (item.rating / 100.0f) * mStarImageViews.length;
-                for (int i = 0; i < mStarImageViews.length; i++) {
-                    ImageView starImageView = mStarImageViews[i];
-                    starImageView.setVisibility(View.VISIBLE);
-                    if ((i + 1) <= ratingOn5)
-                        starImageView.setImageResource(R.drawable.selected_star);
-                    else if ((i + 0.5f) <= ratingOn5)
-                        starImageView.setImageResource(R.drawable.half_selected_star);
-                    else
-                        starImageView.setImageResource(R.drawable.not_selected_star);
-                }
+                mStarLayout.setRating(item.rating / 100.0f);
+                mStarLayout.setVisibility(View.VISIBLE);
             } else {
-                for (int i = 0; i < mStarImageViews.length; i++) {
-                    mStarImageViews[i].setVisibility(View.GONE);
-                }
+                mStarLayout.setVisibility(View.GONE);
             }
         }
 

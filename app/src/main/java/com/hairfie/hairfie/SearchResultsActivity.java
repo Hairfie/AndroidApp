@@ -154,6 +154,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                                 finish();
                             }
                         }).show();
+                        Log.e(Application.TAG, "Error requesting geolocation:" + (error.message != null ? error.message : "null"), error.cause);
                     } else {
                         mGeoPoint = object;
                         refresh();
