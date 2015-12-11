@@ -31,6 +31,17 @@ public class Hairfie {
         return latest((JSONObject)null, limit, skip, callback);
     }
 
+    public static Call latest(BusinessMember businessMember, int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
+        JSONObject where = new JSONObject();
+        if (null != businessMember)
+            try {
+                where.put("businessMemberId", businessMember.id);
+            } catch (JSONException e) {
+                Log.e(Application.TAG, "Could not create JSON", e);
+                return null;
+            }
+        return latest(where, limit, skip, callback);
+    }
     public static Call latest(Business business, int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
         JSONObject where = new JSONObject();
         if (null != business)

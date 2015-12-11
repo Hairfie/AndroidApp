@@ -119,7 +119,7 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
         // Info fragment
         final BusinessInfoFragment infoFragment = BusinessInfoFragment.newInstance(mBusiness);
         final BusinessReviewsFragment reviewsFragment = BusinessReviewsFragment.newInstance(mBusiness);
-        final HairfieGridFragment hairfiesFragment = HairfieGridFragment.newInstance(2, mBusiness);
+        final HairfieGridFragment hairfiesFragment = HairfieGridFragment.newInstance(2, mBusiness, null);
         // View pager
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {

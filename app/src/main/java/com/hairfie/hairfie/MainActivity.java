@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity
                 case 0:
                     return CategoryPictoFragment.newInstance();
                 case 1:
-                    return HairfieGridFragment.newInstance(2, null);
+                    return HairfieGridFragment.newInstance(2, null, null);
             }
             return null;
         }

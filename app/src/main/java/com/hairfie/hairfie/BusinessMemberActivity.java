@@ -5,7 +5,11 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,11 +21,12 @@ import android.widget.TextView;
 import com.hairfie.hairfie.helpers.BlurTransform;
 import com.hairfie.hairfie.helpers.CircleTransform;
 import com.hairfie.hairfie.models.BusinessMember;
+import com.hairfie.hairfie.models.Hairfie;
 import com.hairfie.hairfie.models.Picture;
 
 import java.util.Locale;
 
-public class BusinessMemberActivity extends AppCompatActivity {
+public class BusinessMemberActivity extends AppCompatActivity implements HairfieGridFragment.OnHairfieGridFragmentInteractionListener {
 
     public static final String ARG_BUSINESSMEMBER = "business-member";
 
@@ -85,6 +90,46 @@ public class BusinessMemberActivity extends AppCompatActivity {
 
         }
 
+        // View pager
+        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        final BusinessMemberInfoFragment infoFragment = BusinessMemberInfoFragment.newInstance(mBusinessMember);
+        final HairfieGridFragment hairfiesFragment = HairfieGridFragment.newInstance(2, null, mBusinessMember);
+        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                switch (position) {
+                    case 0:
+                        return infoFragment;
+                    case 1:
+                        return hairfiesFragment;
+                }
+                return null;
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+
+        });
+
+
+        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+        tabs.setupWithViewPager(viewPager);
+        for (int i = 0; i < tabs.getTabCount(); i++) {
+            int icon;
+            switch (i) {
+                case 0:
+                    icon = R.drawable.tab_business_infos;
+                    break;
+                case 1:
+                    icon = R.drawable.tab_business_hairfies;
+                    break;
+                default:
+                    continue;
+            }
+            tabs.getTabAt(i).setIcon(icon);
+        }
     }
 
     @Override
@@ -98,4 +143,8 @@ public class BusinessMemberActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onTouchHairfie(Hairfie item) {
+        Log.d(Application.TAG, "Touch hairfie:"+item.id);
+    }
 }

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.hairfie.hairfie.helpers.CircleTransform;
 import com.hairfie.hairfie.models.Business;
+import com.hairfie.hairfie.models.BusinessMember;
 import com.hairfie.hairfie.models.Hairfie;
 import com.hairfie.hairfie.models.Picture;
 import com.hairfie.hairfie.models.ResultCallback;
@@ -38,9 +39,11 @@ public class HairfieGridFragment extends Fragment {
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String ARG_BUSINESS= "business";
+    private static final String ARG_BUSINESSMEMBER= "business-member";
     // TODO: Customize parameters
     private int mColumnCount = 2;
     private Business mBusiness;
+    private BusinessMember mBusinessMember;
     private OnHairfieGridFragmentInteractionListener mListener;
 
     /**
@@ -52,11 +55,12 @@ public class HairfieGridFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static HairfieGridFragment newInstance(int columnCount, Business business) {
+    public static HairfieGridFragment newInstance(int columnCount, Business business, BusinessMember businessMember) {
         HairfieGridFragment fragment = new HairfieGridFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         args.putParcelable(ARG_BUSINESS, business);
+        args.putParcelable(ARG_BUSINESSMEMBER, businessMember);
         fragment.setArguments(args);
         return fragment;
     }
@@ -68,6 +72,7 @@ public class HairfieGridFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
             mBusiness = (Business)getArguments().getParcelable(ARG_BUSINESS);
+            mBusinessMember = (BusinessMember)getArguments().getParcelable(ARG_BUSINESSMEMBER);
         }
     }
 
@@ -157,7 +162,7 @@ public class HairfieGridFragment extends Fragment {
                 mCurrentCall.cancel();
             }
             final int limit = 10;
-            mCurrentCall = Hairfie.latest(mBusiness, limit, mValues.size(), new ResultCallback.Single<List<Hairfie>>() {
+            ResultCallback.Single<List<Hairfie>> callback = new ResultCallback.Single<List<Hairfie>>() {
                 @Override
                 public void onComplete(@Nullable List<Hairfie> object, @Nullable ResultCallback.Error error) {
                     mCurrentCall = null;
@@ -173,7 +178,14 @@ public class HairfieGridFragment extends Fragment {
                         notifyDataSetChanged();
                     }
                 }
-            });
+            };
+            if (null != mBusiness)
+                mCurrentCall = Hairfie.latest(mBusiness, limit, mValues.size(), callback);
+            else if (null != mBusinessMember)
+                mCurrentCall = Hairfie.latest(mBusinessMember, limit, mValues.size(), callback);
+            else
+                mCurrentCall = Hairfie.latest(limit, mValues.size(), callback);
+
         }
 
         @Override

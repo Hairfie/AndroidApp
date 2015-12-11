@@ -90,6 +90,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_business" />
+    <include layout="@layout/content_business_member" />
 
 </android.support.design.widget.CoordinatorLayout>
