@@ -16,18 +16,13 @@
         app:elevation="0dp"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/appbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textColor="#aaa"
-                android:textSize="14sp" />
-        </FrameLayout>
+        <TextView
+            android:id="@+id/appbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:textColor="#aaa"
+            android:textSize="14sp" />
 
     </android.support.v7.widget.Toolbar>
 
