@@ -226,6 +226,7 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
     public void onTouchBusinessMember(BusinessMember hairdresser) {
         Intent intent = new Intent(this, BusinessMemberActivity.class);
         intent.putExtra(BusinessMemberActivity.ARG_BUSINESSMEMBER, hairdresser);
+        intent.putExtra(BusinessMemberActivity.ARG_BUSINESS, mBusiness);
         startActivity(intent);
     }
 }

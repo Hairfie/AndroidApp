@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.hairfie.hairfie.helpers.BlurTransform;
 import com.hairfie.hairfie.helpers.CircleTransform;
+import com.hairfie.hairfie.models.Business;
 import com.hairfie.hairfie.models.BusinessMember;
 import com.hairfie.hairfie.models.Hairfie;
 import com.hairfie.hairfie.models.Picture;
@@ -29,8 +30,10 @@ import java.util.Locale;
 public class BusinessMemberActivity extends AppCompatActivity implements HairfieGridFragment.OnHairfieGridFragmentInteractionListener {
 
     public static final String ARG_BUSINESSMEMBER = "business-member";
+    public static final String ARG_BUSINESS = "business";
 
     private BusinessMember mBusinessMember;
+    private Business mBusiness;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +46,9 @@ public class BusinessMemberActivity extends AppCompatActivity implements Hairfie
 
 
         mBusinessMember = (BusinessMember)getIntent().getParcelableExtra(ARG_BUSINESSMEMBER);
-        if (null == mBusinessMember) {
-            Log.e(Application.TAG, "Null business member");
+        mBusiness = (Business)getIntent().getParcelableExtra(ARG_BUSINESS);
+        if (null == mBusinessMember || null == mBusiness) {
+            Log.e(Application.TAG, "Null business or business member");
             finish();
         }
 
@@ -92,7 +96,7 @@ public class BusinessMemberActivity extends AppCompatActivity implements Hairfie
 
         // View pager
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        final BusinessMemberInfoFragment infoFragment = BusinessMemberInfoFragment.newInstance(mBusinessMember);
+        final BusinessMemberInfoFragment infoFragment = BusinessMemberInfoFragment.newInstance(mBusinessMember, mBusiness);
         final HairfieGridFragment hairfiesFragment = HairfieGridFragment.newInstance(2, null, mBusinessMember);
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
