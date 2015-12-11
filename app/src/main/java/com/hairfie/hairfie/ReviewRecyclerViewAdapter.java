@@ -20,6 +20,8 @@ import com.hairfie.hairfie.models.Review;
 import com.squareup.okhttp.Call;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -74,6 +76,7 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
                     if (object.size() < limit)
                         mNoMoreItems = true;
                     mValues.addAll(object);
+
                     notifyDataSetChanged();
                 }
             }
@@ -131,7 +134,7 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
                 starLayout.setRating(mItem.rating / 100.0f);
 
             if (null != dateTextView)
-                dateTextView.setText(mItem.createdAt);
+                dateTextView.setText(sDateFormat.format(mItem.createdAt));
 
             if (null != messageTextView)
                 messageTextView.setText(mItem.comment);
@@ -142,4 +145,6 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
             return super.toString() + " '" + mItem.id + "'";
         }
     }
+
+    DateFormat sDateFormat = new SimpleDateFormat("MMMM yyyy");
 }

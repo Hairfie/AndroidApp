@@ -40,5 +40,5 @@ dependencies {
     compile 'me.grantland:autofittextview:0.2.+'
     compile 'com.google.android.gms:play-services-location:8.3.0'
     compile 'com.google.android.gms:play-services-maps:8.3.0'
-
+    compile 'io.gsonfire:gson-fire:1.4.0'
 }

@@ -32,6 +32,7 @@ public class StarLayout extends LinearLayout {
             R.id.star2,
             R.id.star3,
             R.id.star4,
+            R.id.star5,
     };
 
     void prepare() {

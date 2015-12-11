@@ -13,6 +13,7 @@ import com.squareup.okhttp.Request;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public class Review {
     public String lastName;
     public Float rating;
     public String comment;
-    public String createdAt;
+    public Date createdAt;
 
     public static Call fetch(Business business, int limit, int skip, ResultCallback.Single<List<Review>> callback) {
         JsonObject where = new JsonObject();
