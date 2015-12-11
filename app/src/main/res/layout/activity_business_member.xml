@@ -55,23 +55,18 @@
                 app:elevation="0dp"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/name2"
-                        android:gravity="center"
-                        android:textColor="#aaa"
-                        android:alpha="0"
-                        android:layout_gravity="center"
-                        android:textSize="14sp" />
-
-                </FrameLayout>
-
             </android.support.v7.widget.Toolbar>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:id="@+id/name2"
+                android:textColor="#aaa"
+                android:alpha="0"
+                android:gravity="center"
+                app:layout_collapseMode="pin"
+                android:layout_gravity="top|center_horizontal"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/name"
