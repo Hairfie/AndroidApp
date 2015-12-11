@@ -43,6 +43,8 @@ public class SearchFormActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        
         TextView titleTextView = (TextView)findViewById(R.id.appbar_title);
         if (null != titleTextView)
             titleTextView.setText(R.string.search);
