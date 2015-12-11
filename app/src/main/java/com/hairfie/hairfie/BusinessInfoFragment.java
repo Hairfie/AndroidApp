@@ -144,8 +144,16 @@ public class BusinessInfoFragment extends Fragment {
             if (null != title)
                 title.setVisibility(mBusiness.activeHairdressers.length > 0 ? View.VISIBLE : View.GONE);
             for (int i = 0; i < mBusiness.activeHairdressers.length; i++) {
-                BusinessMember hairdresser = mBusiness.activeHairdressers[i];
-                View hairdresserView = inflater.inflate(R.layout.fragment_business_member, linearLayout , true);
+                final BusinessMember hairdresser = mBusiness.activeHairdressers[i];
+                View hairdresserView = inflater.inflate(R.layout.fragment_business_member, null , false);
+                linearLayout.addView(hairdresserView);
+
+                hairdresserView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        touchHairdresser(hairdresser);
+                    }
+                });
                 ImageView imageView = (ImageView)hairdresserView.findViewById(R.id.picture);
                 if (null != imageView) {
                     if (null != hairdresser.getPicture()) {
@@ -178,6 +186,10 @@ public class BusinessInfoFragment extends Fragment {
         }
     }
 
+    public void touchHairdresser(BusinessMember hairdresser) {
+        if (null != mListener)
+            mListener.onTouchBusinessMember(hairdresser);
+    }
     @Override
     public void onDetach() {
         super.onDetach();
@@ -200,5 +212,7 @@ public class BusinessInfoFragment extends Fragment {
         void onTouchPhone(String phoneNumber);
 
         void onTouchTimetable(Timetable timetable);
+
+        void onTouchBusinessMember(BusinessMember hairdresser);
     }
 }

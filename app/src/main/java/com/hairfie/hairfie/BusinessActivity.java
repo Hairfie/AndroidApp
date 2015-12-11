@@ -34,6 +34,7 @@ import android.widget.TextView;
 
 import com.hairfie.hairfie.models.Address;
 import com.hairfie.hairfie.models.Business;
+import com.hairfie.hairfie.models.BusinessMember;
 import com.hairfie.hairfie.models.Hairfie;
 import com.hairfie.hairfie.models.Timetable;
 import com.hairfie.hairfie.models.User;
@@ -221,4 +222,10 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
 
     }
 
+    @Override
+    public void onTouchBusinessMember(BusinessMember hairdresser) {
+        Intent intent = new Intent(this, BusinessMemberActivity.class);
+        intent.putExtra(BusinessMemberActivity.ARG_BUSINESSMEMBER, hairdresser);
+        startActivity(intent);
+    }
 }
