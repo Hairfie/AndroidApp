@@ -21,7 +21,7 @@ public class TimeWindow implements Parcelable {
     public static final Parcelable.Creator<TimeWindow> CREATOR
             = new Parcelable.Creator<TimeWindow>() {
         public TimeWindow createFromParcel(Parcel in) {
-            return new TimeWindow(in);
+            return Gson.sGson.fromJson(in.readString(), TimeWindow.class);
         }
 
         public TimeWindow[] newArray(int size) {
@@ -29,10 +29,4 @@ public class TimeWindow implements Parcelable {
         }
     };
 
-    private TimeWindow(Parcel in) {
-        TimeWindow other = Gson.sGson.fromJson(in.readString(), TimeWindow.class);
-        startTime = other.startTime;
-        endTime = other.endTime;
-        appointmentMode = other.appointmentMode;
-    }
 }

@@ -175,4 +175,6 @@
     <string name="call_x">Call %s ?</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
+    <string name="title_activity_timetable">TimetableActivity</string>
+    <string name="timetable">Time table</string>
 </resources>

@@ -75,7 +75,7 @@ public class Business implements Parcelable {
     public static final Parcelable.Creator<Business> CREATOR
             = new Parcelable.Creator<Business>() {
         public Business createFromParcel(Parcel in) {
-            return new Business(in);
+            return Gson.sGson.fromJson(in.readString(), Business.class);
         }
 
         public Business[] newArray(int size) {
@@ -83,23 +83,6 @@ public class Business implements Parcelable {
         }
     };
 
-    private Business(Parcel in) {
-        Business other = Gson.sGson.fromJson(in.readString(), Business.class);
-        id = other.id;
-        name = other.name;
-        owner = other.owner;
-        kind = other.kind;
-        gps = other.gps;
-        phoneNumber = other.phoneNumber;
-        address = other.address;
-        pictures = other.pictures;
-        thumbnail = other.thumbnail;
-        numHairfies = other.numHairfies;
-        numReviews = other.numReviews;
-        rating = other.rating;
-        facebookPage = other.facebookPage;
-        timetable = other.timetable;
-        activeHairdressers = other.activeHairdressers;
-   }
+
 
 }

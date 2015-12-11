@@ -42,19 +42,13 @@ public class GeoPoint implements Parcelable {
     public static final Parcelable.Creator<GeoPoint> CREATOR
             = new Parcelable.Creator<GeoPoint>() {
         public GeoPoint createFromParcel(Parcel in) {
-            return new GeoPoint(in);
+            return Gson.sGson.fromJson(in.readString(), GeoPoint.class);
         }
 
         public GeoPoint[] newArray(int size) {
             return new GeoPoint[size];
         }
     };
-
-    private GeoPoint(Parcel in) {
-        GeoPoint other = Gson.sGson.fromJson(in.readString(), GeoPoint.class);
-        this.lat = other.lat;
-        this.lng = other.lng;
-    }
 
     public Location toLocation() {
         Location result = new Location("");

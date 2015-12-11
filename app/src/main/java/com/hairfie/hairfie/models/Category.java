@@ -92,7 +92,7 @@ public class Category implements Parcelable {
     public static final Parcelable.Creator<Category> CREATOR
             = new Parcelable.Creator<Category>() {
         public Category createFromParcel(Parcel in) {
-            return new Category(in);
+            return Gson.sGson.fromJson(in.readString(), Category.class);
         }
 
         public Category[] newArray(int size) {
@@ -100,11 +100,5 @@ public class Category implements Parcelable {
         }
     };
 
-    private Category(Parcel in) {
-        Category other = Gson.sGson.fromJson(in.readString(), Category.class);
-        id = other.id;
-        name = other.name;
-        picture = other.picture;
-        position = other.position;
-    }
+
 }

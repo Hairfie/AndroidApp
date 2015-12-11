@@ -16,6 +16,7 @@
     <style name="TransparentText">
         <item name="android:textColor">@android:color/transparent</item>
     </style>
+
     <style name="CollapsingToolbarTitleTextAppearance">
         <item name="android:textColor">#aaa</item>
         <item name="android:textSize">14sp</item>

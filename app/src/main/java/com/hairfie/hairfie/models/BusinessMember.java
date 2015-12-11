@@ -30,7 +30,7 @@ public class BusinessMember implements Parcelable {
     public static final Parcelable.Creator<BusinessMember> CREATOR
             = new Parcelable.Creator<BusinessMember>() {
         public BusinessMember createFromParcel(Parcel in) {
-            return new BusinessMember(in);
+            return Gson.sGson.fromJson(in.readString(), BusinessMember.class);
         }
 
         public BusinessMember[] newArray(int size) {
@@ -38,18 +38,6 @@ public class BusinessMember implements Parcelable {
         }
     };
 
-    private BusinessMember(Parcel in) {
-        BusinessMember other = Gson.sGson.fromJson(in.readString(), BusinessMember.class);
-        id = other.id;
-        active = other.active;
-        user = other.user;
-        firstName = other.firstName;
-        lastName = other.lastName;
-        email = other.email;
-        phoneNumber = other.phoneNumber;
-        numHairfies = other.numHairfies;
-
-    }
 
     public Picture getPicture() {
         if (null != user)

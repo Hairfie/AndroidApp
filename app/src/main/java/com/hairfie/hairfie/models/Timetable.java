@@ -37,7 +37,7 @@ public class Timetable implements Parcelable {
     public static final Parcelable.Creator<Timetable> CREATOR
             = new Parcelable.Creator<Timetable>() {
         public Timetable createFromParcel(Parcel in) {
-            return new Timetable(in);
+            return Gson.sGson.fromJson(in.readString(), Timetable.class);
         }
 
         public Timetable[] newArray(int size) {
@@ -45,17 +45,7 @@ public class Timetable implements Parcelable {
         }
     };
 
-    private Timetable(Parcel in) {
-        Timetable other = Gson.sGson.fromJson(in.readString(), Timetable.class);
 
-        monday = other.monday;
-        tuesday = other.tuesday;
-        wednesday = other.wednesday;
-        thursday = other.thursday;
-        friday = other.friday;
-        saturday = other.saturday;
-        sunday = other.sunday;
-    }
 
     public boolean isOpenToday() {
         Calendar calendar = Calendar.getInstance();

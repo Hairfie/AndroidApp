@@ -215,7 +215,9 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
 
     @Override
     public void onTouchTimetable(Timetable timetable) {
-        Log.d(Application.TAG, "Touch timetable:" + timetable.toString());
+        Intent intent = new Intent(this, TimetableActivity.class);
+        intent.putExtra(TimetableActivity.ARG_TIMETABLE, timetable);
+        startActivity(intent);
 
     }
 
