@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.hairfie.hairfie.models.ResultCallback;
 import com.hairfie.hairfie.models.User;
@@ -28,6 +29,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        TextView titleTextView = (TextView)findViewById(R.id.appbar_title);
+        if (null != titleTextView)
+            titleTextView.setText(R.string.title_activity_forgot_password);
 
         mButton = (Button)findViewById(R.id.submit);
         mButton.setEnabled(false);

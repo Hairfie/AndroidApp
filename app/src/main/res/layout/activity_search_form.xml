@@ -6,40 +6,8 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="com.hairfie.hairfie.SearchFormActivity">
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:elevation="0dp"
-        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/toolbar_background"
-            app:borderWidth="0dp"
-            app:elevation="0dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/search"
-                    android:textColor="#aaa"
-                    android:textSize="14sp" />
-            </FrameLayout>
-
-        </android.support.v7.widget.Toolbar>
-
-
-
-    </android.support.design.widget.AppBarLayout>
-
+    <include layout="@layout/app_bar_default" />
     <include layout="@layout/content_search_form" />
 
 

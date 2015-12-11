@@ -171,7 +171,10 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
 
     @Override
     public void onTouchAddress(Address address) {
-        Log.d(Application.TAG, "Touch address:"+address.toString());
+        Intent intent = new Intent(this, AddressActivity.class);
+        intent.putExtra(AddressActivity.ARG_ADDRESS, address);
+        intent.putExtra(AddressActivity.ARG_TITLE, mBusiness.name);
+        startActivity(intent);
     }
 
     @Override

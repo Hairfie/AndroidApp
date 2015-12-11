@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.hairfie.hairfie.models.Business;
 import com.hairfie.hairfie.models.Category;
@@ -65,6 +66,11 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        TextView titleTextView = (TextView)findViewById(R.id.appbar_title);
+        if (null != titleTextView)
+            titleTextView.setText(R.string.find_your_hairdresser);
+
         mContainer = (ViewPager)findViewById(R.id.container);
         mNoResults = findViewById(R.id.no_results);
         mNoResults.setVisibility(View.GONE);

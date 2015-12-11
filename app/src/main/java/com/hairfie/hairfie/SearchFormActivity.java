@@ -43,6 +43,9 @@ public class SearchFormActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        TextView titleTextView = (TextView)findViewById(R.id.appbar_title);
+        if (null != titleTextView)
+            titleTextView.setText(R.string.search);
 
         mQueryEditText = (EditText) findViewById(R.id.query);
         mLocationEditText = (EditText) findViewById(R.id.location);

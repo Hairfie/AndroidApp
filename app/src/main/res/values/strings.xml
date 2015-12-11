@@ -171,4 +171,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="closed_today">Closed today</string>
     <string name="open_today">Open today</string>
+    <string name="title_activity_address">Address</string>
 </resources>

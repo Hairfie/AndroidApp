@@ -7,31 +7,8 @@
     android:fitsSystemWindows="true"
     tools:context="com.hairfie.hairfie.SignupActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="#ffe7e7e9"
-            app:popupTheme="@style/AppTheme.PopupOverlay" >
-            <!--
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:layout_marginRight="8dp"
-                android:text="@string/validate"
-                android:onClick="touchSignup"
-                android:layout_gravity="right|center_vertical"
-
-                style="@style/AppRedButton"/>
-                -->
-        </android.support.v7.widget.Toolbar>
-
-    </android.support.design.widget.AppBarLayout>
+    <include layout="@layout/app_bar_default" />
 
     <include layout="@layout/content_signup" />
 
