@@ -101,7 +101,7 @@ public class AddressActivity extends AppCompatActivity implements OnMapReadyCall
             // Add a marker in Sydney and move the camera
             LatLng address = new LatLng(mGeoPoint.lat, mGeoPoint.lng);
             mMap.addMarker(new MarkerOptions().position(address).title(mTitle != null ? mTitle.toString() : mAddress.toString()));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(address, 12));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(address, 15));
 
         }
     }

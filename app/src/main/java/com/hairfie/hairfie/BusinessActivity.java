@@ -210,7 +210,7 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
                 }
                 startActivity(intent);
             }
-        });
+        }).show();
     }
 
     @Override
