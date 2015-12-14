@@ -16,6 +16,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -31,7 +34,22 @@ public class Hairfie implements Parcelable {
     public boolean displayBusiness;
     public Business business;
     public String landingPageUrl;
+    public Tag[] tags;
 
+    public List<Tag> orderedTags() {
+        List<Tag> list = Arrays.asList(tags);
+        Collections.sort(list, new Comparator<Tag>() {
+            @Override
+            public int compare(Tag lhs, Tag rhs) {
+                if (lhs.position < rhs.position)
+                    return -1;
+                if (lhs.position > rhs.position)
+                    return 1;
+                return 0;
+            }
+        });
+        return list;
+    }
     public static Call latest(int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
         return latest((JSONObject)null, limit, skip, callback);
     }
