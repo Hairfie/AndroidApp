@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,32 +7,23 @@
     android:paddingBottom="0dp"
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
+    android:paddingTop="0dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.hairfie.hairfie.MainActivity"
-    tools:showIn="@layout/app_bar_main">
+    tools:context="com.hairfie.hairfie.SearchResultsActivity"
+    tools:showIn="@layout/activity_search_results">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="37dp"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:background="@drawable/search_button_background"
-        android:drawableLeft="@drawable/magnifier_button_icon"
-        android:gravity="left|center"
-        android:drawablePadding="10dp"
-        android:textColor="#ff979ca0"
-        android:textAllCaps="false"
-        android:onClick="touchFilterYourSearch"
-        android:text="@string/filter_your_search"/>
-
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="30dp"
+        android:indeterminate="true" />
     <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
+        android:id="@+id/container"
+        android:background="#fff"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp">
         <android.support.v4.view.PagerTitleStrip
             android:id="@+id/pager_title_strip"
             android:layout_width="match_parent"
@@ -43,6 +34,30 @@
             android:padding="10dp"
             android:paddingTop="4dp"
             android:paddingBottom="4dp" />
-
     </android.support.v4.view.ViewPager>
-</LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:background="#ffececed"
+        android:drawableRight="@drawable/search_filters_icon"
+        android:gravity="left|center_vertical"
+        android:onClick="touchModifyFilters"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/modify_filters"
+        android:textColor="#ff848995"
+        android:textSize="17sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/no_results"
+        android:layout_marginBottom="50dp"
+        android:text="@string/no_results"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textColor="#ddd"
+        android:background="#fff"/>
+
+</FrameLayout>
+

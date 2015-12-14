@@ -44,7 +44,7 @@ public class SearchFormActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        
+
         TextView titleTextView = (TextView)findViewById(R.id.appbar_title);
         if (null != titleTextView)
             titleTextView.setText(R.string.search);
@@ -54,13 +54,13 @@ public class SearchFormActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (null != intent) {
-            mQueryEditText.setText(intent.getCharSequenceExtra(SearchResultsActivity.EXTRA_QUERY));
+            mQueryEditText.setText(intent.getCharSequenceExtra(MainActivity.EXTRA_QUERY));
 
-            ArrayList<Category> categories = intent.getParcelableArrayListExtra(SearchResultsActivity.EXTRA_CATEGORIES);
+            ArrayList<Category> categories = intent.getParcelableArrayListExtra(MainActivity.EXTRA_CATEGORIES);
             if (null != categories)
                 mSelectedCategories.addAll(categories);
 
-            mLocationEditText.setText(intent.getCharSequenceExtra(SearchResultsActivity.EXTRA_LOCATION_NAME));
+            mLocationEditText.setText(intent.getCharSequenceExtra(MainActivity.EXTRA_LOCATION_NAME));
 
         }
 
@@ -128,15 +128,15 @@ public class SearchFormActivity extends AppCompatActivity {
         Intent data = new Intent();
 
         if (null != mQueryEditText)
-            data.putExtra(SearchResultsActivity.EXTRA_QUERY, mQueryEditText.getText());
+            data.putExtra(MainActivity.EXTRA_QUERY, mQueryEditText.getText());
 
         CharSequence location = mLocationEditText.getText();
         if (null != location) {
-            data.putExtra(SearchResultsActivity.EXTRA_LOCATION_NAME, location);
+            data.putExtra(MainActivity.EXTRA_LOCATION_NAME, location);
         }
 
 
-        data.putExtra(SearchResultsActivity.EXTRA_CATEGORIES, new ArrayList<Category>(mSelectedCategories));
+        data.putExtra(MainActivity.EXTRA_CATEGORIES, new ArrayList<Category>(mSelectedCategories));
 
         setResult(RESULT_OK, data);
         finish();
