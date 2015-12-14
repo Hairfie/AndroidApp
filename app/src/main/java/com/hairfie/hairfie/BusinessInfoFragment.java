@@ -92,23 +92,6 @@ public class BusinessInfoFragment extends Fragment {
 
         }
 
-        Button phoneButton = (Button)view.findViewById(R.id.phone);
-        if (null != phoneButton) {
-            phoneButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (null != mListener)
-                        mListener.onTouchPhone(mBusiness.phoneNumber);
-                }
-            });
-
-            if (null == mBusiness.phoneNumber) {
-                phoneButton.setVisibility(View.GONE);
-            } else {
-                phoneButton.setVisibility(View.VISIBLE);
-                phoneButton.setText(mBusiness.phoneNumber);
-            }
-        }
         Button timetableButton = (Button)view.findViewById(R.id.timetable);
         if (null != timetableButton) {
             timetableButton.setOnClickListener(new View.OnClickListener() {
@@ -208,8 +191,6 @@ public class BusinessInfoFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         void onTouchAddress(Address address);
-
-        void onTouchPhone(String phoneNumber);
 
         void onTouchTimetable(Timetable timetable);
 

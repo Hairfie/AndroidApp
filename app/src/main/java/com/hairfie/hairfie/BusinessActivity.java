@@ -185,7 +185,6 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
         startActivity(intent);
     }
 
-    @Override
     public void onTouchPhone(final String phoneNumber) {
         new AlertDialog.Builder(this).setTitle(String.format(getString(R.string.call_x), phoneNumber)).setNegativeButton(getString(R.string.no), null).setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
@@ -218,4 +217,9 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
         intent.putExtra(BusinessMemberActivity.ARG_BUSINESS, mBusiness);
         startActivity(intent);
     }
+    public void touchCall(View v) {
+        onTouchPhone(mBusiness.phoneNumber);
+    }
+
+
 }

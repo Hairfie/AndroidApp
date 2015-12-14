@@ -111,5 +111,16 @@
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_business" />
+    <Button
+        style="@style/AppRedButton"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_gravity="bottom"
+        android:background="@color/colorAccent"
+        android:drawableLeft="@drawable/icon_phone"
+        android:drawablePadding="10dp"
+        android:onClick="touchCall"
+        android:text="@string/book" />
+
 
 </android.support.design.widget.CoordinatorLayout>

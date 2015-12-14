@@ -29,19 +29,6 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:id="@+id/phone"
-            android:lines="1"
-            android:maxLines="1"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="34dp"
-            android:textAllCaps="false"
-            android:textSize="14sp"
-            android:textColor="@color/colorText"
-            android:background="@drawable/phone_background"
-            />
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
             android:id="@+id/timetable"
             android:lines="1"
             android:maxLines="1"
