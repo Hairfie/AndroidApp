@@ -1,5 +1,6 @@
 package com.hairfie.hairfie;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -149,6 +150,9 @@ public class BusinessMemberActivity extends AppCompatActivity implements Hairfie
 
     @Override
     public void onTouchHairfie(Hairfie item) {
-        Log.d(Application.TAG, "Touch hairfie:"+item.id);
+        Intent intent = new Intent(this, HairfieActivity.class);
+        intent.putExtra(HairfieActivity.ARG_HAIRFIE, item);
+        startActivity(intent);
+
     }
 }

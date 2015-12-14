@@ -193,7 +193,9 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
 
     @Override
     public void onTouchHairfie(Hairfie item) {
-
+        Intent intent = new Intent(this, HairfieActivity.class);
+        intent.putExtra(HairfieActivity.ARG_HAIRFIE, item);
+        startActivity(intent);
     }
 
     @Override

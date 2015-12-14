@@ -188,4 +188,6 @@
     <string name="workplace">Work place</string>
     <string name="hairdressers">Hairdressers</string>
     <string name="similar_businesses">Similar Businesses</string>
+    <string name="title_activity_hairfie">HairfieActivity</string>
+    <string name="share">Share</string>
 </resources>

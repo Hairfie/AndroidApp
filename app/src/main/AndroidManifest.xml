@@ -113,6 +113,10 @@
         <activity
             android:name=".BusinessMemberActivity"
             android:label="@string/title_activity_business_member"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".HairfieActivity"
+            android:label="@string/title_activity_hairfie"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

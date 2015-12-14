@@ -1,6 +1,8 @@
 package com.hairfie.hairfie.models;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.gson.reflect.TypeToken;
@@ -19,7 +21,7 @@ import java.util.List;
 /**
  * Created by stephh on 03/12/15.
  */
-public class Hairfie {
+public class Hairfie implements Parcelable {
     public String id;
     public Picture picture;
     public Price price;
@@ -28,6 +30,7 @@ public class Hairfie {
     public Picture[] pictures;
     public boolean displayBusiness;
     public Business business;
+    public String landingPageUrl;
 
     public static Call latest(int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
         return latest((JSONObject)null, limit, skip, callback);
@@ -82,4 +85,21 @@ public class Hairfie {
 
 
     }
+
+    public int describeContents() {
+        return 0;
+    }
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(Gson.sGson.toJson(this));
+    }
+    public static final Parcelable.Creator<Hairfie> CREATOR
+            = new Parcelable.Creator<Hairfie>() {
+        public Hairfie createFromParcel(Parcel in) {
+            return Gson.sGson.fromJson(in.readString(), Hairfie.class);
+        }
+
+        public Hairfie[] newArray(int size) {
+            return new Hairfie[size];
+        }
+    };
 }
