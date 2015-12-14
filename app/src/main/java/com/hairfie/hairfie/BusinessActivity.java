@@ -4,29 +4,21 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -37,9 +29,6 @@ import com.hairfie.hairfie.models.Business;
 import com.hairfie.hairfie.models.BusinessMember;
 import com.hairfie.hairfie.models.Hairfie;
 import com.hairfie.hairfie.models.Timetable;
-import com.hairfie.hairfie.models.User;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.Locale;
 
@@ -120,6 +109,8 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
         final BusinessInfoFragment infoFragment = BusinessInfoFragment.newInstance(mBusiness);
         final BusinessReviewsFragment reviewsFragment = BusinessReviewsFragment.newInstance(mBusiness);
         final HairfieGridFragment hairfiesFragment = HairfieGridFragment.newInstance(2, mBusiness, null);
+        final BusinessServicesFragment pricesFragment = BusinessServicesFragment.newInstance(mBusiness);
+
         // View pager
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -132,13 +123,15 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
                         return reviewsFragment;
                     case 2:
                         return hairfiesFragment;
+                    case 3:
+                        return pricesFragment;
                 }
                 return null;
             }
 
             @Override
             public int getCount() {
-                return 3;
+                return 4;
             }
 
         });
@@ -157,6 +150,9 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
                     break;
                 case 2:
                     icon = R.drawable.tab_business_hairfies;
+                    break;
+                case 3:
+                    icon = R.drawable.tab_business_services;
                     break;
                 default:
                     continue;

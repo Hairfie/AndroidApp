@@ -1,5 +1,7 @@
 package com.hairfie.hairfie.models;
 
+import android.os.Parcelable;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Currency;
