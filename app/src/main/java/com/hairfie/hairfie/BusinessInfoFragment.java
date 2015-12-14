@@ -160,6 +160,28 @@ public class BusinessInfoFragment extends Fragment {
 
         }
 
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        fetchSimilarBusinesses();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnFragmentInteractionListener");
+        }
+
+    }
+
+    void fetchSimilarBusinesses() {
         // Similar business
         if (!mBusiness.isPremium()) {
             Business.listSimilar(mBusiness, new ResultCallback.Single<List<Business>>() {
@@ -174,21 +196,8 @@ public class BusinessInfoFragment extends Fragment {
                 }
             });
         }
-        return view;
+
     }
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
     public void touchHairdresser(BusinessMember hairdresser) {
         if (null != mListener)
             mListener.onTouchBusinessMember(hairdresser);
