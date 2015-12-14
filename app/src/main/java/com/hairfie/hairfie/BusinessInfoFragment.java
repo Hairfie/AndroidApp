@@ -46,6 +46,8 @@ public class BusinessInfoFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private View mView;
+
     public BusinessInfoFragment() {
         // Required empty public constructor
     }
@@ -79,6 +81,7 @@ public class BusinessInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_business_info, container, false);
+        mView = view;
 
         Button addressButton = (Button)view.findViewById(R.id.address);
         if (null != addressButton) {
@@ -160,13 +163,8 @@ public class BusinessInfoFragment extends Fragment {
 
         }
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         fetchSimilarBusinesses();
+        return view;
     }
 
     @Override
@@ -230,10 +228,10 @@ public class BusinessInfoFragment extends Fragment {
 
     void setupSimilarBusinesses(List<Business> businesses) {
         // Hairdressers
-        LinearLayout container = (LinearLayout)getView().findViewById(R.id.similar_businesses_container);
+        LinearLayout container = (LinearLayout)mView.findViewById(R.id.similar_businesses_container);
         if (null != container ) {
             container.setVisibility(View.VISIBLE);
-            TextView title = (TextView)getView().findViewById(R.id.similar_businesses_title);
+            TextView title = (TextView)mView.findViewById(R.id.similar_businesses_title);
             if (null != title)
                 title.setVisibility(businesses.size() > 0 ? View.VISIBLE : View.GONE);
             int counter = 0;
