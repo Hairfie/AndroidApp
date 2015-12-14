@@ -62,7 +62,7 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.setItem(mValues.get(position));
+        holder.setItem(mValues.get(position), mReferenceLocation);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +80,7 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         private Business mItem;
         public ImageView mPictureImageView;
@@ -99,7 +99,7 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
             mStarLayout = (StarLayout)view.findViewById(R.id.stars);
         }
 
-        public void setItem(Business item) {
+        public void setItem(Business item, Location referenceLocation) {
             mItem = item;
             if (item.pictures != null && item.pictures.length > 0 && item.pictures[0].url != null) {
                 Application.getPicasso().load(item.pictures[0].url).fit().centerCrop().transform(new RoundedCornersTransform(5,0)).into(mPictureImageView);
@@ -110,7 +110,7 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
             mNameTextView.setText(item.name);
 
             // Distance
-            Location lastLocation = mReferenceLocation;
+            Location lastLocation = referenceLocation;
             if (null != lastLocation && null != item.gps) {
                 float distanceKm = lastLocation.distanceTo(item.gps.toLocation()) / 1000.0f;
                 mDistanceTextView.setText(String.format(Locale.getDefault(), "%.1f km", distanceKm));

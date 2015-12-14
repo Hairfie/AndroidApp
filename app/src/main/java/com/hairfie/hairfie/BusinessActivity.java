@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
@@ -28,8 +29,10 @@ import com.hairfie.hairfie.models.Address;
 import com.hairfie.hairfie.models.Business;
 import com.hairfie.hairfie.models.BusinessMember;
 import com.hairfie.hairfie.models.Hairfie;
+import com.hairfie.hairfie.models.ResultCallback;
 import com.hairfie.hairfie.models.Timetable;
 
+import java.util.List;
 import java.util.Locale;
 
 public class BusinessActivity extends AppCompatActivity implements BusinessInfoFragment.OnFragmentInteractionListener, HairfieGridFragment.OnHairfieGridFragmentInteractionListener {
@@ -159,6 +162,8 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
             }
             tabs.getTabAt(i).setIcon(icon);
         }
+
+
     }
 
     @Override
@@ -177,6 +182,12 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
 
     }
 
+    @Override
+    public void onTouchSimilarBusiness(Business business) {
+        Intent intent = new Intent(this, BusinessActivity.class);
+        intent.putExtra(EXTRA_BUSINESS, business);
+        startActivity(intent);
+    }
     @Override
     public void onTouchAddress(Address address) {
         Intent intent = new Intent(this, AddressActivity.class);
@@ -220,6 +231,5 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
     public void touchCall(View v) {
         onTouchPhone(mBusiness.phoneNumber);
     }
-
 
 }

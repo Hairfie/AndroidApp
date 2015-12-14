@@ -4,8 +4,10 @@ import android.content.Context;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +20,12 @@ import com.hairfie.hairfie.helpers.CircleTransform;
 import com.hairfie.hairfie.models.Address;
 import com.hairfie.hairfie.models.Business;
 import com.hairfie.hairfie.models.BusinessMember;
+import com.hairfie.hairfie.models.ResultCallback;
 import com.hairfie.hairfie.models.Timetable;
 
 import org.w3c.dom.Text;
+
+import java.util.List;
 
 
 /**
@@ -121,15 +126,15 @@ public class BusinessInfoFragment extends Fragment {
         }
 
         // Hairdressers
-        LinearLayout linearLayout = (LinearLayout)view.findViewById(R.id.linear_layout);
-        if (null != linearLayout ) {
+        LinearLayout hairdressersContainer = (LinearLayout)view.findViewById(R.id.hairdressers_container);
+        if (null != hairdressersContainer ) {
             TextView title = (TextView)view.findViewById(R.id.hairdressers_title);
             if (null != title)
                 title.setVisibility(mBusiness.activeHairdressers.length > 0 ? View.VISIBLE : View.GONE);
             for (int i = 0; i < mBusiness.activeHairdressers.length; i++) {
                 final BusinessMember hairdresser = mBusiness.activeHairdressers[i];
                 View hairdresserView = inflater.inflate(R.layout.fragment_business_member, null , false);
-                linearLayout.addView(hairdresserView);
+                hairdressersContainer.addView(hairdresserView);
 
                 hairdresserView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -153,6 +158,21 @@ public class BusinessInfoFragment extends Fragment {
 
             }
 
+        }
+
+        // Similar business
+        if (!mBusiness.isPremium()) {
+            Business.listSimilar(mBusiness, new ResultCallback.Single<List<Business>>() {
+                @Override
+                public void onComplete(@Nullable List<Business> object, @Nullable ResultCallback.Error error) {
+
+                    if (null != error) {
+                        Log.e(Application.TAG, "Error getting similar businesses:" + error.message, error.cause);
+                        return;
+                    }
+                    setupSimilarBusinesses(object);
+                }
+            });
         }
         return view;
     }
@@ -190,10 +210,45 @@ public class BusinessInfoFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
+
+        void onTouchSimilarBusiness(Business business);
         void onTouchAddress(Address address);
 
         void onTouchTimetable(Timetable timetable);
 
         void onTouchBusinessMember(BusinessMember hairdresser);
     }
+
+    void setupSimilarBusinesses(List<Business> businesses) {
+        // Hairdressers
+        LinearLayout container = (LinearLayout)getView().findViewById(R.id.similar_businesses_container);
+        if (null != container ) {
+            container.setVisibility(View.VISIBLE);
+            TextView title = (TextView)getView().findViewById(R.id.similar_businesses_title);
+            if (null != title)
+                title.setVisibility(businesses.size() > 0 ? View.VISIBLE : View.GONE);
+            int counter = 0;
+            for (final Business business : businesses) {
+                if (counter >= 3)
+                    break;
+
+                View hairdresserView = getActivity().getLayoutInflater().inflate(R.layout.fragment_business, null, false);
+                BusinessRecyclerViewAdapter.ViewHolder holder = new BusinessRecyclerViewAdapter.ViewHolder(hairdresserView);
+                holder.setItem(business, Application.getInstance().getLastLocation());
+                container.addView(hairdresserView);
+
+                hairdresserView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (null != mListener)
+                            mListener.onTouchSimilarBusiness(business);
+                    }
+                });
+                counter++;
+
+            }
+
+        }
+    }
+
 }

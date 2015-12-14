@@ -48,6 +48,20 @@ public class Business implements Parcelable {
     public Timetable timetable;
     public BusinessMember[] activeHairdressers;
     public Service[] services;
+    public String accountType;
+
+    public static Call listSimilar(Business business, ResultCallback.Single<List<Business>>callback) {
+        if (null == business)
+            return null;
+
+        String url = Config.instance.getAPIRoot() + "businesses/"+ business.id + "/similar";
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        Call result = HttpClient.getInstance().newCall(request);
+        result.enqueue((null == callback ? new ResultCallback.Void<ArrayList<Business>>() : callback).okHttpCallback(new ResultCallback.GsonDeserializer(new TypeToken<ArrayList<Business>>(){})));
+        return result;
+    }
 
     public static Call listNearby(GeoPoint geoPoint, String query, List<Category> categories, int limit, ResultCallback.Single<List<Business>> callback) {
 
@@ -97,5 +111,8 @@ public class Business implements Parcelable {
     };
 
 
+    public boolean isPremium() {
+        return !"BASIC".equals(accountType);
+    }
 
 }
