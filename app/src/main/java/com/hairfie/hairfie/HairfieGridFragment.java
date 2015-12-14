@@ -261,7 +261,14 @@ public class HairfieGridFragment extends Fragment {
                     Application.getPicasso().load(R.drawable.default_user_picture_circle).fit().centerCrop().transform(new CircleTransform()).into(mAuthorPicture);
                 }
 
-                mAuthorNameTextView.setText(item.author != null ? item.author.getFullname() : "");
+                String nameText;
+                if (item.displayBusiness) {
+                    nameText = item.business != null ? item.business.name : "";
+                } else {
+                    nameText = item.author != null ? item.author.getFullname() : "";
+                }
+                mAuthorNameTextView.setText(nameText);
+
                 if (item.numLikes > 0) {
                     mLikeContainerView.setVisibility(View.VISIBLE);
                     mLikeCountTextView.setText(String.format(Locale.getDefault(), "%d", item.numLikes));

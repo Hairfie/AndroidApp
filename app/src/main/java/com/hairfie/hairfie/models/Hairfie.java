@@ -26,6 +26,8 @@ public class Hairfie {
     public Integer numLikes;
     public User.Profile author;
     public Picture[] pictures;
+    public boolean displayBusiness;
+    public Business business;
 
     public static Call latest(int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
         return latest((JSONObject)null, limit, skip, callback);
