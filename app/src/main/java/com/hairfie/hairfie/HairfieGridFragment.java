@@ -254,12 +254,11 @@ public class HairfieGridFragment extends Fragment {
                 }
 
                 if (item.author != null && item.author.picture != null) {
-                    mAuthorPicture.setVisibility(View.VISIBLE);
                     Picture authorPicture = item.author.picture;
                     Application.getPicasso().load(Uri.parse(authorPicture.url)).placeholder(R.drawable.default_user_picture_circle).fit().centerCrop().transform(new CircleTransform()).into(mAuthorPicture);
 
                 } else {
-                    mAuthorPicture.setVisibility(View.GONE);
+                    Application.getPicasso().load(R.drawable.default_user_picture_circle).fit().centerCrop().transform(new CircleTransform()).into(mAuthorPicture);
                 }
 
                 mAuthorNameTextView.setText(item.author != null ? item.author.getFullname() : "");
