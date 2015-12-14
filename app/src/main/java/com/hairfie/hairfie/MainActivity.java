@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
 
         boolean authenticated = User.getCurrentUser().isAuthenticated();
@@ -177,13 +178,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -194,11 +188,6 @@ public class MainActivity extends AppCompatActivity
             touchLogin(null);
             return true;
         }
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_take_picture) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -428,6 +417,10 @@ public class MainActivity extends AppCompatActivity
 
     void setSpinning(boolean spinning) {
         mContainer.setVisibility(spinning ? View.INVISIBLE : View.VISIBLE);
+    }
+
+    public void touchNewHairfie(View v) {
+
     }
 
 }
