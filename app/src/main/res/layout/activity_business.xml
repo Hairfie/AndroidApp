@@ -118,7 +118,7 @@
         android:layout_gravity="bottom"
         android:background="@color/colorAccent"
         android:drawableLeft="@drawable/icon_phone"
-        android:drawablePadding="10dp"
+        android:padding="10dp"
         android:onClick="touchCall"
         android:text="@string/book" />
 
