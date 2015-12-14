@@ -118,7 +118,10 @@
         android:layout_gravity="bottom"
         android:background="@color/colorAccent"
         android:drawableLeft="@drawable/icon_phone"
-        android:padding="10dp"
+        android:gravity="center"
+        android:drawablePadding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="40dp"
         android:onClick="touchCall"
         android:text="@string/book" />
 
