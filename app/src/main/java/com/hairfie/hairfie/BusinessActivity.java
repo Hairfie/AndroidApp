@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.androidpagecontrol.PageControl;
 import com.hairfie.hairfie.models.Address;
 import com.hairfie.hairfie.models.Business;
 import com.hairfie.hairfie.models.BusinessMember;
@@ -102,11 +103,24 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
                 }
             }
         });
-        // Picture
-        final ImageView pictureImageView = (ImageView) findViewById(R.id.main_picture);
-        if (null != pictureImageView && null != mBusiness.pictures && 0 < mBusiness.pictures.length) {
-            Application.getPicasso().load(mBusiness.pictures[0].url).into(pictureImageView);
-        }
+        // Pictures
+        ViewPager picturesViewPager = (ViewPager)findViewById(R.id.pictures_view_pager);
+        picturesViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return PictureFragment.newInstance(mBusiness.pictures[position].url);
+            }
+
+            @Override
+            public int getCount() {
+                return mBusiness.pictures.length;
+            }
+        });
+
+        // Page control
+        PageControl pageControl = (PageControl)findViewById(R.id.page_control);
+        pageControl.setViewPager(picturesViewPager);
+        pageControl.setVisibility(mBusiness.pictures.length > 1 ? View.VISIBLE : View.GONE);
 
         // Info fragment
         final BusinessInfoFragment infoFragment = BusinessInfoFragment.newInstance(mBusiness);
