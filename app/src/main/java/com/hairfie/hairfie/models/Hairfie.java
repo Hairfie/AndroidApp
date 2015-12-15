@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,6 +36,7 @@ public class Hairfie implements Parcelable {
     public Business business;
     public String landingPageUrl;
     public Tag[] tags;
+    public Date createdAt;
 
     public List<Tag> orderedTags() {
         List<Tag> list = Arrays.asList(tags);
