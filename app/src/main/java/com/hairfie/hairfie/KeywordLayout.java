@@ -72,8 +72,8 @@ public class KeywordLayout extends ViewGroup {
         int horizontalSpacing = Math.round(density * mHorizontalSpacing);
         int verticalSpacing = Math.round(density * mVerticalSpacing);
         int ourMeasuredWidth = MeasureSpec.getSize(widthMeasureSpec);
-        int x = 0;
-        int y = 0;
+        int x = getPaddingLeft();
+        int y = getPaddingTop();
         int lineHeight = 0;
 
         for (int i = 0; i < count; i++) {
@@ -86,9 +86,9 @@ public class KeywordLayout extends ViewGroup {
             int measuredWidth = textView.getMeasuredWidth();
             int measuredHeight = textView.getMeasuredHeight();
 
-            if (x != 0 && x + measuredWidth > ourMeasuredWidth) {
+            if (x != getPaddingLeft() && x + measuredWidth + getPaddingRight() > ourMeasuredWidth) {
                 y += lineHeight + verticalSpacing;
-                x = 0;
+                x = getPaddingLeft();
                 lineHeight = 0;
             }
             maxY = Math.max(maxY, y + textView.getMeasuredHeight());
@@ -97,7 +97,7 @@ public class KeywordLayout extends ViewGroup {
             lineHeight = Math.max(lineHeight, measuredHeight);
         }
 
-        setMeasuredDimension(ourMeasuredWidth, maxY);
+        setMeasuredDimension(ourMeasuredWidth, maxY + getPaddingBottom());
     }
 
     @Override
@@ -108,8 +108,9 @@ public class KeywordLayout extends ViewGroup {
         int horizontalSpacing = Math.round(density * mHorizontalSpacing);
         int verticalSpacing = Math.round(density * mVerticalSpacing);
         int ourMeasuredWidth = getMeasuredWidth();
-        int x = 0;
-        int y = 0;
+        ;
+        int x = getPaddingLeft();
+        int y = getPaddingTop();
         int lineHeight = 0;
 
         for (int i = 0; i < count; i++) {
@@ -121,9 +122,9 @@ public class KeywordLayout extends ViewGroup {
             int measuredWidth = textView.getMeasuredWidth();
             int measuredHeight = textView.getMeasuredHeight();
 
-            if (x != 0 && x + measuredWidth > ourMeasuredWidth) {
+            if (x != getPaddingLeft() && x + measuredWidth + getPaddingRight() > ourMeasuredWidth) {
                 y += lineHeight + verticalSpacing;
-                x = 0;
+                x = getPaddingLeft();
                 lineHeight = 0;
             }
             textView.layout(x, y, x + measuredWidth, y + textView.getMeasuredHeight());
