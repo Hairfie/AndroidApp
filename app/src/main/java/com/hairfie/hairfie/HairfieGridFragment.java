@@ -217,8 +217,7 @@ public class HairfieGridFragment extends Fragment {
             private final ImageView mPictureImageView;
             private final ImageView mSecondaryPictureImageView;
             private final ImageView mAuthorPicture;
-            private final View mLikeContainerView;
-            private final TextView mLikeCountTextView;
+            private final HairfieLikesView mLikesView;
             private final TextView mPriceTextView;
             private Hairfie mItem;
 
@@ -229,9 +228,9 @@ public class HairfieGridFragment extends Fragment {
                 mSecondaryPictureImageView = (ImageView) view.findViewById(R.id.secondary_picture);
                 mAuthorPicture = (ImageView) view.findViewById(R.id.author_picture);
                 mAuthorNameTextView = (TextView) view.findViewById(R.id.author_name);
-                mLikeContainerView = view.findViewById(R.id.like_container);
-                mLikeCountTextView = (TextView) view.findViewById(R.id.like_count);
+                mLikesView = (HairfieLikesView)view.findViewById(R.id.like_container);
                 mPriceTextView = (TextView) view.findViewById(R.id.price);
+
 
             }
 
@@ -269,12 +268,7 @@ public class HairfieGridFragment extends Fragment {
                 }
                 mAuthorNameTextView.setText(nameText);
 
-                if (item.numLikes > 0) {
-                    mLikeContainerView.setVisibility(View.VISIBLE);
-                    mLikeCountTextView.setText(String.format(Locale.getDefault(), "%d", item.numLikes));
-                } else {
-                    mLikeContainerView.setVisibility(View.GONE);
-                }
+                mLikesView.setHairfie(item);
 
                 if (item.price != null) {
                     mPriceTextView.setVisibility(View.VISIBLE);

@@ -12,10 +12,34 @@
     tools:context="com.hairfie.hairfie.HairfieActivity"
     tools:showIn="@layout/activity_hairfie">
 
-    <com.hairfie.hairfie.KeywordLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/keywords">
+        android:orientation="vertical">
 
-    </com.hairfie.hairfie.KeywordLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="310dp">
+
+            <ImageView
+                android:id="@+id/picture"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.hairfie.hairfie.HairfieLikesView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:id="@+id/like_container" />
+
+        </FrameLayout>
+
+        <com.hairfie.hairfie.KeywordLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/keywords"/>
+    </LinearLayout>
+
 </android.support.v4.widget.NestedScrollView>

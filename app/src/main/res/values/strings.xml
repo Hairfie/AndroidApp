@@ -190,4 +190,5 @@
     <string name="similar_businesses">Similar Businesses</string>
     <string name="title_activity_hairfie">HairfieActivity</string>
     <string name="share">Share</string>
+    <string name="x_hairfie">%s\'s hairfie</string>
 </resources>
