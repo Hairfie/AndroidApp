@@ -1,6 +1,7 @@
 package com.hairfie.hairfie;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -33,6 +34,7 @@ import com.hairfie.hairfie.models.Hairfie;
 import com.hairfie.hairfie.models.ResultCallback;
 import com.hairfie.hairfie.models.Timetable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -73,7 +75,7 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
 
         // Num reviews
         TextView numReviews = (TextView) findViewById(R.id.num_reviews);
-        if (null != numReviews) {
+        if (null != numReviews && null != mBusiness.numReviews) {
             if (mBusiness.numReviews != 1) {
                 numReviews.setText(String.format(Locale.getDefault(), getString(R.string.x_reviews), mBusiness.numReviews));
             } else {
@@ -104,16 +106,20 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
             }
         });
         // Pictures
+        final List<PictureFragment> pictureFragments = new ArrayList<>();
+        for (int i = 0; i < mBusiness.pictures.length; i++) {
+            pictureFragments.add(PictureFragment.newInstance(mBusiness.pictures[i].url));
+        }
         ViewPager picturesViewPager = (ViewPager)findViewById(R.id.pictures_view_pager);
         picturesViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return PictureFragment.newInstance(mBusiness.pictures[position].url);
+                return pictureFragments.get(position);
             }
 
             @Override
             public int getCount() {
-                return mBusiness.pictures.length;
+                return pictureFragments.size();
             }
         });
 

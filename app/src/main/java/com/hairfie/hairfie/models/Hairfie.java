@@ -37,6 +37,7 @@ public class Hairfie implements Parcelable {
     public String landingPageUrl;
     public Tag[] tags;
     public Date createdAt;
+    public BusinessMember businessMember;
 
     public List<Tag> orderedTags() {
         List<Tag> list = Arrays.asList(tags);

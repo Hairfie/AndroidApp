@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.okhttp.Request;
+import com.squareup.picasso.RequestCreator;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,8 +21,7 @@ public class PictureFragment extends Fragment {
 
     private static final String ARG_PICTURE_URL = "picture-url";
 
-    private CharSequence mPictureUrl;
-
+    private RequestCreator mRequestCreator;
 
     public PictureFragment() {
         // Required empty public constructor
@@ -45,7 +47,11 @@ public class PictureFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mPictureUrl = getArguments().getCharSequence(ARG_PICTURE_URL);
+            CharSequence url = getArguments().getCharSequence(ARG_PICTURE_URL);
+            if (null != url) {
+                mRequestCreator = Application.getPicasso().load(url.toString());
+                mRequestCreator.fetch();
+            }
         }
     }
 
@@ -56,7 +62,8 @@ public class PictureFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_picture, container, false);
         if (view instanceof ImageView) {
             ImageView imageView = (ImageView)view;
-            Application.getPicasso().load(mPictureUrl.toString()).into(imageView);
+            if (null != mRequestCreator)
+                mRequestCreator.into(imageView);
         }
         return view;
     }

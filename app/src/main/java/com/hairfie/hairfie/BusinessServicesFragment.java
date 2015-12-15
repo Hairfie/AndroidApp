@@ -94,7 +94,7 @@ public class BusinessServicesFragment extends Fragment {
 
                 @Override
                 public int getItemCount() {
-                    return mBusiness.services.length;
+                    return mBusiness.services != null ? mBusiness.services.length : 0;
                 }
             });
         }

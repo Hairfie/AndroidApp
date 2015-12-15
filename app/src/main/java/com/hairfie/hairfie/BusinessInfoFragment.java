@@ -133,8 +133,8 @@ public class BusinessInfoFragment extends Fragment {
         if (null != hairdressersContainer ) {
             TextView title = (TextView)view.findViewById(R.id.hairdressers_title);
             if (null != title)
-                title.setVisibility(mBusiness.activeHairdressers.length > 0 ? View.VISIBLE : View.GONE);
-            for (int i = 0; i < mBusiness.activeHairdressers.length; i++) {
+                title.setVisibility(null != mBusiness.activeHairdressers && mBusiness.activeHairdressers.length > 0 ? View.VISIBLE : View.GONE);
+            for (int i = 0; null != mBusiness.activeHairdressers && i < mBusiness.activeHairdressers.length; i++) {
                 final BusinessMember hairdresser = mBusiness.activeHairdressers[i];
                 View hairdresserView = inflater.inflate(R.layout.fragment_business_member, null , false);
                 hairdressersContainer.addView(hairdresserView);
