@@ -33,23 +33,35 @@
         android:textSize="12sp"
         android:textColorHint="#ddd"/>
 
-    <EditText
-        android:id="@+id/location"
-        android:layout_width="match_parent"
-        android:layout_height="37dp"
+    <FrameLayout
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:background="@drawable/search_field_background"
-        android:drawableLeft="@drawable/location_search_field"
-        android:gravity="left|center_vertical"
-        android:drawablePadding="10dp"
-        android:textColor="#ff979ca0"
-        android:textAllCaps="false"
-        android:paddingLeft="10dp"
-        android:hint="@string/nearby_current_location"
-        android:textSize="12sp"
-        android:textColorHint="#ddd"/>
+        android:layout_width="match_parent"
+        android:layout_height="37dp">
+        <EditText
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/search_field_background"
+            android:drawableLeft="@drawable/location_search_field"
+            android:gravity="left|center_vertical"
+            android:drawablePadding="10dp"
+            android:textColor="#ff979ca0"
+            android:textAllCaps="false"
+            android:paddingLeft="10dp"
+            android:hint="@string/nearby_current_location"
+            android:textSize="12sp"
+            android:textColorHint="#ddd"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/location_search_button"
+            android:layout_gravity="center_vertical|left"
+            android:background="@null"
+            android:onClick="touchClearLocation"/>
+    </FrameLayout>
+
 
 
     <TextView android:layout_width="match_parent"

@@ -186,4 +186,9 @@ public class SearchFormActivity extends AppCompatActivity {
 
         }
     }
+
+    public void touchClearLocation(View v) {
+        mLocationEditText.setText(null);
+
+    }
 }
