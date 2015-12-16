@@ -10,7 +10,7 @@
     android:paddingTop="0dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.hairfie.hairfie.SearchResultsActivity"
-    tools:showIn="@layout/activity_search_results">
+    tools:showIn="@layout/activity_main">
 
     <ProgressBar
         android:layout_width="wrap_content"
@@ -36,6 +36,7 @@
             android:paddingBottom="4dp" />
     </android.support.v4.view.ViewPager>
     <Button
+        android:id="@+id/filter_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="bottom"
@@ -58,6 +59,16 @@
         android:textSize="14sp"
         android:textColor="#ddd"
         android:background="#fff"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/picture_icon"
+        android:onClick="touchNewHairfie"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="60dp"
+        android:background="@null"/>
 
 </FrameLayout>
 
