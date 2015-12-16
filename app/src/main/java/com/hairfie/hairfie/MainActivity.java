@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity
     CharSequence mLocationName;
     private ViewPager mContainer;
 
-    View mNoResults;
     BusinessMapFragment mMapFragment;
     BusinessListFragment mListFragment;
     HairfieGridFragment mHairfiesFragment;
@@ -113,8 +112,6 @@ public class MainActivity extends AppCompatActivity
         Application.getBroadcastManager().registerReceiver(mProfileUpdatedBroadcastReceiver, new IntentFilter(User.PROFILE_UPDATED_BROADCAST_INTENT));
 
         mContainer = (ViewPager)findViewById(R.id.container);
-        mNoResults = findViewById(R.id.no_results);
-        mNoResults.setVisibility(View.GONE);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mMapFragment = new BusinessMapFragment();
@@ -327,7 +324,13 @@ public class MainActivity extends AppCompatActivity
         mAdapter.resetItems();
 
         setSpinning(true);
-        mNoResults.setVisibility(View.GONE);
+
+        mContainer.setCurrentItem(1);
+        
+        final View noResults = findViewById(R.id.no_results);
+        if (null != noResults)
+            noResults.setVisibility(View.GONE);
+
 
         mListBusinessesCall = Business.listNearby(mGeoPoint, mQuery, mCategories, 100, new ResultCallback.Single<List<Business>>() {
             @Override
@@ -348,8 +351,8 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 if (null != object) {
-                    if (object.size() == 0) {
-                        mNoResults.setVisibility(View.VISIBLE);
+                    if (object.size() == 0 && null != noResults) {
+                        noResults.setVisibility(View.VISIBLE);
                     }
                     mAdapter.addItems(object);
                 }

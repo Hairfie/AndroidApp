@@ -57,21 +57,19 @@ public class BusinessListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_business_list, container, false);
-
+        mRecyclerView = (RecyclerView)view.findViewById(R.id.list);
         // Set the adapter
-        if (view instanceof RecyclerView) {
+        if (null != mRecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            mRecyclerView = recyclerView;
 
             if (mColumnCount <= 1) {
                 LinearLayoutManager manager = new LinearLayoutManager(context);
-                recyclerView.setLayoutManager(manager);
+                mRecyclerView.setLayoutManager(manager);
             } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             if (mAdapter != null)
-                recyclerView.setAdapter(mAdapter);
+                mRecyclerView.setAdapter(mAdapter);
         }
         return view;
     }

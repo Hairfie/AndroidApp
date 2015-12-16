@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
-    android:name="com.hairfie.hairfie.BusinessFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    app:layoutManager="LinearLayoutManager"
-    android:clipToPadding="false"
     tools:context=".BusinessListFragment"
-    tools:listitem="@layout/fragment_business" />
+    >
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layoutManager="LinearLayoutManager"
+        android:clipToPadding="false"
+        tools:listitem="@layout/fragment_business" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/no_results"
+        android:layout_marginBottom="50dp"
+        android:text="@string/no_results"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textColor="#ddd"
+        android:visibility="gone"
+        android:background="#fff"/>
+
+</FrameLayout>
