@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,7 @@ public class HairfiePictureActivity extends AppCompatActivity {
     private View mNextStepView;
     private View mTakePictureView;
     private View mGalleryView;
-    private ViewGroup mCameraContainer;
+    private FrameLayout mCameraContainer;
     private View mMaskView;
 
     private boolean mDisableCamera = false;
@@ -67,7 +68,7 @@ public class HairfiePictureActivity extends AppCompatActivity {
         mNextStepView = findViewById(R.id.next_step);
         mTakePictureView = findViewById(R.id.take_picture);
         mGalleryView = findViewById(R.id.gallery);
-        mCameraContainer = (ViewGroup)findViewById(R.id.camera_container);
+        mCameraContainer = (FrameLayout)findViewById(R.id.camera_container);
         mMaskView = findViewById(R.id.mask);
         updateUserInterface();
 
@@ -245,7 +246,8 @@ public class HairfiePictureActivity extends AppCompatActivity {
         // Setup camera preview
         if (null == mSelectedPictureFile && null != mCamera) {
             mCameraPreview = new CameraPreview(this, mCamera);
-            ViewGroup.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.gravity = Gravity.CENTER;
             mCameraPreview.setLayoutParams(layoutParams);
             mCameraContainer.addView(mCameraPreview);
 

@@ -19,11 +19,13 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:background="#000"
+        android:clipChildren="true"
         app:aspectRatio="100%">
 
         <FrameLayout
             android:id="@+id/camera_container"
             android:gravity="center"
+            android:clipChildren="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <ImageView
