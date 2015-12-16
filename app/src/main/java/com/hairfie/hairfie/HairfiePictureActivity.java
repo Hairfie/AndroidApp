@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -13,11 +14,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.webkit.MimeTypeMap;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.hairfie.hairfie.helpers.BitmapUtil;
+import com.hairfie.hairfie.helpers.CameraUtil;
 import com.hairfie.hairfie.helpers.FileUtils;
 import com.hairfie.hairfie.helpers.RoundedCornersTransform;
 import com.squareup.picasso.MemoryPolicy;
@@ -39,6 +43,10 @@ public class HairfiePictureActivity extends AppCompatActivity {
     private View mNextStepView;
     private View mTakePictureView;
     private View mGalleryView;
+    private ViewGroup mCameraContainer;
+
+    private boolean mDisableCamera = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +66,34 @@ public class HairfiePictureActivity extends AppCompatActivity {
         mNextStepView = findViewById(R.id.next_step);
         mTakePictureView = findViewById(R.id.take_picture);
         mGalleryView = findViewById(R.id.gallery);
+        mCameraContainer = (ViewGroup)findViewById(R.id.camera_container);
 
         updateUserInterface();
+
+        if (!CameraUtil.checkCameraHardware(this)) {
+            mDisableCamera = true;
+            errorAlert(getString(R.string.couldnt_access_camera));
+        }
+
     }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        setupCameraAndPreview();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        releaseCamera();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -79,9 +112,6 @@ public class HairfiePictureActivity extends AppCompatActivity {
         mPictureFiles.remove(mSelectedPictureFile);
         mSelectedPictureFile = mPictureFiles.size() == 0 ? null : mPictureFiles.get(mPictureFiles.size() - 1);
         updateUserInterface();
-    }
-    public void touchSwitchCamera(View v) {
-
     }
     public void touchAddPicture(View v) {
         mSelectedPictureFile = null;
@@ -184,5 +214,56 @@ public class HairfiePictureActivity extends AppCompatActivity {
         mGalleryView.setVisibility(mSelectedPictureFile == null ? View.VISIBLE : View.GONE);
     }
 
+
+    private Camera mCamera;
+    private int mWhichCamera = Camera.CameraInfo.CAMERA_FACING_BACK;
+    private CameraPreview mCameraPreview;
+
+    public void touchSwitchCamera(View v) {
+        switch (mWhichCamera) {
+            case Camera.CameraInfo.CAMERA_FACING_BACK:
+                mWhichCamera = Camera.CameraInfo.CAMERA_FACING_FRONT;
+                break;
+
+            default:
+                mWhichCamera = Camera.CameraInfo.CAMERA_FACING_BACK;
+        }
+
+        setupCameraAndPreview();
+    }
+
+
+    private void setupCameraAndPreview() {
+        if (mDisableCamera)
+            return;
+
+        releaseCamera();
+
+        mCamera = CameraUtil.getCameraInstance(mWhichCamera);
+        if (null == mCamera)
+            return;
+
+        mCameraPreview = new CameraPreview(this, mCamera);
+        ViewGroup.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mCameraPreview.setLayoutParams(layoutParams);
+        mCameraContainer.addView(mCameraPreview);
+
+    }
+
+
+    private void releaseCamera() {
+        if (mDisableCamera)
+            return;
+
+        if (null != mCamera)
+            mCamera.release();
+
+        if (null != mCameraPreview) {
+            ViewParent parent = mCameraPreview.getParent();
+            if (null != parent)
+                ((ViewGroup)parent).removeView(mCameraPreview);
+            mCameraPreview = null;
+        }
+    }
 
 }

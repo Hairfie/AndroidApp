@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -59,6 +60,7 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".IntroActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SignupActivity"
@@ -75,6 +77,7 @@
         <activity
             android:name=".ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"
+            android:screenOrientation="portrait"
             android:parentActivityName=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize">
@@ -96,30 +99,37 @@
 
         <activity
             android:name=".SearchFormActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_search_form"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".BusinessActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_business"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AddressActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_address"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TimetableActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_timetable"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".BusinessMemberActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_business_member"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HairfieActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_hairfie"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HairfiePictureActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_hairfie_picture"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
