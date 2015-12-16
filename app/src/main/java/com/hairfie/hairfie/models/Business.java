@@ -112,7 +112,7 @@ public class Business implements Parcelable {
 
 
     public boolean isPremium() {
-        return !"BASIC".equals(accountType);
+        return "PREMIUM".equals(accountType);
     }
 
 }
