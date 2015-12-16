@@ -22,6 +22,7 @@ import android.widget.ImageView;
 
 import com.hairfie.hairfie.helpers.BitmapUtil;
 import com.hairfie.hairfie.helpers.CameraUtil;
+import com.hairfie.hairfie.helpers.GalleryUtil;
 import com.hairfie.hairfie.helpers.RoundedCornersTransform;
 import com.squareup.picasso.MemoryPolicy;
 
@@ -43,7 +44,7 @@ public class HairfiePictureActivity extends AppCompatActivity {
     private View mRemoveSelectedPictureView;
     private View mNextStepView;
     private View mTakePictureView;
-    private View mGalleryView;
+    private ImageView mGalleryView;
     private FrameLayout mCameraContainer;
     private View mMaskView;
 
@@ -67,7 +68,7 @@ public class HairfiePictureActivity extends AppCompatActivity {
         mSelectedPictureImageView = (ImageView)findViewById(R.id.selected_picture);
         mNextStepView = findViewById(R.id.next_step);
         mTakePictureView = findViewById(R.id.take_picture);
-        mGalleryView = findViewById(R.id.gallery);
+        mGalleryView = (ImageView)findViewById(R.id.gallery);
         mCameraContainer = (FrameLayout)findViewById(R.id.camera_container);
         mMaskView = findViewById(R.id.mask);
         updateUserInterface();
@@ -76,6 +77,8 @@ public class HairfiePictureActivity extends AppCompatActivity {
             mDisableCamera = true;
             errorAlert(getString(R.string.couldnt_access_camera));
         }
+
+
 
     }
 
@@ -252,6 +255,12 @@ public class HairfiePictureActivity extends AppCompatActivity {
             mCameraContainer.addView(mCameraPreview);
 
         }
+
+        // Update the gallery button
+        Bitmap lastPicture = GalleryUtil.lastPictureTaken(Application.getInstance());
+        if (null != lastPicture)
+            mGalleryView.setImageBitmap(lastPicture);
+
     }
 
 
@@ -336,6 +345,7 @@ public class HairfiePictureActivity extends AppCompatActivity {
                 matrix.postRotate(90);
                 Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
                 Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                GalleryUtil.insertImage(getContentResolver(), rotatedBitmap, "", "");
                 bitmap.recycle();
                 bitmapPicked(rotatedBitmap);
                 updateUserInterface();
