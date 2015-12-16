@@ -117,6 +117,10 @@
         <activity
             android:name=".HairfieActivity"
             android:label="@string/title_activity_hairfie"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".HairfiePictureActivity"
+            android:label="@string/title_activity_hairfie_picture"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

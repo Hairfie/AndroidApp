@@ -433,6 +433,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void touchNewHairfie(View v) {
+        Intent intent = new Intent(this, HairfiePictureActivity.class);
+        startActivity(intent);
 
     }
 
