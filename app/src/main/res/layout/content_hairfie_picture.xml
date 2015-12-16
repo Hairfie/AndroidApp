@@ -62,4 +62,13 @@
         android:layout_centerHorizontal="true"
         android:background="@null"
         android:src="@drawable/take_picture_button" />
+
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/gallery"
+        android:onClick="touchGallery"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"/>
 </RelativeLayout>

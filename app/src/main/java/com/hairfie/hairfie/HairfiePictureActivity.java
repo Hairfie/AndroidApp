@@ -44,4 +44,7 @@ public class HairfiePictureActivity extends AppCompatActivity {
     public void touchNextStep(View v) {
 
     }
+    public void touchGallery(View v) {
+
+    }
 }
