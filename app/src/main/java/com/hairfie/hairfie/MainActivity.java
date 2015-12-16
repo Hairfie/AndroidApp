@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity
         mContainer.setAdapter(mPagerAdapter);
         mContainer.setCurrentItem(1);
 
-        Log.d(Application.TAG, String.format(Locale.ENGLISH, "Searching with query %s, location %s, categories %s", mQuery != null ? mQuery : "null", mGeoPoint != null ? mGeoPoint.toLocation().toString() : "null", mCategories != null ? mCategories.toString(): "null"));
+        Log.d(Application.TAG, String.format(Locale.ENGLISH, "Searching with query %s, location %s, categories %s", mQuery != null ? mQuery : "null", mGeoPoint != null ? mGeoPoint.toLocation().toString() : "null", mCategories != null ? mCategories.toString() : "null"));
 
     }
 
@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity
                         new AlertDialog.Builder(MainActivity.this).setTitle(String.format(Locale.getDefault(), getString(R.string.cant_locate_name), mLocationName)).setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                finish();
+//                                finish();
                             }
                         }).show();
                         Log.e(Application.TAG, "Error requesting geolocation:" + (error.message != null ? error.message : "null"), error.cause);
@@ -336,7 +336,14 @@ public class MainActivity extends AppCompatActivity
 
                 if (null != error) {
                     Log.e(Application.TAG, "Could not search businesses: " + (error.message != null ? error.message : "null"), error.cause);
-                    finish();
+//                    finish();
+                    new AlertDialog.Builder(MainActivity.this).setTitle(error.message).setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            touchModifyFilters(null);
+                        }
+                    }).show();
+
                     return;
                 }
 

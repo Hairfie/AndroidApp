@@ -15,9 +15,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <FrameLayout
+        <com.hairfie.hairfie.AspectRatioFrameLayout
             android:layout_width="match_parent"
-            android:layout_height="310dp">
+            android:layout_height="wrap_content"
+            app:aspectRatio="100%">
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/pictures_view_pager"
@@ -39,7 +40,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="10dp" />
 
-        </FrameLayout>
+        </com.hairfie.hairfie.AspectRatioFrameLayout>
 
         <View
             android:layout_width="wrap_content"

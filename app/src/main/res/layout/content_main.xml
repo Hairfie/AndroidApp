@@ -63,7 +63,7 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/picture_icon"
+        android:src="@drawable/picture_icon_shadow"
         android:onClick="touchNewHairfie"
         android:layout_gravity="bottom|right"
         android:layout_marginRight="10dp"
