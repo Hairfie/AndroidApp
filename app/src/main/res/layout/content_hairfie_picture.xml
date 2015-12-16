@@ -69,6 +69,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@null"
+        android:onClick="touchTakePicture"
         android:src="@drawable/take_picture_button" />
 
     <ImageButton

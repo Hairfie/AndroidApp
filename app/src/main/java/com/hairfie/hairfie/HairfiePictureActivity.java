@@ -4,8 +4,8 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -15,14 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.webkit.MimeTypeMap;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.hairfie.hairfie.helpers.BitmapUtil;
 import com.hairfie.hairfie.helpers.CameraUtil;
-import com.hairfie.hairfie.helpers.FileUtils;
 import com.hairfie.hairfie.helpers.RoundedCornersTransform;
 import com.squareup.picasso.MemoryPolicy;
 
@@ -46,6 +44,7 @@ public class HairfiePictureActivity extends AppCompatActivity {
     private View mTakePictureView;
     private View mGalleryView;
     private ViewGroup mCameraContainer;
+    private View mMaskView;
 
     private boolean mDisableCamera = false;
 
@@ -69,7 +68,7 @@ public class HairfiePictureActivity extends AppCompatActivity {
         mTakePictureView = findViewById(R.id.take_picture);
         mGalleryView = findViewById(R.id.gallery);
         mCameraContainer = (ViewGroup)findViewById(R.id.camera_container);
-
+        mMaskView = findViewById(R.id.mask);
         updateUserInterface();
 
         if (!CameraUtil.checkCameraHardware(this)) {
@@ -80,19 +79,16 @@ public class HairfiePictureActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        setupCameraAndPreview();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
+        setupCamera();
+        updateUserInterface();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        releaseCameraPreview();
         releaseCamera();
     }
 
@@ -130,6 +126,19 @@ public class HairfiePictureActivity extends AppCompatActivity {
 
     }
 
+    public void touchPicture1(View v) {
+        if (0 < mPictureFiles.size()) {
+            mSelectedPictureFile = mPictureFiles.get(0);
+            updateUserInterface();
+        }
+    }
+    public void touchPicture2(View v) {
+        if (1 < mPictureFiles.size()) {
+            mSelectedPictureFile = mPictureFiles.get(1);
+            updateUserInterface();
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -147,7 +156,19 @@ public class HairfiePictureActivity extends AppCompatActivity {
             InputStream inputStream = contentResolver.openInputStream(data.getData());
 
             Bitmap originalBitmap = BitmapFactory.decodeStream(inputStream);
+            bitmapPicked(originalBitmap);
 
+            // Update UI
+            updateUserInterface();
+        } catch (FileNotFoundException e) {
+            Log.e(Application.TAG, "Error getting picked image", e);
+        } catch (IOException e) {
+            Log.e(Application.TAG, "Error getting picked image", e);
+        }
+    }
+
+    private void bitmapPicked(Bitmap originalBitmap) {
+        try {
             // Crop to square
             Bitmap croppedBitmap = BitmapUtil.cropToSquare(originalBitmap);
             originalBitmap.recycle();
@@ -160,7 +181,8 @@ public class HairfiePictureActivity extends AppCompatActivity {
             }
 
             // Save to file
-            File pictureFile = BitmapUtil.saveToFile(Application.getInstance(), croppedBitmap);
+            File pictureFile = null;
+            pictureFile = BitmapUtil.saveToFile(Application.getInstance(), croppedBitmap);
 
             Log.d(Application.TAG, "Picked image saved at:" + pictureFile.getAbsolutePath());
 
@@ -170,13 +192,10 @@ public class HairfiePictureActivity extends AppCompatActivity {
             // Select
             mSelectedPictureFile = pictureFile;
 
-            // Update UI
-            updateUserInterface();
-        } catch (FileNotFoundException e) {
-            Log.e(Application.TAG, "Error getting picked image", e);
         } catch (IOException e) {
-            Log.e(Application.TAG, "Error getting picked image", e);
+            Log.e(Application.TAG, "Error getting picked bitmap", e);
         }
+
     }
 
     void errorAlert(String message) {
@@ -211,9 +230,26 @@ public class HairfiePictureActivity extends AppCompatActivity {
         if (null != mSelectedPictureFile)
             Application.getPicasso().load(mSelectedPictureFile).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).centerCrop().fit().into(mSelectedPictureImageView);
 
+        // Camera mask
+        mMaskView.setVisibility(mSelectedPictureFile == null ? View.VISIBLE : View.GONE);
+
         // Bottom nav
         mTakePictureView.setVisibility(mSelectedPictureFile == null && mCamera != null ? View.VISIBLE : View.GONE);
         mGalleryView.setVisibility(mSelectedPictureFile == null ? View.VISIBLE : View.GONE);
+
+        // Remove camera preview if appropriate
+        if (null != mSelectedPictureFile || null != mCameraPreview) {
+            releaseCameraPreview();
+        }
+
+        // Setup camera preview
+        if (null == mSelectedPictureFile && null != mCamera) {
+            mCameraPreview = new CameraPreview(this, mCamera);
+            ViewGroup.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            mCameraPreview.setLayoutParams(layoutParams);
+            mCameraContainer.addView(mCameraPreview);
+
+        }
     }
 
 
@@ -231,11 +267,11 @@ public class HairfiePictureActivity extends AppCompatActivity {
                 mWhichCamera = Camera.CameraInfo.CAMERA_FACING_BACK;
         }
 
-        setupCameraAndPreview();
+        setupCamera();
     }
 
 
-    private void setupCameraAndPreview() {
+    private void setupCamera() {
         if (mDisableCamera)
             return;
 
@@ -284,13 +320,27 @@ public class HairfiePictureActivity extends AppCompatActivity {
             }
         }
 
-        mCameraPreview = new CameraPreview(this, mCamera);
-        ViewGroup.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        mCameraPreview.setLayoutParams(layoutParams);
-        mCameraContainer.addView(mCameraPreview);
 
     }
 
+    public void touchTakePicture(View v) {
+        if (null == mCamera)
+            return;
+
+        mCamera.takePicture(null, null, new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera) {
+                Matrix matrix = new Matrix();
+                matrix.postRotate(90);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                bitmap.recycle();
+                bitmapPicked(rotatedBitmap);
+                updateUserInterface();
+
+            }
+        });
+    }
 
     private void releaseCamera() {
         if (mDisableCamera)
@@ -299,12 +349,16 @@ public class HairfiePictureActivity extends AppCompatActivity {
         if (null != mCamera)
             mCamera.release();
 
+    }
+
+    private void releaseCameraPreview() {
         if (null != mCameraPreview) {
             ViewParent parent = mCameraPreview.getParent();
             if (null != parent)
                 ((ViewGroup)parent).removeView(mCameraPreview);
             mCameraPreview = null;
         }
+
     }
 
 }
