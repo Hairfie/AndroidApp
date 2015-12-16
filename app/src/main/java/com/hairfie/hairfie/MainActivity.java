@@ -326,7 +326,7 @@ public class MainActivity extends AppCompatActivity
         setSpinning(true);
 
         mContainer.setCurrentItem(1);
-        
+
         final View noResults = findViewById(R.id.no_results);
         if (null != noResults)
             noResults.setVisibility(View.GONE);

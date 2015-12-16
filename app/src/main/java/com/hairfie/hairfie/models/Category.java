@@ -19,6 +19,8 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -59,6 +61,16 @@ public class Category implements Parcelable {
             @Override
             public void onComplete(@Nullable List<Category> object, @Nullable ResultCallback.Error error) {
                 if (null != object && null == error && !object.equals(sCachedCategories)) {
+                    Collections.sort(object, new Comparator<Category>() {
+                        @Override
+                        public int compare(Category lhs, Category rhs) {
+                            if (lhs.position < rhs.position)
+                                return -1;
+                            if (lhs.position > rhs.position)
+                                return 1;
+                            return 0;
+                        }
+                    });
                     sCachedCategories = object;
                     // Send a broadcast
                     Intent intent = new Intent(CATEGORIES_UPDATED_BROADCAST_INTENT);
