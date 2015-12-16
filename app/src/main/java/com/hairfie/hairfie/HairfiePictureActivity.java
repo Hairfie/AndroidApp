@@ -31,6 +31,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class HairfiePictureActivity extends AppCompatActivity {
@@ -210,7 +212,7 @@ public class HairfiePictureActivity extends AppCompatActivity {
             Application.getPicasso().load(mSelectedPictureFile).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).centerCrop().fit().into(mSelectedPictureImageView);
 
         // Bottom nav
-        mTakePictureView.setVisibility(mSelectedPictureFile != null ? View.GONE : View.VISIBLE);
+        mTakePictureView.setVisibility(mSelectedPictureFile == null && mCamera != null ? View.VISIBLE : View.GONE);
         mGalleryView.setVisibility(mSelectedPictureFile == null ? View.VISIBLE : View.GONE);
     }
 
@@ -242,6 +244,45 @@ public class HairfiePictureActivity extends AppCompatActivity {
         mCamera = CameraUtil.getCameraInstance(mWhichCamera);
         if (null == mCamera)
             return;
+
+        // Select the right picture size
+        Camera.Parameters cameraParams = mCamera.getParameters();
+        if (null != cameraParams) {
+            List<Camera.Size> sizes = cameraParams.getSupportedPictureSizes();
+
+            // Sort sizes by width ascending
+            Collections.sort(sizes, new Comparator<Camera.Size>() {
+                @Override
+                public int compare(Camera.Size lhs, Camera.Size rhs) {
+                    // We use the height here because we rotated 90°
+                    if (lhs.height < rhs.height)
+                        return -1;
+                    if (lhs.height > rhs.height)
+                        return 1;
+                    return 0;
+                }
+            });
+            Camera.Size selectedSize = null;
+
+            // Take the smallest size if available
+            if (0 < sizes.size())
+                selectedSize = sizes.get(0);
+
+            // Take the first size that is wider than the Hairfie size
+            for (Camera.Size size : sizes) {
+
+                // We use the height here because we rotated 90°
+                if (size.height > Config.instance.getHairfiePixelSize()) {
+                    selectedSize = size;
+                    break;
+                }
+            }
+
+            if (null != selectedSize) {
+                Log.d(Application.TAG, "Selecting picture size "+ selectedSize.width + ":" + selectedSize.height);
+                cameraParams.setPictureSize(selectedSize.width, selectedSize.height);
+            }
+        }
 
         mCameraPreview = new CameraPreview(this, mCamera);
         ViewGroup.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
