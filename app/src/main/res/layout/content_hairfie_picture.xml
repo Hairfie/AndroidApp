@@ -25,6 +25,12 @@
             android:id="@+id/camera_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+        <ImageView
+            android:id="@+id/mask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/hairfie_mask"
+            android:scaleType="fitXY"/>
 
         <ImageButton
             android:id="@+id/switch_camera"
