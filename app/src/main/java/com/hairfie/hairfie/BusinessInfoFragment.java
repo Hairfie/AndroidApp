@@ -146,12 +146,12 @@ public class BusinessInfoFragment extends Fragment {
                     }
                 });
                 ImageView imageView = (ImageView)hairdresserView.findViewById(R.id.picture);
+                imageView.setVisibility(View.VISIBLE);
                 if (null != imageView) {
-                    if (null != hairdresser.getPicture()) {
-                        imageView.setVisibility(View.VISIBLE);
+                    if (null != hairdresser.getPicture())
                         Application.getPicasso().load(hairdresser.getPicture().url).transform(new CircleTransform()).fit().centerCrop().into(imageView);
-                    } else
-                        imageView.setVisibility(View.INVISIBLE);
+                    else
+                        Application.getPicasso().load(R.drawable.default_user_picture).transform(new CircleTransform()).fit().centerCrop().into(imageView);
                 }
 
                 TextView textView = (TextView)hairdresserView.findViewById(R.id.name);
