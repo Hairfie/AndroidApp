@@ -10,6 +10,10 @@ public class Config {
     public String getAPIRoot() {
         return "http://api.hairfie.com/api/";
     }
+    public int getHairfiePixelSize() {
+        return 500;
+    }
+
     private static class Debug extends Config {
         public String getAPIRoot() {
             return "http://api-staging.hairfie.com/api/";

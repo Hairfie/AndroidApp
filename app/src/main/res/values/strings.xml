@@ -192,4 +192,5 @@
     <string name="share">Share</string>
     <string name="x_hairfie">%s\'s hairfie</string>
     <string name="title_activity_hairfie_picture">HairfiePictureActivity</string>
+    <string name="couldnt_guess_type">We couldn\'t guess the type of this file! Please use JPEG or PNG images</string>
 </resources>

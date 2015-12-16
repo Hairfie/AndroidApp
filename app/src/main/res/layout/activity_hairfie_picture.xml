@@ -28,22 +28,22 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="51dp"
+                    android:layout_height="50dp"
                     android:id="@+id/picture1"
                     android:background="@null"
                     android:onClick="touchAddPicture"
                     android:layout_marginRight="3dp"/>
                 <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="51dp"
+                    android:layout_height="50dp"
                     android:id="@+id/picture2"
                     android:background="@null"
                     android:onClick="touchAddPicture"
                     android:layout_marginRight="3dp"/>
                 <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="51dp"
+                    android:layout_height="50dp"
                     android:id="@+id/add_picture"
                     android:background="@null"
                     android:src="@drawable/add_second_picture"

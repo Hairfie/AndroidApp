@@ -26,8 +26,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <FrameLayout
-            android:id="@+id/selected_picture_container"
+        <ImageButton
+            android:id="@+id/switch_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@null"
+            android:onClick="touchSwitchCamera"
+            android:src="@drawable/switch_camera_button" />
+
+        <ImageView
+            android:id="@+id/selected_picture"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -41,16 +52,6 @@
             android:onClick="touchRemoveSelectedPicture"
             android:src="@drawable/cancel_white" />
 
-        <ImageButton
-            android:id="@+id/switch_camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|right"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@null"
-            android:onClick="touchSwitchCamera"
-            android:src="@drawable/switch_camera_button" />
 
     </com.hairfie.hairfie.AspectRatioFrameLayout>
 
