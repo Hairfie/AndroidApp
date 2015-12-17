@@ -196,4 +196,5 @@
     <string name="couldnt_access_camera">We couldn\'t access your device camera.</string>
     <string name="title_activity_hairfie_post">HairfiePostActivity</string>
     <string name="post_hairfie">Post Hairfie</string>
+    <string name="post">Post</string>
 </resources>

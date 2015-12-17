@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
@@ -19,6 +20,7 @@ public class HairfiePostActivity extends AppCompatActivity {
     public static final String ARG_PICTUREFILEPATHS = "picture-file-paths";
 
     private List<File> mPictureFiles = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,17 @@ public class HairfiePostActivity extends AppCompatActivity {
         for (int i = 0; i < pictureFilePaths.length; i++) {
             mPictureFiles.add(new File(pictureFilePaths[i]));
         }
+
+        // Fill image views
+        ImageView picture1ImageView = (ImageView)findViewById(R.id.picture1);
+        if (null != picture1ImageView && mPictureFiles.size() > 0)
+            Application.getPicasso().load(mPictureFiles.get(0)).centerCrop().fit().into(picture1ImageView);
+
+        ImageView picture2ImageView = (ImageView)findViewById(R.id.picture2);
+        if (null != picture2ImageView && mPictureFiles.size() > 1)
+            Application.getPicasso().load(mPictureFiles.get(1)).centerCrop().fit().into(picture2ImageView);
+        else if (null != picture2ImageView)
+            picture2ImageView.setVisibility(View.GONE);
     }
 
     @Override
@@ -56,5 +69,8 @@ public class HairfiePostActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void touchPost(View v) {
+
+    }
 
 }
