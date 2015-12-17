@@ -197,4 +197,8 @@
     <string name="title_activity_hairfie_post">HairfiePostActivity</string>
     <string name="post_hairfie">Post Hairfie</string>
     <string name="post">Post</string>
+    <string name="where">Where?</string>
+    <string name="who">Who?</string>
+    <string name="how_much">How much?</string>
+    <string name="add_customer_email">Add you customer\'s email</string>
 </resources>

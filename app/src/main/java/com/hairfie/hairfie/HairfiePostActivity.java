@@ -73,4 +73,12 @@ public class HairfiePostActivity extends AppCompatActivity {
 
     }
 
+    public void touchWho(View v) {
+
+    }
+
+    public void touchWhere(View v) {
+
+    }
+
 }
