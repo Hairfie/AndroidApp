@@ -16,6 +16,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.hairfie.hairfie.models.Category;
 import com.hairfie.hairfie.models.ResultCallback;
+import com.hairfie.hairfie.models.TagCategory;
 import com.hairfie.hairfie.models.User;
 import com.squareup.picasso.LruCache;
 import com.squareup.picasso.Picasso;
@@ -23,6 +24,9 @@ import com.squareup.picasso.Picasso;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
 import com.squareup.picasso.OkHttpDownloader;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by stephh on 24/11/15.
@@ -65,6 +69,9 @@ public class Application extends android.app.Application implements GoogleApiCli
 
         // Prepare category list
         Category.fetchAll(null);
+
+        // Prepare tags
+        TagCategory.ordered(null);
 
         // Google apis
         buildGoogleApiClient();
