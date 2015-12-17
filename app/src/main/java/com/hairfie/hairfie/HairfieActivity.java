@@ -17,6 +17,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -74,11 +75,15 @@ public class HairfieActivity extends AppCompatActivity {
 
         KeywordLayout keywordLayout = (KeywordLayout)findViewById(R.id.keywords);
         List<CharSequence> keywords = new ArrayList<>();
-        for (Tag tag : mHairfie.orderedTags())
-            keywords.add(tag.name);
-        keywordLayout.setKeywords(keywords);
+        float density = getResources().getDisplayMetrics().density;
+        for (Tag tag : mHairfie.orderedTags()) {
+            TextView textView = (TextView)getLayoutInflater().inflate(R.layout.fragment_tag, keywordLayout, false);
+            textView.setText(tag.name);
+            keywordLayout.addView(textView);
+        }
 
-        HairfieLikesView likesView = (HairfieLikesView)findViewById(R.id.like_container);
+
+        HairfieLikesView likesView = (HairfieLikesView) findViewById(R.id.like_container);
         if (null != likesView)
             likesView.setHairfie(mHairfie);
 

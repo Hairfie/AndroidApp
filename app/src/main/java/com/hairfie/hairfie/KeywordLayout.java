@@ -26,38 +26,6 @@ public class KeywordLayout extends ViewGroup {
         super(context, attrs, defStyleAttr);
     }
 
-    List<CharSequence> mKeywords = new ArrayList<>();
-
-    float mTextSize = 13;
-
-
-    public void setKeywords(List<CharSequence> keywords) {
-        mKeywords.clear();
-        mKeywords.addAll(keywords);
-
-        // Remove all children
-        removeAllViews();
-
-        // Rebuild
-        buildSubviews();
-    }
-    void buildSubviews() {
-        float density = getContext().getResources().getDisplayMetrics().density;
-        for (CharSequence keyword : mKeywords) {
-
-            TextView textView = new TextView(getContext());
-            textView.setText(keyword);
-            textView.setPadding((int) (5 * density), (int) (5 * density), (int) (5 * density), (int) (5 * density));
-            textView.setTextSize(mTextSize);
-            textView.setLines(1);
-            textView.setMaxLines(1);
-            textView.setEllipsize(TextUtils.TruncateAt.END);
-            textView.setTextColor(getResources().getColor(R.color.colorText));
-            textView.setBackgroundResource(R.drawable.keyword_background);
-            addView(textView);
-        }
-
-    }
 
     int mHorizontalSpacing = 10;
     int mVerticalSpacing = 5;
@@ -78,20 +46,17 @@ public class KeywordLayout extends ViewGroup {
 
         for (int i = 0; i < count; i++) {
             View view = getChildAt(i);
-            if (!(view instanceof TextView))
-                continue;
 
-            TextView textView = (TextView)view;
-            measureChild(textView, widthMeasureSpec, heightMeasureSpec);
-            int measuredWidth = textView.getMeasuredWidth();
-            int measuredHeight = textView.getMeasuredHeight();
+            measureChild(view, widthMeasureSpec, heightMeasureSpec);
+            int measuredWidth = view.getMeasuredWidth();
+            int measuredHeight = view.getMeasuredHeight();
 
             if (x != getPaddingLeft() && x + measuredWidth + getPaddingRight() > ourMeasuredWidth) {
                 y += lineHeight + verticalSpacing;
                 x = getPaddingLeft();
                 lineHeight = 0;
             }
-            maxY = Math.max(maxY, y + textView.getMeasuredHeight());
+            maxY = Math.max(maxY, y + view.getMeasuredHeight());
 
             x += measuredWidth + horizontalSpacing;
             lineHeight = Math.max(lineHeight, measuredHeight);
@@ -115,19 +80,16 @@ public class KeywordLayout extends ViewGroup {
 
         for (int i = 0; i < count; i++) {
             View view = getChildAt(i);
-            if (!(view instanceof TextView))
-                continue;
 
-            TextView textView = (TextView)view;
-            int measuredWidth = textView.getMeasuredWidth();
-            int measuredHeight = textView.getMeasuredHeight();
+            int measuredWidth = view.getMeasuredWidth();
+            int measuredHeight = view.getMeasuredHeight();
 
             if (x != getPaddingLeft() && x + measuredWidth + getPaddingRight() > ourMeasuredWidth) {
                 y += lineHeight + verticalSpacing;
                 x = getPaddingLeft();
                 lineHeight = 0;
             }
-            textView.layout(x, y, x + measuredWidth, y + textView.getMeasuredHeight());
+            view.layout(x, y, x + measuredWidth, y + view.getMeasuredHeight());
 
             x += measuredWidth + horizontalSpacing;
             lineHeight = Math.max(lineHeight, measuredHeight);
