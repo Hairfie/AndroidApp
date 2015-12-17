@@ -121,7 +121,13 @@ public class HairfiePictureActivity extends AppCompatActivity {
 
     }
     public void touchNextStep(View v) {
-
+        Intent intent = new Intent(this, HairfiePostActivity.class);
+        String[] filenames = new String[mPictureFiles.size()];
+        for (int i = 0; i < mPictureFiles.size(); i++) {
+            filenames[i] = mPictureFiles.get(i).getAbsolutePath();
+        }
+        intent.putExtra(HairfiePostActivity.ARG_PICTUREFILEPATHS, filenames);
+        startActivity(intent);
     }
     public void touchGallery(View v) {
         Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -318,9 +324,10 @@ public class HairfiePictureActivity extends AppCompatActivity {
             // Take the first size that is wider than the Hairfie size
             for (Camera.Size size : sizes) {
 
+                selectedSize = size;
+
                 // We use the height here because we rotated 90°
                 if (size.height > Config.instance.getHairfiePixelSize()) {
-                    selectedSize = size;
                     break;
                 }
             }

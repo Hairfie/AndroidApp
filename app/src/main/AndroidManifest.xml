@@ -77,8 +77,8 @@
         <activity
             android:name=".ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"
-            android:screenOrientation="portrait"
             android:parentActivityName=".LoginActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize">
             <meta-data
@@ -99,38 +99,42 @@
 
         <activity
             android:name=".SearchFormActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_search_form"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".BusinessActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_business"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AddressActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_address"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TimetableActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_timetable"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".BusinessMemberActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_business_member"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HairfieActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_hairfie"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HairfiePictureActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_hairfie_picture"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".HairfiePostActivity"
+            android:label="@string/title_activity_hairfie_post"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
