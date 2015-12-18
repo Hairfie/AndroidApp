@@ -2,24 +2,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ccc"
     tools:context="com.hairfie.hairfie.IntroFragment">
 
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="190dp"
+        android:layout_marginBottom="0dp"
         android:scaleType="centerCrop"
         android:id="@+id/image"/>
     
     <TextView
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="190dp"
+        android:layout_height="match_parent"
         android:id="@+id/text"
-        android:gravity="center_vertical"
+        android:gravity="center_horizontal|bottom"
+        android:background="#55000000"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:paddingBottom="10sp"
         android:textAlignment="center"
-        android:textColor="#FFcccccc"
+        android:textColor="#fff"
         android:textSize="16sp"
         />
 </FrameLayout>
