@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_id": "hairfie-7bbe",
-    "project_number": "235030023814",
+    "project_id": "hairfie-8778e",
+    "project_number": "997271767139",
     "name": "Hairfie"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:235030023814:android:4b5dfe5038ec954e",
+        "mobilesdk_app_id": "1:997271767139:android:4b5dfe5038ec954e",
         "client_id": "android:com.hairfie.hairfie",
         "client_type": 1,
         "android_client_info": {
