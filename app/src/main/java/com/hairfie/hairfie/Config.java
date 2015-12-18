@@ -13,6 +13,9 @@ public class Config {
     public int getHairfiePixelSize() {
         return 500;
     }
+    public String getGoogleAnalyticsTrackingId() {
+        return "UA-55125713-5";
+    }
 
     private static class Debug extends Config {
         public String getAPIRoot() {

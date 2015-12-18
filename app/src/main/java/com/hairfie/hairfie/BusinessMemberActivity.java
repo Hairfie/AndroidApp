@@ -138,6 +138,13 @@ public class BusinessMemberActivity extends AppCompatActivity implements Hairfie
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Application.getInstance().trackScreenName("BusinessMemberActivity");
+
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button

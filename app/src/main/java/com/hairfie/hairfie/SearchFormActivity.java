@@ -97,6 +97,12 @@ public class SearchFormActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Application.getInstance().trackScreenName("SearchFormActivity");
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -88,6 +88,13 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Application.getInstance().trackScreenName("SignupActivity");
+
+    }
+
     public void touchPhoto(View v) {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.add_photo)

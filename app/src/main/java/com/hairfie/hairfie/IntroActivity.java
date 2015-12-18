@@ -63,6 +63,13 @@ public class IntroActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Application.getInstance().trackScreenName("IntroActivity");
+
+    }
+
     public void touchSkip(View v) {
 
         Intent intent = new Intent(this, MainActivity.class);

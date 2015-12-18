@@ -119,6 +119,36 @@ public class MainActivity extends AppCompatActivity
 
         mContainer = (ViewPager)findViewById(R.id.container);
 
+        mContainer.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                switch(position) {
+                    case 0:
+                        Application.getInstance().trackScreenName("BusinessMapFragment");
+                        break;
+                    case 1:
+                        Application.getInstance().trackScreenName("BusinessListFragment");
+                        break;
+                    case 2:
+                        Application.getInstance().trackScreenName("HairfieGridFragment");
+                        break;
+
+
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mMapFragment = new BusinessMapFragment();
         mMapFragment.setAdapter(mAdapter);
@@ -173,6 +203,8 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         AppEventsLogger.activateApp(this);
+        Application.getInstance().trackScreenName("MainActivity");
+
     }
 
     @Override

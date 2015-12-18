@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.androidpagecontrol.PageControl;
+import com.google.android.gms.analytics.HitBuilders;
 import com.hairfie.hairfie.models.Address;
 import com.hairfie.hairfie.models.Business;
 import com.hairfie.hairfie.models.BusinessMember;
@@ -136,6 +137,35 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
 
         // View pager
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0:
+                        Application.getInstance().trackScreenName("BusinessInfoFragment");
+                        break;
+                    case 1:
+                        Application.getInstance().trackScreenName("BusinessReviewsFragment");
+                        break;
+                    case 2:
+                        Application.getInstance().trackScreenName("BusinessHairfiesFragment");
+                        break;
+                    case 3:
+                        Application.getInstance().trackScreenName("BusinessPricesFragment");
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -187,6 +217,12 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Application.getInstance().trackScreenName("BusinessActivity");
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
@@ -222,6 +258,7 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
         new AlertDialog.Builder(this).setTitle(String.format(getString(R.string.call_x), phoneNumber)).setNegativeButton(getString(R.string.no), null).setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Application.getInstance().trackAction("call");
                 Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
                 if (ActivityCompat.checkSelfPermission(BusinessActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     String[] permissions = {Manifest.permission.CALL_PHONE};

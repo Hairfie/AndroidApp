@@ -11,6 +11,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.facebook.FacebookSdk;
+import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -20,6 +21,9 @@ import com.hairfie.hairfie.models.TagCategory;
 import com.hairfie.hairfie.models.User;
 import com.squareup.picasso.LruCache;
 import com.squareup.picasso.Picasso;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Logger;
+import com.google.android.gms.analytics.Tracker;
 
 import pl.aprilapps.easyphotopicker.EasyImage;
 
@@ -35,6 +39,7 @@ public class Application extends android.app.Application implements GoogleApiCli
     public static final String LOCATION_UPDATED_BROADCAST_INTENT = "LOCATION_UPDATED_BROADCAST_INTENT";
     public static final String TAG = "Hairfie";
     private static Picasso sPicasso;
+    private Tracker mTracker;
 
     @Override
     public void onCreate() {
@@ -101,8 +106,8 @@ public class Application extends android.app.Application implements GoogleApiCli
 
     public Location getLastLocation() {
 
-        /*
         // FIXME: don't check me in
+        /*
         Location targetLocation = new Location("");
         targetLocation.setLatitude(48.8567d);
         targetLocation.setLongitude(2.3508d);
@@ -166,5 +171,36 @@ public class Application extends android.app.Application implements GoogleApiCli
         mConnectedToGoogleApi = false;
         CharSequence message = connectionResult.getErrorMessage();
         Log.d(Application.TAG, "Could not connect to Google APIs: " + (null != message ? message : "null"));
+    }
+
+    /**
+     * Gets the default {@link Tracker} for this {@link Application}.
+     * @return tracker
+     */
+    synchronized public Tracker getDefaultTracker() {
+        if (mTracker == null) {
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
+            mTracker = analytics.newTracker(Config.instance.getGoogleAnalyticsTrackingId());
+        }
+        return mTracker;
+    }
+
+    public void trackScreenName(String screenName) {
+        Log.d(Application.TAG, "Tracking screen "+screenName);
+        getDefaultTracker().setScreenName(screenName);
+        getDefaultTracker().send(new HitBuilders.ScreenViewBuilder().build());
+
+    }
+
+    public void trackAction(String action) {
+        trackAction("Action", action);
+    }
+    public void trackAction(String category, String action) {
+        Log.d(Application.TAG, "Tracking action "+action+" category " +category);
+        getDefaultTracker().send(new HitBuilders.EventBuilder()
+                .setCategory(category)
+                .setAction(action)
+                .build());
     }
 }

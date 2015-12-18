@@ -56,6 +56,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Application.getInstance().trackScreenName("ForgotPasswordActivity");
+
+    }
+
     public void touchReset(View view) {
         CharSequence email = mEmailEditText.getText();
         final ProgressDialog progress = new ProgressDialog(this);

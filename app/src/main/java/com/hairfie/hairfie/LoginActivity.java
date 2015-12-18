@@ -73,6 +73,13 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Application.getInstance().trackScreenName("LoginActivity");
+
+    }
+
     public void touchFacebook(View view) {
 
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));

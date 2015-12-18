@@ -88,6 +88,7 @@ public class HairfiePictureActivity extends AppCompatActivity {
         super.onResume();
         setupCamera();
         updateUserInterface();
+        Application.getInstance().trackScreenName("HairfiePictureActivity");
     }
 
     @Override

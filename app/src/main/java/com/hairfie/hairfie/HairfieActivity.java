@@ -192,6 +192,13 @@ public class HairfieActivity extends AppCompatActivity {
                 priceContainer.setVisibility(View.GONE);
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Application.getInstance().trackScreenName("HairfieActivity");
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
