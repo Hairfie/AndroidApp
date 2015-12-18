@@ -111,6 +111,9 @@ public class MainActivity extends AppCompatActivity
         // Navigation header
         setupNavigationHeader();
 
+        // Navigation menu
+        setupNavigationMenu();
+
         // Profile updated
         Application.getBroadcastManager().registerReceiver(mProfileUpdatedBroadcastReceiver, new IntentFilter(User.PROFILE_UPDATED_BROADCAST_INTENT));
 
@@ -217,7 +220,7 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = new Intent(this, IntroActivity.class);
                 startActivity(intent);
                 finish();
-                break;
+                return true;
             case R.id.nav_copyright:
                 return false;
         }
@@ -225,7 +228,7 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
+        return false;
     }
 
     public void touchLogin(View view) {
@@ -242,6 +245,32 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private void setupNavigationMenu() {
+        if (!User.getCurrentUser().isAuthenticated())
+            return;
+
+        Business.ownedBy(User.getCurrentUser().getProfile(), new ResultCallback.Single<List<Business>>() {
+            @Override
+            public void onComplete(@Nullable List<Business> object, @Nullable ResultCallback.Error error) {
+                if (null != error) {
+                    Log.e(Application.TAG, "Could not fetch managed businesses: "+error.message, error.cause);
+                    return;
+                }
+
+                if (null != object) {
+                    Menu menu = mNavigationView.getMenu();
+                    for (Business business : object) {
+                        Intent intent = new Intent(MainActivity.this, BusinessActivity.class);
+                        intent.putExtra(BusinessActivity.EXTRA_BUSINESS, business);
+                        MenuItem item = menu.add(business.name);
+                        item.setIntent(intent);
+                    }
+                }
+
+            }
+        });
+
+    }
 
 
     private void setupNavigationHeader() {
