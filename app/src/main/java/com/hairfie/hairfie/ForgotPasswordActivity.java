@@ -32,7 +32,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         TextView titleTextView = (TextView)findViewById(R.id.appbar_title);
         if (null != titleTextView)
-            titleTextView.setText(R.string.title_activity_forgot_password);
+            titleTextView.setText(R.string.forgotten_password);
 
         mButton = (Button)findViewById(R.id.submit);
         mButton.setEnabled(false);
