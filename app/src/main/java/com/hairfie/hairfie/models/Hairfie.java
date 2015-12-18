@@ -3,8 +3,10 @@ package com.hairfie.hairfie.models;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.Editable;
 import android.util.Log;
 
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.hairfie.hairfie.Application;
 import com.hairfie.hairfie.Config;
@@ -53,8 +55,9 @@ public class Hairfie implements Parcelable {
         });
         return list;
     }
+
     public static Call latest(int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
-        return latest((JSONObject)null, limit, skip, callback);
+        return latest((JSONObject) null, limit, skip, callback);
     }
 
     public static Call latest(BusinessMember businessMember, int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
@@ -68,6 +71,7 @@ public class Hairfie implements Parcelable {
             }
         return latest(where, limit, skip, callback);
     }
+
     public static Call latest(Business business, int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
         JSONObject where = new JSONObject();
         if (null != business)
@@ -91,12 +95,13 @@ public class Hairfie implements Parcelable {
                 filter.put("where", where);
 
             Request request = new Request.Builder()
-                    .url(Config.instance.getAPIRoot() + "hairfies?filter="+ Uri.encode(filter.toString()))
+                    .url(Config.instance.getAPIRoot() + "hairfies?filter=" + Uri.encode(filter.toString()))
                     .build();
 
 
             Call result = HttpClient.getInstance().newCall(request);
-            result.enqueue((null == callback ? new ResultCallback.Void<ArrayList<Category>>() : callback).okHttpCallback(new ResultCallback.GsonDeserializer(new TypeToken<ArrayList<Hairfie>>(){})));
+            result.enqueue((null == callback ? new ResultCallback.Void<ArrayList<Category>>() : callback).okHttpCallback(new ResultCallback.GsonDeserializer(new TypeToken<ArrayList<Hairfie>>() {
+            })));
             return result;
         } catch (JSONException e) {
             callback.executeOnOriginalThread(null, new ResultCallback.Error(e));
@@ -104,15 +109,16 @@ public class Hairfie implements Parcelable {
         }
 
 
-
     }
 
     public int describeContents() {
         return 0;
     }
+
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(Gson.sGson.toJson(this));
     }
+
     public static final Parcelable.Creator<Hairfie> CREATOR
             = new Parcelable.Creator<Hairfie>() {
         public Hairfie createFromParcel(Parcel in) {
@@ -123,4 +129,42 @@ public class Hairfie implements Parcelable {
             return new Hairfie[size];
         }
     };
+
+    public static Call post(List<Picture> pictures, Price price, Business business, BusinessMember businessMember, CharSequence customerEmail, List<Tag> tags, ResultCallback.Single<Hairfie> callback) {
+        JsonObject parameters = new JsonObject();
+        if (null != pictures) {
+            String[] ids = new String[pictures.size()];
+            for (int i = 0; i < pictures.size(); i++)
+                ids[i] = pictures.get(i).name;
+            parameters.add("pictures", Gson.sGson.toJsonTree(ids));
+
+        }
+        if (null != price)
+            parameters.add("price", Gson.sGson.toJsonTree(price));
+        if (null != business)
+            parameters.addProperty("businessId", business.id);
+        else
+            parameters.addProperty("selfMade", true);
+
+        if (null != businessMember)
+            parameters.addProperty("businessMemberId", businessMember.id);
+        if (null != customerEmail)
+            parameters.addProperty("customerEmail", customerEmail.toString());
+        if (null != tags) {
+            String[] names = new String[tags.size()];
+            for (int i = 0; i < tags.size(); i++)
+                names[i] = tags.get(i).id;
+            parameters.add("tags", Gson.sGson.toJsonTree(names));
+        }
+        Request request = new Request.Builder()
+                .url(Config.instance.getAPIRoot() + "hairfies")
+                .post(RequestBody.create(HttpClient.MEDIA_TYPE_JSON, parameters.toString()))
+                .build();
+
+
+        Call result = HttpClient.getInstance().newCall(request);
+        result.enqueue((null == callback ? new ResultCallback.Void<ArrayList<Category>>() : callback).okHttpCallback(new ResultCallback.GsonDeserializer(new TypeToken<Hairfie>() {
+        })));
+        return result;
+    }
 }

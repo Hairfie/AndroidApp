@@ -1,5 +1,6 @@
 package com.hairfie.hairfie;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,11 +16,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hairfie.hairfie.models.Business;
 import com.hairfie.hairfie.models.BusinessMember;
+import com.hairfie.hairfie.models.Hairfie;
+import com.hairfie.hairfie.models.Picture;
+import com.hairfie.hairfie.models.Price;
 import com.hairfie.hairfie.models.ResultCallback;
 import com.hairfie.hairfie.models.Tag;
 import com.hairfie.hairfie.models.TagCategory;
@@ -34,12 +39,14 @@ public class HairfiePostActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_CHOOSE_BUSINESS = 1002;
 
     private List<File> mPictureFiles = new ArrayList<>();
+    private List<Picture> mPictures = new ArrayList<>();
     private List<Tag> mSelectedTags = new ArrayList<>();
     private ViewGroup mContainer;
 
     private Button mWhoButton;
     private Button mWhereButton;
-
+    private EditText mPriceEditText;
+    private EditText mCustomerEmailEditText;
     private Business mBusiness;
     private BusinessMember mBusinessMember;
 
@@ -66,6 +73,12 @@ public class HairfiePostActivity extends AppCompatActivity {
         for (int i = 0; i < pictureFilePaths.length; i++) {
             mPictureFiles.add(new File(pictureFilePaths[i]));
         }
+
+        // Price
+        mPriceEditText = (EditText)findViewById(R.id.price);
+
+        // Customer email
+        mCustomerEmailEditText = (EditText)findViewById(R.id.email);
 
         // Who & Where
         mWhoButton = (Button)findViewById(R.id.who);
@@ -125,6 +138,77 @@ public class HairfiePostActivity extends AppCompatActivity {
     }
 
     public void touchPost(View v) {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle(R.string.sending);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        uploadPictures(new UploadCallback() {
+            @Override
+            public void onUploadComplete(ResultCallback.Error error) {
+                if (null != error) {
+                    progressDialog.dismiss();
+                    new AlertDialog.Builder(HairfiePostActivity.this).setTitle(error.message).setPositiveButton(R.string.ok, null).show();
+                    return;
+                }
+
+                // Price
+                Price price = null;
+                CharSequence priceString = mPriceEditText.getText();
+                if (null != priceString && 0 < priceString.length()) {
+                    price = new Price();
+                    price.amount = Double.parseDouble(priceString.toString());
+                    price.currency = "EUR";
+                }
+
+
+                Hairfie.post(mPictures, price, mBusiness, mBusinessMember, mCustomerEmailEditText.getText(), mSelectedTags, new ResultCallback.Single<Hairfie>() {
+                    @Override
+                    public void onComplete(@Nullable Hairfie object, @Nullable ResultCallback.Error error) {
+                        progressDialog.dismiss();
+                        if (null != error) {
+                            new AlertDialog.Builder(HairfiePostActivity.this).setTitle(error.message).setPositiveButton(R.string.ok, null).show();
+                            return;
+                        }
+                        setResult(RESULT_OK);
+                        Intent intent = new Intent(HairfiePostActivity.this, HairfieActivity.class);
+                        intent.putExtra(HairfieActivity.ARG_HAIRFIE, object);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+            }
+        });
+
+
+    }
+
+    private interface UploadCallback {
+        void onUploadComplete(ResultCallback.Error error);
+    }
+    private void uploadPictures(final UploadCallback uploadCallback) {
+        if (mPictureFiles.size() <= mPictures.size()) {
+            if (null != uploadCallback)
+                uploadCallback.onUploadComplete(null);
+            return;
+        }
+
+        File pictureToUpload = mPictureFiles.get(mPictures.size());
+        Picture.upload(pictureToUpload, Picture.HAIRFIES_CONTAINER, new ResultCallback.Single<Picture>(){
+
+            @Override
+            public void onComplete(@Nullable Picture object, @Nullable ResultCallback.Error error) {
+                if (null != error || null == object) {
+                    if (null != uploadCallback)
+                        uploadCallback.onUploadComplete(error);
+                    return;
+                }
+
+                mPictures.add(object);
+                uploadPictures(uploadCallback);
+            }
+        });
+
 
     }
 

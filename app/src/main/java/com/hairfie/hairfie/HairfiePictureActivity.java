@@ -37,6 +37,7 @@ import java.util.List;
 
 public class HairfiePictureActivity extends AppCompatActivity {
     private static final int ACTION_PICK = 1001;
+    private static final int ACTION_POST = 1002;
 
     private List<ImageView> mPictureImageViews = new ArrayList<>();
     private View mAddPictureView;
@@ -127,7 +128,7 @@ public class HairfiePictureActivity extends AppCompatActivity {
             filenames[i] = mPictureFiles.get(i).getAbsolutePath();
         }
         intent.putExtra(HairfiePostActivity.ARG_PICTUREFILEPATHS, filenames);
-        startActivity(intent);
+        startActivityForResult(intent, ACTION_POST);
     }
     public void touchGallery(View v) {
         Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -157,6 +158,8 @@ public class HairfiePictureActivity extends AppCompatActivity {
                 imagePicked(data);
             return;
         }
+        if (ACTION_POST == requestCode && RESULT_OK == resultCode)
+            finish();
     }
 
     private void imagePicked(Intent data) {

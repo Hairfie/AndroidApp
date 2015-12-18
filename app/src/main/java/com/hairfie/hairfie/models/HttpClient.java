@@ -25,9 +25,9 @@ public class HttpClient extends OkHttpClient {
 
     private HttpClient() {
         super();
-        setConnectTimeout(30, TimeUnit.SECONDS);
-        setReadTimeout(30, TimeUnit.SECONDS);
-        setWriteTimeout(30, TimeUnit.SECONDS);
+        setConnectTimeout(60, TimeUnit.SECONDS);
+        setReadTimeout(60, TimeUnit.SECONDS);
+        setWriteTimeout(60, TimeUnit.SECONDS);
         interceptors().add(new AccessTokenInterceptor());
 
     }

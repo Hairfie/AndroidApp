@@ -222,7 +222,7 @@ public class User {
     }
 
     public Call uploadPicture(File pictureFile, ResultCallback.Single<Picture> callback) {
-        return Picture.upload(pictureFile, "users", callback);
+        return Picture.upload(pictureFile, Picture.USERS_CONTAINER, callback);
     }
 
     public Call loginWithFacebook(AccessToken accessToken, final ResultCallback.Single<User> callback) {

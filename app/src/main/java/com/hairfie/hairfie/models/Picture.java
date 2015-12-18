@@ -21,6 +21,9 @@ import java.io.File;
  */
 public class Picture {
 
+    public static final String HAIRFIES_CONTAINER = "hairfies";
+    public static final String USERS_CONTAINER = "users";
+
     public String name;
     public String container;
     public String url;
@@ -51,16 +54,10 @@ public class Picture {
             public Picture fromJSONObject(JSONObject json) throws Exception {
                 String container = null, id = null;
 
-                JSONObject result = json.optJSONObject("result");
-                if (null != result) {
-                    JSONObject files = result.optJSONObject("files");
-                    if (null != files) {
-                        JSONObject fileJson = files.optJSONObject("file");
-                        if (null != fileJson) {
-                            id = fileJson.optString("name");
-                            container = fileJson.optString("container");
-                        }
-                    }
+                JSONObject fileJson = json.optJSONObject("file");
+                if (null != fileJson) {
+                    id = fileJson.optString("id");
+                    container = fileJson.optString("container");
                 }
 
                 return null != id && null != container ? new Picture(id, container) : null;
