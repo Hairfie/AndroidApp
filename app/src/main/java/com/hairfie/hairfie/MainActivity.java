@@ -34,6 +34,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.hairfie.hairfie.helpers.BlurTransform;
 import com.hairfie.hairfie.helpers.CircleTransform;
 import com.hairfie.hairfie.models.Business;
+import com.hairfie.hairfie.models.BusinessSearchResults;
 import com.hairfie.hairfie.models.Category;
 import com.hairfie.hairfie.models.GeoPoint;
 import com.hairfie.hairfie.models.Hairfie;
@@ -44,6 +45,7 @@ import com.squareup.okhttp.Call;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -332,9 +334,9 @@ public class MainActivity extends AppCompatActivity
             noResults.setVisibility(View.GONE);
 
 
-        mListBusinessesCall = Business.listNearby(mGeoPoint, mQuery, mCategories, 100, new ResultCallback.Single<List<Business>>() {
+        mListBusinessesCall = Business.listNearby(mGeoPoint, mQuery, mCategories, 100, new ResultCallback.Single<BusinessSearchResults>() {
             @Override
-            public void onComplete(@Nullable List<Business> object, @Nullable ResultCallback.Error error) {
+            public void onComplete(@Nullable BusinessSearchResults object, @Nullable ResultCallback.Error error) {
                 setSpinning(false);
 
                 if (null != error) {
@@ -351,10 +353,11 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 if (null != object) {
-                    if (object.size() == 0 && null != noResults) {
+                    Business[] list = object.hits;
+                    if (list.length == 0 && null != noResults) {
                         noResults.setVisibility(View.VISIBLE);
                     }
-                    mAdapter.addItems(object);
+                    mAdapter.addItems(Arrays.asList(list));
                 }
 
 

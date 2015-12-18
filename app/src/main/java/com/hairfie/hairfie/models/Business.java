@@ -63,7 +63,7 @@ public class Business implements Parcelable {
         return result;
     }
 
-    public static Call listNearby(GeoPoint geoPoint, String query, List<Category> categories, int limit, ResultCallback.Single<List<Business>> callback) {
+    public static Call listNearby(GeoPoint geoPoint, String query, List<Category> categories, int limit, ResultCallback.Single<BusinessSearchResults> callback) {
 
         //https://hairfie.herokuapp.com/v1/businesses/search?pageSize=10&location[lat]=48.9021449&location][lng]=2&radius=100000&query=franck&facetFilters[categorySlugs][0]=barbier&facetFilters[categorySlugs][1]=coiffures
 
@@ -82,14 +82,14 @@ public class Business implements Parcelable {
                 builder.append(String.format(Locale.ENGLISH, "&facetFilters[categorySlugs]=%s", Uri.encode(category.name)));
             }
         }
-        String url = Config.instance.getAPIRoot() + "businesses/nearby?"+ builder.toString();
+        String url = Config.instance.getAPIRoot() + "businesses/search?"+ builder.toString();
         Request request = new Request.Builder()
                 .url(url)
                 .build();
 
 
         Call result = HttpClient.getInstance().newCall(request);
-        result.enqueue((null == callback ? new ResultCallback.Void<ArrayList<Business>>() : callback).okHttpCallback(new ResultCallback.GsonDeserializer(new TypeToken<ArrayList<Business>>(){})));
+        result.enqueue((null == callback ? new ResultCallback.Void<BusinessSearchResults>() : callback).okHttpCallback(new ResultCallback.GsonDeserializer(new TypeToken<BusinessSearchResults>(){})));
         return result;
     }
 

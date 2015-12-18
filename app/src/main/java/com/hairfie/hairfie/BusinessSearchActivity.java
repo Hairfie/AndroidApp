@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -20,10 +21,13 @@ import android.widget.TextView;
 
 import com.hairfie.hairfie.models.Business;
 import com.hairfie.hairfie.models.BusinessMember;
+import com.hairfie.hairfie.models.BusinessSearchResults;
 import com.hairfie.hairfie.models.GeoPoint;
 import com.hairfie.hairfie.models.ResultCallback;
 import com.squareup.okhttp.Call;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -98,6 +102,17 @@ public class BusinessSearchActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public void touchSearch() {
         final CharSequence locationName = mLocationEditText.getText();
         if (null == locationName || locationName.length() == 0) {
@@ -153,9 +168,9 @@ public class BusinessSearchActivity extends AppCompatActivity {
 
 
         CharSequence query = null != mQueryEditText.getText() ? mQueryEditText.getText() : "";
-        mListBusinessesCall = Business.listNearby(mGeoPoint, query.toString(), null, 100, new ResultCallback.Single<List<Business>>() {
+        mListBusinessesCall = Business.listNearby(mGeoPoint, query.toString(), null, 100, new ResultCallback.Single<BusinessSearchResults>() {
             @Override
-            public void onComplete(@Nullable List<Business> object, @Nullable ResultCallback.Error error) {
+            public void onComplete(@Nullable BusinessSearchResults object, @Nullable ResultCallback.Error error) {
                 setSpinning(false);
 
                 if (null != error) {
@@ -166,10 +181,12 @@ public class BusinessSearchActivity extends AppCompatActivity {
                 }
 
                 if (null != object) {
-                    if (object.size() == 0 && null != noResults) {
+                    Business[] list = object.hits;
+                    if (list.length == 0 && null != noResults) {
                         noResults.setVisibility(View.VISIBLE);
                     }
-                    mAdapter.addItems(object);
+
+                    mAdapter.addItems(Arrays.asList(list));
                 }
 
 
