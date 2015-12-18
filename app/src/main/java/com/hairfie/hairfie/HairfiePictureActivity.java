@@ -289,6 +289,7 @@ public class HairfiePictureActivity extends AppCompatActivity {
         }
 
         setupCamera();
+        updateUserInterface();
     }
 
 
@@ -353,7 +354,7 @@ public class HairfiePictureActivity extends AppCompatActivity {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
                 Matrix matrix = new Matrix();
-                matrix.postRotate(90);
+                matrix.postRotate(mWhichCamera == Camera.CameraInfo.CAMERA_FACING_BACK ? 90 : -90);
                 Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
                 Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
                 GalleryUtil.insertImage(getContentResolver(), rotatedBitmap, "", "");
