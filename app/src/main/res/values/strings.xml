@@ -75,8 +75,6 @@
     <string name="x_reviews">%d reviews</string>
     <string name="one_review">1 review</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="closed_today">Closed today</string>
     <string name="open_today">Open today</string>
     <string name="call_x">Call %s ?</string>
