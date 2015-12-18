@@ -1,114 +1,111 @@
 <resources>
     <string name="app_name">Hairfie</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Ouvrir la barre de navigation</string>
+    <string name="navigation_drawer_close">Fermer la barre de navigation</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Réglages</string>
 
-    <string name="login_with_facebook">Login with Facebook</string>
-    <string name="signup">Sign Up</string>
-    <string name="login">Login</string>
+    <string name="login_with_facebook">S\'identifier avec Facebook</string>
+    <string name="signup">S\'inscrire</string>
+    <string name="login">S\'identifier</string>
 
-    <string name="intro_text_1"><![CDATA[Get inspired by hairfies to find the haircut that\'s right for you and the hairdresser to do it.]]></string>
-    <string name="intro_text_2"><![CDATA[Secure an appointment wherever you are, at anytime]]></string>
-    <string name="intro_text_3"><![CDATA[Share your new haircut with your friends!]]></string>
-    <string name="or_skip_for_now">or skip for now</string>
-    <string name="validate">Validate</string>
-    <string name="add_photo">Add Photo</string>
-    <string name="civility">Civility</string>
-    <string name="first_name">First name</string>
-    <string name="last_name">Last name</string>
+    <string name="intro_text_1"><![CDATA[Inspirez-vous des hairfies pour trouver votre idée coiffure et le coiffeur qui saura la réaliser.]]></string>
+    <string name="intro_text_2"><![CDATA[Prenez rendez-vous où que vous soyez, à tout moment et en toute confiance.]]></string>
+    <string name="intro_text_3"><![CDATA[Partagez votre nouvelle coiffure avec vos amis !]]></string>
+    <string name="or_skip_for_now">pas pour l\'instant</string>
+    <string name="validate">Valider</string>
+    <string name="add_photo">Ajouter photo</string>
+    <string name="civility">Civilité</string>
+    <string name="first_name">Prénom</string>
+    <string name="last_name">Nom</string>
     <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="subscribe_to_the_newsletter">Subscribe to the newsletter</string>
-    <string name="please_choose">Please choose</string>
-    <string name="retry">Retry</string>
-    <string name="sending">Sending</string>
-    <string name="all_fields_are_mandatory">All fields are mandatory</string>
+    <string name="password">Mot de passe</string>
+    <string name="subscribe_to_the_newsletter">S\'inscrire à la newsletter</string>
+    <string name="please_choose">Veuillez choisir</string>
+    <string name="retry">Ré-essayer</string>
+    <string name="sending">Envoi</string>
+    <string name="all_fields_are_mandatory">Tous les champs sont obligatoires</string>
 
-    <string name="facebook_app_id" translatable="false">726709544031609</string>
-    <string name="email_permission_required">We need your E-mail address to log you into Hairfie!</string>
-    <string name="accept_terms">By clicking here, I accept terms and conditions.</string>
-    <string name="or_separator">–––––––––– or –––––––––––</string>
-    <string name="dont_worry_facebook">Don\'t worry, we don\'t publish anything automatically</string>
-    <string name="please_enter_email">Please enter your E-mail and your password!</string>
-    <string name="logging_in">Logging in</string>
-    <string name="filter_your_search">Filter your search</string>
-    <string name="book">Book</string>
-    <string name="address">Address</string>
+    <string name="email_permission_required">Nous avons besoin de votre adresse E-mail pour vous inscrire sur Hairfie!</string>
+    <string name="accept_terms">En cliquant ici, j\'accepte les termes et conditions.</string>
+    <string name="or_separator">–––––––––– ou –––––––––––</string>
+    <string name="dont_worry_facebook">Pas d\'inquiétude, nous ne publions rien automatiquement</string>
+    <string name="please_enter_email">Veuillez entrer votre E-mail et mot de passe!</string>
+    <string name="logging_in">Identification</string>
+    <string name="filter_your_search">Filtrer la recherche</string>
+    <string name="book">Réserver</string>
+    <string name="address">Adresse</string>
     <string name="hairfies">Hairfies</string>
-    <string name="new_hairfie">New Hairfie</string>
-    <string name="forgotten">forgotten?</string>
-    <string name="forgotten_password">Forgotten Password</string>
+    <string name="new_hairfie">Nouveau Hairfie</string>
+    <string name="forgotten">oublié ?</string>
+    <string name="forgotten_password">Mot de passe oublié</string>
     <array name="image_picker_options">
-        <item>Take Picture</item>
-        <item>Choose From Gallery</item>
+        <item>Prendre une photo</item>
+        <item>Choisir dans la gallerie</item>
     </array>
     <array name="gender_options">
-        <item>Woman</item>
-        <item>Man</item>
+        <item>Femme</item>
+        <item>Homme</item>
     </array>
-    <string name="enter_your_email_below">Enter your email below:</string>
-    <string name="reset_password">Reset password</string>
-    <string name="check_your_email">Check your email!</string>
-    <string name="home">Home</string>
-    <string name="logout">Logout</string>
+    <string name="enter_your_email_below">Entrez votre E-mail ci-dessous:</string>
+    <string name="reset_password">Ré-initialiser le mot de passe</string>
+    <string name="check_your_email">Relevez vos Emails!</string>
+    <string name="home">Accueil</string>
+    <string name="logout">Déconnexion</string>
     <string name="copyright_version">© Hairfie 2015 v1.0</string>
-    <string name="find_your_hairdresser">Find your hairdresser</string>
+    <string name="find_your_hairdresser">Trouver un salon</string>
     <string name="one_hairfie">1 hairfie</string>
     <string name="x_hairfies">%d hairfies</string>
-    <string name="modify_filters">Modify filters</string>
-    <string name="results">Results</string>
-    <string name="map">Map</string>
-    <string name="hairdresser">Hairdresser</string>
-    <string name="search">Search</string>
-    <string name="close">Close</string>
+    <string name="modify_filters">Modifier les filtres</string>
+    <string name="results">Résultats</string>
+    <string name="map">Carte</string>
+    <string name="hairdresser">Salon</string>
+    <string name="search">Rechercher</string>
+    <string name="close">Fermer</string>
     <string name="hairfie">Hairfie</string>
-    <string name="search_on_hairfie">Search Hairfie</string>
-    <string name="nearby_current_location">Nearby current location</string>
-    <string name="categories">Categories</string>
-    <string name="no_results">No results.</string>
-    <string name="cant_locate_name">We can\'t locate %s, please choose a different location</string>
-    <string name="cant_locate_you">We can\'t locate you, please choose a location</string>
+    <string name="search_on_hairfie">Rechercher sur Hairfie</string>
+    <string name="nearby_current_location">Près de ma position actuelle</string>
+    <string name="categories">Catégories</string>
+    <string name="no_results">Pas de résultats.</string>
+    <string name="cant_locate_name">Nous n\'arrivons pas à localiser %s, veuillez choisir un autre endroit</string>
+    <string name="cant_locate_you">Nous n\'arrivons pas à vous localiser, veuillez choisir un endroit</string>
     <string name="ok">OK</string>
-    <string name="x_reviews">%d reviews</string>
-    <string name="one_review">1 review</string>
+    <string name="x_reviews">%d avis</string>
+    <string name="one_review">1 avis</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="closed_today">Closed today</string>
-    <string name="open_today">Open today</string>
-    <string name="call_x">Call %s ?</string>
-    <string name="no">No</string>
-    <string name="yes">Yes</string>
-    <string name="timetable">Time table</string>
-    <string name="monday">Monday</string>
-    <string name="tuesday">Tuesday</string>
-    <string name="wednesday">Wednesday</string>
-    <string name="thursday">Thursday</string>
-    <string name="friday">Friday</string>
-    <string name="saturday">Saturday</string>
-    <string name="sunday">Sunday</string>
-    <string name="workplace">Work place</string>
-    <string name="hairdressers">Hairdressers</string>
-    <string name="similar_businesses">Similar Businesses</string>
-    <string name="share">Share</string>
-    <string name="x_hairfie">%s\'s hairfie</string>
-    <string name="couldnt_guess_type">We couldn\'t guess the type of this file! Please use JPEG or PNG images</string>
-    <string name="couldnt_access_camera">We couldn\'t access your device camera.</string>
-    <string name="post_hairfie">Post Hairfie</string>
-    <string name="post">Post</string>
-    <string name="where">Where?</string>
-    <string name="who">Who?</string>
-    <string name="how_much">How much?</string>
-    <string name="add_customer_email">Add your customer\'s email</string>
-    <string name="i_did_it">I did it</string>
+    <string name="closed_today">Fermé aujourd\'hui</string>
+    <string name="open_today">Ouvert aujourd\'hui</string>
+    <string name="call_x">Appeler %s ?</string>
+    <string name="no">Non</string>
+    <string name="yes">Oui</string>
+    <string name="timetable">Horaires</string>
+    <string name="monday">Lundi</string>
+    <string name="tuesday">Mardi</string>
+    <string name="wednesday">Mercredi</string>
+    <string name="thursday">Jeudi</string>
+    <string name="friday">Vendredi</string>
+    <string name="saturday">Samedi</string>
+    <string name="sunday">Dimanche</string>
+    <string name="workplace">Salon</string>
+    <string name="hairdressers">Coiffeurs</string>
+    <string name="similar_businesses">Salons similaires</string>
+    <string name="share">Partager</string>
+    <string name="x_hairfie">Le hairfie de %s</string>
+    <string name="couldnt_guess_type">Nous n\'avons pas pu deviner le type de ce fichier ! Veuillez utiliser une image PNG ou JPEG.</string>
+    <string name="couldnt_access_camera">Nous n\'avons pas pu accéder à l\'appareil photo de votre dispositif.</string>
+    <string name="post_hairfie">Envoyer</string>
+    <string name="post">Envoyer</string>
+    <string name="where">Où ?</string>
+    <string name="who">Qui ?</string>
+    <string name="how_much">Combien ?</string>
+    <string name="add_customer_email">Ajouter l\'E-mail de votre client</string>
+    <string name="i_did_it">Je l\'ai fait moi-même</string>
     <string-array name="where_choice">
-        <item>I did it</item>
-        <item>Hairdresser in a Salon</item>
+        <item>Je l\'ai fait moi-même</item>
+        <item>Un coiffeur dans un salon</item>
     </string-array>
-    <string name="choose_salon">Choose salon</string>
-    <string name="enter_explicit_location">We cannot locate you. Please enter an explicit location.</string>
-    <string name="choose_hairdresser">Choose your hairdresser</string>
+    <string name="choose_salon">Choisir salon</string>
+    <string name="enter_explicit_location">Nous n\'arrivons pas à vous localiser. Veuillez entrer un endroit.</string>
+    <string name="choose_hairdresser">Choisissez votre coiffeur</string>
 </resources>
