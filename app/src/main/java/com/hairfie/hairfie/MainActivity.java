@@ -17,6 +17,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -136,6 +137,18 @@ public class MainActivity extends AppCompatActivity
         mContainer.setAdapter(mPagerAdapter);
         mContainer.setCurrentItem(1);
 
+        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                setSpinning(false);
+                View noResults = findViewById(R.id.no_results);
+                if (null != noResults && 0 == mAdapter.getItemCount())
+                    noResults.setVisibility(View.VISIBLE);
+
+
+            }
+        });
         Log.d(Application.TAG, String.format(Locale.ENGLISH, "Searching with query %s, location %s, categories %s", mQuery != null ? mQuery : "null", mGeoPoint != null ? mGeoPoint.toLocation().toString() : "null", mCategories != null ? mCategories.toString() : "null"));
 
     }
@@ -321,8 +334,6 @@ public class MainActivity extends AppCompatActivity
             mListBusinessesCall.cancel();
 
 
-        mAdapter.setReferenceLocation(mGeoPoint.toLocation());
-
         mAdapter.resetItems();
 
         setSpinning(true);
@@ -334,35 +345,8 @@ public class MainActivity extends AppCompatActivity
             noResults.setVisibility(View.GONE);
 
 
-        mListBusinessesCall = Business.listNearby(mGeoPoint, mQuery, mCategories, 100, new ResultCallback.Single<BusinessSearchResults>() {
-            @Override
-            public void onComplete(@Nullable BusinessSearchResults object, @Nullable ResultCallback.Error error) {
-                setSpinning(false);
+        mAdapter.search(mGeoPoint, mQuery, mCategories);
 
-                if (null != error) {
-                    Log.e(Application.TAG, "Could not search businesses: " + (error.message != null ? error.message : "null"), error.cause);
-//                    finish();
-                    new AlertDialog.Builder(MainActivity.this).setTitle(error.message).setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            touchModifyFilters(null);
-                        }
-                    }).show();
-
-                    return;
-                }
-
-                if (null != object) {
-                    Business[] list = object.hits;
-                    if (list.length == 0 && null != noResults) {
-                        noResults.setVisibility(View.VISIBLE);
-                    }
-                    mAdapter.addItems(Arrays.asList(list));
-                }
-
-
-            }
-        });
 
         /*
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {

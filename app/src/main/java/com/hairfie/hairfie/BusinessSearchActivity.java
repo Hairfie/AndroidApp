@@ -69,6 +69,14 @@ public class BusinessSearchActivity extends AppCompatActivity {
             titleTextView.setText(R.string.choose_salon);
 
 
+        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                setSpinning(false);
+            }
+
+        });
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.list);
         recyclerView.setAdapter(mAdapter);
 
@@ -156,8 +164,6 @@ public class BusinessSearchActivity extends AppCompatActivity {
             mListBusinessesCall.cancel();
 
 
-        mAdapter.setReferenceLocation(mGeoPoint.toLocation());
-
         mAdapter.resetItems();
 
         setSpinning(true);
@@ -168,30 +174,9 @@ public class BusinessSearchActivity extends AppCompatActivity {
 
 
         CharSequence query = null != mQueryEditText.getText() ? mQueryEditText.getText() : "";
-        mListBusinessesCall = Business.listNearby(mGeoPoint, query.toString(), null, 100, new ResultCallback.Single<BusinessSearchResults>() {
-            @Override
-            public void onComplete(@Nullable BusinessSearchResults object, @Nullable ResultCallback.Error error) {
-                setSpinning(false);
+        mAdapter.search(mGeoPoint, query.toString(), null);
+        setSpinning(true);
 
-                if (null != error) {
-                    Log.e(Application.TAG, "Could not search businesses: " + (error.message != null ? error.message : "null"), error.cause);
-//                    finish();
-                    new AlertDialog.Builder(BusinessSearchActivity.this).setTitle(error.message).setPositiveButton(getString(R.string.ok), null).show();
-                    return;
-                }
-
-                if (null != object) {
-                    Business[] list = object.hits;
-                    if (list.length == 0 && null != noResults) {
-                        noResults.setVisibility(View.VISIBLE);
-                    }
-
-                    mAdapter.addItems(Arrays.asList(list));
-                }
-
-
-            }
-        });
     }
 
     public void touchClearLocation(View v) {

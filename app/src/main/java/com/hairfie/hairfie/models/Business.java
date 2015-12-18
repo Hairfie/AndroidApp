@@ -63,12 +63,12 @@ public class Business implements Parcelable {
         return result;
     }
 
-    public static Call listNearby(GeoPoint geoPoint, String query, List<Category> categories, int limit, ResultCallback.Single<BusinessSearchResults> callback) {
+    public static Call listNearby(GeoPoint geoPoint, String query, List<Category> categories, int limit, int skip, ResultCallback.Single<BusinessSearchResults> callback) {
 
         //https://hairfie.herokuapp.com/v1/businesses/search?pageSize=10&location[lat]=48.9021449&location][lng]=2&radius=100000&query=franck&facetFilters[categorySlugs][0]=barbier&facetFilters[categorySlugs][1]=coiffures
 
         StringBuilder builder = new StringBuilder();
-        builder.append(String.format(Locale.ENGLISH, "radius=100000&pageSize=%d", limit));
+        builder.append(String.format(Locale.ENGLISH, "radius=100000&limit=%d&skip=%d", limit, skip));
 
         if (null != geoPoint)
             builder.append(String.format(Locale.ENGLISH, "&location[lat]=%f&location[lng]=%f", geoPoint.lat, geoPoint.lng));

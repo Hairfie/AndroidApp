@@ -1,7 +1,10 @@
 package com.hairfie.hairfie;
 
 import android.location.Location;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +13,15 @@ import android.widget.TextView;
 
 import com.hairfie.hairfie.helpers.RoundedCornersTransform;
 import com.hairfie.hairfie.models.Business;
+import com.hairfie.hairfie.models.BusinessSearchResults;
+import com.hairfie.hairfie.models.Category;
+import com.hairfie.hairfie.models.GeoPoint;
+import com.hairfie.hairfie.models.Hairfie;
+import com.hairfie.hairfie.models.ResultCallback;
+import com.squareup.okhttp.Call;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,19 +30,16 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
     private final ArrayList<Business> mValues = new ArrayList<>();
     private final BusinessListFragment.OnListFragmentInteractionListener mListener;
 
-    private Location mReferenceLocation;
+    private Call mCurrentCall;
+    private GeoPoint mGeoPoint;
+    private  String mQuery;
+    private List<Category> mCategories;
+
+    private boolean mNoMoreItems;
     public BusinessRecyclerViewAdapter(BusinessListFragment.OnListFragmentInteractionListener listener) {
-        this(null, listener);
-    }
-
-    public BusinessRecyclerViewAdapter(Location referenceLocation, BusinessListFragment.OnListFragmentInteractionListener listener) {
         mListener = listener;
-        mReferenceLocation = referenceLocation;
     }
 
-    public void setReferenceLocation(Location location) {
-        mReferenceLocation = location;
-    }
     public Business getItem(int position) {
         return mValues.get(position);
     }
@@ -44,13 +51,51 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
         return null;
     }
 
-    public void addItems(List<Business> items) {
-        mValues.addAll(items);
-        notifyDataSetChanged();
-    }
     public void resetItems() {
         mValues.clear();
+        mNoMoreItems = false;
         notifyDataSetChanged();
+    }
+
+    public void search(@NonNull GeoPoint geoPoint, @Nullable String query, @Nullable List<Category> categories) {
+        mQuery = query;
+        mGeoPoint = geoPoint;
+        mCategories = categories;
+        mNoMoreItems = false;
+        loadNextItems();
+    }
+
+    private void loadNextItems() {
+        if (null == mGeoPoint) {
+            Log.e(Application.TAG, "No geopoint provided");
+            return;
+        }
+        if (mNoMoreItems)
+            return;
+
+        if (mCurrentCall != null && !mCurrentCall.isCanceled()) {
+            mCurrentCall.cancel();
+        }
+        final int limit = 5;
+        ResultCallback.Single<BusinessSearchResults> callback = new ResultCallback.Single<BusinessSearchResults>() {
+            @Override
+            public void onComplete(@Nullable BusinessSearchResults object, @Nullable ResultCallback.Error error) {
+                mCurrentCall = null;
+                if (null != error) {
+                    Log.w(Application.TAG, "Could not get businesses", error.cause);
+                    return;
+                }
+
+                if (object != null) {
+                    Business[] list = object.hits;
+                    if (list.length < limit)
+                        mNoMoreItems = true;
+                    mValues.addAll(Arrays.asList(list));
+                    notifyDataSetChanged();
+                }
+            }
+        };
+        mCurrentCall = Business.listNearby(mGeoPoint, mQuery, mCategories, limit, mValues.size(), callback);
     }
 
     @Override
@@ -62,7 +107,10 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.setItem(mValues.get(position), mReferenceLocation);
+        if (position + 1 == mValues.size()) {
+            loadNextItems();
+        }
+        holder.setItem(mValues.get(position), mGeoPoint.toLocation());
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
