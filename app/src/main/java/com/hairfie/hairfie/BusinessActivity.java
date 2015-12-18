@@ -109,7 +109,11 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
         // Pictures
         final List<PictureFragment> pictureFragments = new ArrayList<>();
         for (int i = 0; i < mBusiness.pictures.length; i++) {
-            pictureFragments.add(PictureFragment.newInstance(mBusiness.pictures[i].url));
+            pictureFragments.add(PictureFragment.newInstance(mBusiness.pictures[i].url, R.drawable.placeholder_business));
+        }
+        if (0 == mBusiness.pictures.length) {
+            pictureFragments.add(PictureFragment.newInstance(null, R.drawable.placeholder_business));
+
         }
         ViewPager picturesViewPager = (ViewPager)findViewById(R.id.pictures_view_pager);
         picturesViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
