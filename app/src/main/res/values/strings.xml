@@ -201,4 +201,13 @@
     <string name="who">Who?</string>
     <string name="how_much">How much?</string>
     <string name="add_customer_email">Add your customer\'s email</string>
+    <string name="i_did_it">I did it</string>
+    <string-array name="where_choice">
+        <item>I did it</item>
+        <item>Hairdresser in a Salon</item>
+    </string-array>
+    <string name="title_activity_business_search">BusinessSearchActivity</string>
+    <string name="choose_salon">Choose salon</string>
+    <string name="enter_explicit_location">We cannot locate you. Please enter an explicit location.</string>
+    <string name="choose_hairdresser">Choose your hairdresser</string>
 </resources>

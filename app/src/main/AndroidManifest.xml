@@ -134,9 +134,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HairfiePostActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_hairfie_post"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".BusinessSearchActivity"
+            android:label="@string/title_activity_business_search"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
