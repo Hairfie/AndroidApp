@@ -47,7 +47,8 @@
             android:text="@string/hairdressers"
             android:paddingLeft="10dp"
             android:textStyle="bold"
-            android:id="@+id/hairdressers_title"/>
+            android:id="@+id/hairdressers_title"
+            android:visibility="gone"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -1,7 +1,13 @@
 package com.hairfie.hairfie.models;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.google.gson.reflect.TypeToken;
+import com.hairfie.hairfie.Config;
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.Request;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -53,6 +59,20 @@ public class BusinessMember implements Parcelable {
             tokens.add(lastName);
 
         return StringUtils.join(tokens, " ");
+    }
+
+    public static Call activeInBusiness(Business business, ResultCallback.Single<List<BusinessMember>> callback) {
+        if (null == business)
+            return null;
+        String url = Config.instance.getAPIRoot() + "businessMembers?filter[where][businessId]="+business.id+"&filter[where][hidden]=false&filter[where][active]=true";
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+
+        Call result = HttpClient.getInstance().newCall(request);
+        result.enqueue((null == callback ? new ResultCallback.Void<ArrayList<BusinessMember>>() : callback).okHttpCallback(new ResultCallback.GsonDeserializer(new TypeToken<ArrayList<BusinessMember>>(){})));
+        return result;
     }
 
 }

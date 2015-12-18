@@ -128,15 +128,58 @@ public class BusinessInfoFragment extends Fragment {
             }
         }
 
+        fetchHairdressers();
+
+
+        fetchSimilarBusinesses();
+        return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnFragmentInteractionListener");
+        }
+
+    }
+
+    void fetchHairdressers() {
+        BusinessMember.activeInBusiness(mBusiness, new ResultCallback.Single<List<BusinessMember>>() {
+            @Override
+            public void onComplete(@Nullable List<BusinessMember> object, @Nullable ResultCallback.Error error) {
+
+                if (null != error) {
+                    Log.e(Application.TAG, "Could not get active hairdressers:" + error.message, error.cause);
+                    return;
+                }
+                setupActiveHairdressers(object);
+            }
+        });
+    }
+
+    private void setupActiveHairdressers(List<BusinessMember> object) {
+        View view = getView();
+        if (null == view)
+            return;
+
+        BusinessMember[] activeHairdressers = new BusinessMember[object.size()];
+        object.toArray(activeHairdressers);
+
         // Hairdressers
         LinearLayout hairdressersContainer = (LinearLayout)view.findViewById(R.id.hairdressers_container);
+        LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         if (null != hairdressersContainer ) {
             TextView title = (TextView)view.findViewById(R.id.hairdressers_title);
             if (null != title)
-                title.setVisibility(null != mBusiness.activeHairdressers && mBusiness.activeHairdressers.length > 0 ? View.VISIBLE : View.GONE);
-            for (int i = 0; null != mBusiness.activeHairdressers && i < mBusiness.activeHairdressers.length; i++) {
-                final BusinessMember hairdresser = mBusiness.activeHairdressers[i];
-                View hairdresserView = inflater.inflate(R.layout.fragment_business_member, null , false);
+                title.setVisibility(null != activeHairdressers && activeHairdressers.length > 0 ? View.VISIBLE : View.GONE);
+            for (int i = 0; null != activeHairdressers && i < activeHairdressers.length; i++) {
+                final BusinessMember hairdresser = activeHairdressers[i];
+                View hairdresserView = inflater.inflate(R.layout.fragment_business_member, null, false);
                 hairdressersContainer.addView(hairdresserView);
 
                 hairdresserView.setOnClickListener(new View.OnClickListener() {
@@ -162,21 +205,6 @@ public class BusinessInfoFragment extends Fragment {
             }
 
         }
-
-        fetchSimilarBusinesses();
-        return view;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-        }
-
     }
 
     void fetchSimilarBusinesses() {

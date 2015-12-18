@@ -46,7 +46,6 @@ public class Business implements Parcelable {
     public Float rating;
     public FacebookPage facebookPage;
     public Timetable timetable;
-    public BusinessMember[] activeHairdressers;
     public Service[] services;
     public String accountType;
 

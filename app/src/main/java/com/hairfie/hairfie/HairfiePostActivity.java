@@ -49,6 +49,7 @@ public class HairfiePostActivity extends AppCompatActivity {
     private EditText mCustomerEmailEditText;
     private Business mBusiness;
     private BusinessMember mBusinessMember;
+    private List<BusinessMember> mActiveHairdressers = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,17 +221,17 @@ public class HairfiePostActivity extends AppCompatActivity {
     }
 
     public void touchWho(View v) {
-        if (null == mBusiness || null == mBusiness.activeHairdressers || 0 == mBusiness.activeHairdressers.length)
+        if (null == mActiveHairdressers || 0 == mActiveHairdressers.size())
             return;
 
-        final CharSequence[] hairdressers = new CharSequence[mBusiness.activeHairdressers.length];
-        for (int i = 0; i < mBusiness.activeHairdressers.length; i++)
-            hairdressers[i] = mBusiness.activeHairdressers[i].getFullname();
+        final CharSequence[] hairdressers = new CharSequence[mActiveHairdressers.size()];
+        for (int i = 0; i < mActiveHairdressers.size(); i++)
+            hairdressers[i] = mActiveHairdressers.get(i).getFullname();
 
         new AlertDialog.Builder(this).setTitle(getString(R.string.choose_hairdresser)).setItems(hairdressers, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mBusinessMember = mBusiness.activeHairdressers[which];
+                mBusinessMember = mActiveHairdressers.get(which);
                 mWhoButton.setText(hairdressers[which]);
             }
         }).show();
@@ -285,13 +286,30 @@ public class HairfiePostActivity extends AppCompatActivity {
                 mWhoButton.setVisibility(View.GONE);
                 if (null != mBusiness) {
                     mWhereButton.setText(mBusiness.name);
-                    if (mBusiness.activeHairdressers != null && mBusiness.activeHairdressers.length > 0) {
-                        mWhoButton.setVisibility(View.VISIBLE);
-                        mWhoButton.setText(R.string.who);
-                    }
-
+                    fetchActiveHairdressers();
                 }
             }
         }
+    }
+
+    private void fetchActiveHairdressers() {
+        if (null == mBusiness)
+            return;
+
+        BusinessMember.activeInBusiness(mBusiness, new ResultCallback.Single<List<BusinessMember>>() {
+            @Override
+            public void onComplete(@Nullable List<BusinessMember> object, @Nullable ResultCallback.Error error) {
+                if (null != error) {
+                    Log.e(Application.TAG, "Could not fetch hairdressers: "+ error.message, error.cause);
+                    return;
+                }
+                mActiveHairdressers = object;
+                if (mActiveHairdressers != null && mActiveHairdressers.size() > 0) {
+                    mWhoButton.setVisibility(View.VISIBLE);
+                    mWhoButton.setText(R.string.who);
+                }
+
+            }
+        });
     }
 }
