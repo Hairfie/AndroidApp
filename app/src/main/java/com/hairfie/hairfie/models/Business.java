@@ -33,18 +33,15 @@ import java.util.Locale;
  */
 public class Business implements Parcelable {
     public String id;
-    public User.Profile owner;
     public String kind;
     public String name;
     public GeoPoint gps;
     public String phoneNumber;
     public Address address;
     public Picture[] pictures;
-    public Picture thumbnail;
     public Integer numHairfies;
     public Integer numReviews;
     public Float rating;
-    public FacebookPage facebookPage;
     public Timetable timetable;
     public Service[] services;
     public String accountType;
