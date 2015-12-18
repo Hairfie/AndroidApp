@@ -102,9 +102,9 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
         public void setItem(Business item, Location referenceLocation) {
             mItem = item;
             if (item.pictures != null && item.pictures.length > 0 && item.pictures[0].url != null) {
-                Application.getPicasso().load(item.pictures[0].url).fit().centerCrop().transform(new RoundedCornersTransform(5,0)).into(mPictureImageView);
+                Application.getPicasso().load(item.pictures[0].url).placeholder(R.drawable.placeholder_business).fit().centerCrop().transform(new RoundedCornersTransform(5,0)).into(mPictureImageView);
             } else {
-                mPictureImageView.setImageBitmap(null);
+                Application.getPicasso().load(R.drawable.placeholder_business).fit().centerCrop().transform(new RoundedCornersTransform(5,0)).into(mPictureImageView);
             }
 
             mNameTextView.setText(item.name);
