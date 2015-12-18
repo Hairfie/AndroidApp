@@ -76,7 +76,7 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
         if (mCurrentCall != null && !mCurrentCall.isCanceled()) {
             mCurrentCall.cancel();
         }
-        final int limit = 5;
+        final int limit = 10;
         ResultCallback.Single<BusinessSearchResults> callback = new ResultCallback.Single<BusinessSearchResults>() {
             @Override
             public void onComplete(@Nullable BusinessSearchResults object, @Nullable ResultCallback.Error error) {
