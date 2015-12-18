@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -47,6 +48,12 @@ public class Application extends android.app.Application implements GoogleApiCli
         sInstance = this;
 
         sPicasso = new Picasso.Builder(this)
+                .listener(new Picasso.Listener() {
+                    @Override
+                    public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                        Log.e(Application.TAG, "Error loading image " + (null != uri ? uri.toString() : "null"), exception);
+                    }
+                })
                 .downloader(new OkHttpDownloader(this, 128 * 1024 * 1024))
                 .build();
 //        sPicasso.setIndicatorsEnabled(true);

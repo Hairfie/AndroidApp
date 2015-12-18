@@ -146,7 +146,7 @@ public class HairfiePostActivity extends AppCompatActivity {
 
     public void touchPost(View v) {
         final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle(R.string.sending);
+        progressDialog.setMessage(getString(R.string.sending));
         progressDialog.setCancelable(false);
         progressDialog.show();
         uploadPictures(new UploadCallback() {
