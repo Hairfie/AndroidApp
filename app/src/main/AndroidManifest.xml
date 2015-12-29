@@ -144,6 +144,9 @@
             android:name=".BusinessSearchActivity"
             android:label="@string/search"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="01c7d153f20ece3266a38e9645a8a326d53e86a7" />
     </application>
 
 </manifest>
