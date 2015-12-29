@@ -91,6 +91,9 @@ public class SignupActivity extends AppCompatActivity {
         String[] genderOptions = getResources().getStringArray(R.array.gender_options);
         mGenderButton.setText(genderOptions[0]);
 
+        // Subscribe by defaults
+        mSubscribeButton.setSelected(true);
+
 
     }
 
