@@ -282,7 +282,10 @@ public class HairfieGridFragment extends Fragment {
                     mPictureImageView.setImageDrawable(null);
                 }
 
-                if (item.author != null && item.author.picture != null) {
+                if (item.displayBusiness && item.business != null && item.business.pictures != null && item.business.pictures.length > 0) {
+                    Picture picture = item.business.pictures[0];
+                    Application.getPicasso().load(Uri.parse(picture.url)).placeholder(R.drawable.default_user_picture_circle).fit().centerCrop().transform(new CircleTransform()).into(mAuthorPicture);
+                } else if (item.author != null && item.author.picture != null) {
                     Picture authorPicture = item.author.picture;
                     Application.getPicasso().load(Uri.parse(authorPicture.url)).placeholder(R.drawable.default_user_picture_circle).fit().centerCrop().transform(new CircleTransform()).into(mAuthorPicture);
 
