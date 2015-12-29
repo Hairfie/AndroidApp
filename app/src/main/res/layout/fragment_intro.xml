@@ -18,13 +18,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/text"
-        android:gravity="center_horizontal|bottom"
+        android:gravity="center"
         android:background="#55000000"
-        android:paddingLeft="10sp"
-        android:paddingRight="10sp"
+        android:paddingLeft="20sp"
+        android:paddingRight="20sp"
         android:paddingBottom="10sp"
         android:textAlignment="center"
         android:textColor="#fff"
-        android:textSize="16sp"
+        android:textSize="18sp"
         />
 </FrameLayout>
