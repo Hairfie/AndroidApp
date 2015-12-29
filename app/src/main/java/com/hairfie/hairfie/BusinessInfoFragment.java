@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.hairfie.hairfie.helpers.CircleTransform;
@@ -47,6 +48,10 @@ public class BusinessInfoFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private View mView;
+
+    private ProgressBar mProgressBar;
+    private boolean mHairdressersFetched;
+    private boolean mSimilarBusinessesFetched;
 
     public BusinessInfoFragment() {
         // Required empty public constructor
@@ -82,6 +87,7 @@ public class BusinessInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_business_info, container, false);
         mView = view;
+        mProgressBar = (ProgressBar)mView.findViewById(R.id.progress);
 
         Button addressButton = (Button)view.findViewById(R.id.address);
         if (null != addressButton) {
@@ -152,6 +158,8 @@ public class BusinessInfoFragment extends Fragment {
             @Override
             public void onComplete(@Nullable List<BusinessMember> object, @Nullable ResultCallback.Error error) {
 
+                mHairdressersFetched = true;
+                updateProgressView();
                 if (null != error) {
                     Log.e(Application.TAG, "Could not get active hairdressers:" + error.message, error.cause);
                     return;
@@ -213,6 +221,8 @@ public class BusinessInfoFragment extends Fragment {
             Business.listSimilar(mBusiness, new ResultCallback.Single<List<Business>>() {
                 @Override
                 public void onComplete(@Nullable List<Business> object, @Nullable ResultCallback.Error error) {
+                    mSimilarBusinessesFetched = true;
+                    updateProgressView();
 
                     if (null != error) {
                         Log.e(Application.TAG, "Error getting similar businesses:" + error.message, error.cause);
@@ -284,6 +294,10 @@ public class BusinessInfoFragment extends Fragment {
             }
 
         }
+    }
+
+    void updateProgressView() {
+        mProgressBar.setVisibility(mHairdressersFetched && mSimilarBusinessesFetched ? View.GONE : View.VISIBLE);
     }
 
 }
