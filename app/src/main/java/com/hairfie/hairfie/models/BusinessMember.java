@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by stephh on 10/12/15.
@@ -49,8 +50,6 @@ public class BusinessMember implements Parcelable {
     public Picture getPicture() {
         if (null != picture)
             return picture;
-        if (null != user)
-            return user.picture;
         return null;
     }
 
@@ -63,6 +62,16 @@ public class BusinessMember implements Parcelable {
 
         return StringUtils.join(tokens, " ");
     }
+    public String getAbbreviatedName() {
+        List<String> tokens = new ArrayList<String>();
+        if (null != firstName)
+            tokens.add(firstName);
+        if (null != lastName && lastName.length() > 0 && !" ".contentEquals(lastName))
+            tokens.add(String.format(Locale.ENGLISH, "%s.", lastName.substring(0, 1)).toUpperCase(Locale.getDefault()));
+
+        return StringUtils.join(tokens, " ");
+    }
+
 
     public static Call activeInBusiness(Business business, ResultCallback.Single<List<BusinessMember>> callback) {
         if (null == business)

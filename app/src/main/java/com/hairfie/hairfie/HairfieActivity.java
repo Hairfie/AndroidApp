@@ -165,7 +165,7 @@ public class HairfieActivity extends AppCompatActivity {
         if (null != mHairfie.businessMember) {
             TextView businessMemberNameTextView = (TextView)findViewById(R.id.business_member_name);
             if (null != businessMemberNameTextView)
-                businessMemberNameTextView.setText(mHairfie.businessMember.getFullname());
+                businessMemberNameTextView.setText(mHairfie.businessMember.getAbbreviatedName());
 
             if (null != mHairfie.business)
                 businessMemberContainer.setOnClickListener(new View.OnClickListener() {

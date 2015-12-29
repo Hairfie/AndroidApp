@@ -226,7 +226,7 @@ public class HairfiePostActivity extends AppCompatActivity {
 
         final CharSequence[] hairdressers = new CharSequence[mActiveHairdressers.size()];
         for (int i = 0; i < mActiveHairdressers.size(); i++)
-            hairdressers[i] = mActiveHairdressers.get(i).getFullname();
+            hairdressers[i] = mActiveHairdressers.get(i).getAbbreviatedName();
 
         new AlertDialog.Builder(this).setTitle(getString(R.string.choose_hairdresser)).setItems(hairdressers, new DialogInterface.OnClickListener() {
             @Override

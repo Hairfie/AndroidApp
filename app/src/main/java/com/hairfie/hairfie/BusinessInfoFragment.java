@@ -207,7 +207,7 @@ public class BusinessInfoFragment extends Fragment {
 
                 TextView textView = (TextView)hairdresserView.findViewById(R.id.name);
                 if (null != textView) {
-                    textView.setText(hairdresser.getFullname());
+                    textView.setText(hairdresser.getAbbreviatedName());
                 }
 
             }

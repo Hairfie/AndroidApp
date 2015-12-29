@@ -58,11 +58,11 @@ public class BusinessMemberActivity extends AppCompatActivity implements Hairfie
         // Name
         TextView nameTextView = (TextView) findViewById(R.id.name);
         if (null != nameTextView)
-            nameTextView.setText(mBusinessMember.getFullname());
+            nameTextView.setText(mBusinessMember.getAbbreviatedName());
 
         final TextView name2TextView = (TextView) findViewById(R.id.name2);
         if (null != name2TextView)
-            name2TextView.setText(mBusinessMember.getFullname());
+            name2TextView.setText(mBusinessMember.getAbbreviatedName());
 
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
         final CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
