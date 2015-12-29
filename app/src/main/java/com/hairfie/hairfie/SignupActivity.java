@@ -86,6 +86,12 @@ public class SignupActivity extends AppCompatActivity {
         mPasswordEditText = (EditText) findViewById(R.id.password);
         mSignupContainer = findViewById(R.id.signup_container);
 
+        // Woman by default:
+        mForm.gender = Gender.Female;
+        String[] genderOptions = getResources().getStringArray(R.array.gender_options);
+        mGenderButton.setText(genderOptions[0]);
+
+
     }
 
     @Override
