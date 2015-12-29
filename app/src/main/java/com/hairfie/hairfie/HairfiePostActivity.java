@@ -28,6 +28,7 @@ import com.hairfie.hairfie.models.Price;
 import com.hairfie.hairfie.models.ResultCallback;
 import com.hairfie.hairfie.models.Tag;
 import com.hairfie.hairfie.models.TagCategory;
+import com.hairfie.hairfie.models.User;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ public class HairfiePostActivity extends AppCompatActivity {
     private Business mBusiness;
     private BusinessMember mBusinessMember;
     private List<BusinessMember> mActiveHairdressers = null;
+    private List<Business> mOwnedBusinesses = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +127,18 @@ public class HairfiePostActivity extends AppCompatActivity {
                 }
             }
         });
+        User.getCurrentUser().fetchOwnedBusinesses(new ResultCallback.Single<List<Business>>() {
+            @Override
+            public void onComplete(@Nullable List<Business> object, @Nullable ResultCallback.Error error) {
+                if (null != object) {
+                    mOwnedBusinesses.addAll(object);
+                    if (0 < object.size())
+                        setBusiness(object.get(0));
+                }
+            }
+        });
+
+
     }
 
     @Override
@@ -202,7 +216,7 @@ public class HairfiePostActivity extends AppCompatActivity {
         }
 
         File pictureToUpload = mPictureFiles.get(mPictures.size());
-        Picture.upload(pictureToUpload, Picture.HAIRFIES_CONTAINER, new ResultCallback.Single<Picture>(){
+        Picture.upload(pictureToUpload, Picture.HAIRFIES_CONTAINER, new ResultCallback.Single<Picture>() {
 
             @Override
             public void onComplete(@Nullable Picture object, @Nullable ResultCallback.Error error) {
@@ -240,7 +254,20 @@ public class HairfiePostActivity extends AppCompatActivity {
     }
 
     public void touchWhere(View v) {
-        new AlertDialog.Builder(this).setItems(R.array.where_choice, new DialogInterface.OnClickListener() {
+        final String[] whereChoices = getResources().getStringArray(R.array.where_choice);
+        int choicesLength = whereChoices.length + mOwnedBusinesses.size();
+        String[] choices = new String[choicesLength];
+        for (int i = 0; i < choicesLength; i++) {
+            if (i < whereChoices.length)
+                choices[i] = whereChoices[i];
+            else
+                choices[i] = mOwnedBusinesses.get(i - whereChoices.length).name;
+        }
+
+
+
+
+        new AlertDialog.Builder(this).setItems(choices, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
@@ -251,10 +278,13 @@ public class HairfiePostActivity extends AppCompatActivity {
                         mWhoButton.setVisibility(View.GONE);
                         break;
 
-                    default:
+                    case 1:
                         Intent intent = new Intent(HairfiePostActivity.this, BusinessSearchActivity.class);
                         startActivityForResult(intent, REQUEST_CODE_CHOOSE_BUSINESS);
                         break;
+                    default:
+                        setBusiness(mOwnedBusinesses.get(which - whereChoices.length));
+
 
                 }
             }
@@ -281,15 +311,20 @@ public class HairfiePostActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (REQUEST_CODE_CHOOSE_BUSINESS == requestCode) {
             if (RESULT_OK == resultCode && null != data) {
-                mBusiness = (Business)data.getParcelableExtra(BusinessSearchActivity.RESULT_BUSINESS);
-                mBusinessMember = null;
-                mWhoButton.setVisibility(View.GONE);
-                if (null != mBusiness) {
-                    mWhereButton.setText(mBusiness.name);
-                    fetchActiveHairdressers();
-                }
+                setBusiness((Business) data.getParcelableExtra(BusinessSearchActivity.RESULT_BUSINESS));
             }
         }
+    }
+
+    private void setBusiness(Business business) {
+        mBusiness = business;
+        mBusinessMember = null;
+        mWhoButton.setVisibility(View.GONE);
+        if (null != mBusiness) {
+            mWhereButton.setText(mBusiness.name);
+            fetchActiveHairdressers();
+        }
+
     }
 
     private void fetchActiveHairdressers() {

@@ -304,7 +304,7 @@ public class MainActivity extends AppCompatActivity
                         Intent intent = new Intent(MainActivity.this, BusinessActivity.class);
                         intent.putExtra(BusinessActivity.EXTRA_BUSINESS, business);
                         MenuItem item = menu.add(business.name);
-q                        item.setIntent(intent);
+                        item.setIntent(intent);
                         mAddedItems.add(item);
                     }
                 }
