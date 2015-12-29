@@ -196,6 +196,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onReceive(Context context, Intent intent) {
             setupNavigationHeader();
+            setupNavigationMenu();
         }
     };
 
@@ -277,11 +278,18 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    List<MenuItem> mAddedItems = new ArrayList<>();
+
+
     private void setupNavigationMenu() {
         if (!User.getCurrentUser().isAuthenticated())
             return;
 
-        Business.ownedBy(User.getCurrentUser().getProfile(), new ResultCallback.Single<List<Business>>() {
+        // Hide previously added items (we can't remove them...)
+        for (MenuItem item : mAddedItems)
+            item.setVisible(false);
+
+        User.getCurrentUser().fetchOwnedBusinesses(new ResultCallback.Single<List<Business>>() {
             @Override
             public void onComplete(@Nullable List<Business> object, @Nullable ResultCallback.Error error) {
                 if (null != error) {
@@ -291,11 +299,13 @@ public class MainActivity extends AppCompatActivity
 
                 if (null != object) {
                     Menu menu = mNavigationView.getMenu();
+
                     for (Business business : object) {
                         Intent intent = new Intent(MainActivity.this, BusinessActivity.class);
                         intent.putExtra(BusinessActivity.EXTRA_BUSINESS, business);
                         MenuItem item = menu.add(business.name);
-                        item.setIntent(intent);
+q                        item.setIntent(intent);
+                        mAddedItems.add(item);
                     }
                 }
 

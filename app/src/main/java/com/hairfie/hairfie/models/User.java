@@ -111,6 +111,8 @@ public class User {
         editor.remove("user.profile");
         editor.commit();
 
+        mOwnedBusinesses = null;
+
         Request request = new Request.Builder()
                 .url(Config.instance.getAPIRoot() + "users/logout")
                 .post(RequestBody.create(HttpClient.MEDIA_TYPE_JSON, ""))
@@ -288,6 +290,24 @@ public class User {
         }));
         return result;
 
+    }
+
+    private List<Business> mOwnedBusinesses;
+    public Call fetchOwnedBusinesses(final ResultCallback.Single<List<Business>> callback) {
+        if (null != mOwnedBusinesses) {
+            callback.executeOnOriginalThread(mOwnedBusinesses, null);
+            return null;
+        }
+
+        return Business.ownedBy(getProfile(), new ResultCallback.Single<List<Business>>() {
+
+            @Override
+            public void onComplete(@Nullable List<Business> object, @Nullable ResultCallback.Error error) {
+                mOwnedBusinesses = object;
+                if (null != callback)
+                    callback.executeOnOriginalThread(object, error);
+            }
+        });
     }
 
     private static class FetchProfileWrapperCallback extends ResultCallback.Single<User> {
