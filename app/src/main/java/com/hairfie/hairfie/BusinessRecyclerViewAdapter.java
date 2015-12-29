@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.hairfie.hairfie.helpers.RoundedCornersTransform;
@@ -110,7 +111,9 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
         if (position + 1 == mValues.size()) {
             loadNextItems();
         }
-        holder.setItem(mValues.get(position), mGeoPoint.toLocation());
+        boolean showLoader = position == getItemCount() - 1 && !mNoMoreItems;
+
+        holder.setItem(mValues.get(position), mGeoPoint.toLocation(), showLoader);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,6 +139,7 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
         public TextView mDistanceTextView;
         public TextView mNumHairfiesTextView;
         public StarLayout mStarLayout;
+        public ProgressBar mProgressBar;
 
         public ViewHolder(View view) {
             super(view);
@@ -145,9 +149,10 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
             mDistanceTextView = (TextView)view.findViewById(R.id.distance);
             mNumHairfiesTextView = (TextView)view.findViewById(R.id.num_hairfies);
             mStarLayout = (StarLayout)view.findViewById(R.id.stars);
+            mProgressBar = (ProgressBar)view.findViewById(R.id.progress);
         }
 
-        public void setItem(Business item, Location referenceLocation) {
+        public void setItem(Business item, Location referenceLocation, boolean showLoader) {
             mItem = item;
             if (item.pictures != null && item.pictures.length > 0 && item.pictures[0].url != null) {
                 Application.getPicasso().load(item.pictures[0].url).placeholder(R.drawable.placeholder_business).fit().centerCrop().transform(new RoundedCornersTransform(5,0)).into(mPictureImageView);
@@ -179,6 +184,9 @@ public class BusinessRecyclerViewAdapter extends RecyclerView.Adapter<BusinessRe
             } else {
                 mStarLayout.setVisibility(View.GONE);
             }
+
+            // Progress bar
+            mProgressBar.setVisibility(showLoader ? View.VISIBLE : View.GONE);
         }
 
     }

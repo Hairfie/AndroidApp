@@ -269,7 +269,7 @@ public class BusinessInfoFragment extends Fragment {
 
                 View hairdresserView = getActivity().getLayoutInflater().inflate(R.layout.fragment_business, null, false);
                 BusinessRecyclerViewAdapter.ViewHolder holder = new BusinessRecyclerViewAdapter.ViewHolder(hairdresserView);
-                holder.setItem(business, Application.getInstance().getLastLocation());
+                holder.setItem(business, Application.getInstance().getLastLocation(), false);
                 container.addView(hairdresserView);
 
                 hairdresserView.setOnClickListener(new View.OnClickListener() {
