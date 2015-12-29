@@ -35,7 +35,7 @@ public class Review {
         if (null != firstName)
             tokens.add(firstName);
         if (null != lastName && lastName.length() > 0)
-            tokens.add(String.format(Locale.ENGLISH, "%s.", lastName.substring(0, 1)));
+            tokens.add(String.format(Locale.ENGLISH, "%s.", lastName.substring(0, 1)).toUpperCase(Locale.getDefault()));
 
         return StringUtils.join(tokens, " ");
     }
