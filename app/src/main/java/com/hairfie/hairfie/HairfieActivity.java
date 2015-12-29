@@ -116,7 +116,9 @@ public class HairfieActivity extends AppCompatActivity {
         ImageView authorPictureImageView = (ImageView)findViewById(R.id.author_picture);
         if (null != authorPictureImageView) {
             RequestCreator creator;
-            if (null != mHairfie.author && null != mHairfie.author.picture)
+            if (null != mHairfie.author && null != mHairfie.businessMember && null != mHairfie.businessMember.user && mHairfie.businessMember.user.id.equals(mHairfie.author.id) && null != mHairfie.businessMember.picture) {
+                creator = Application.getPicasso().load(mHairfie.businessMember.picture.url);
+            } else if (null != mHairfie.author && null != mHairfie.author.picture)
                 creator = Application.getPicasso().load(mHairfie.author.picture.url);
             else
                 creator = Application.getPicasso().load(R.drawable.default_user_picture);
@@ -125,9 +127,12 @@ public class HairfieActivity extends AppCompatActivity {
         }
 
         TextView authorNameTextView = (TextView)findViewById(R.id.author_name);
-        if (null != authorNameTextView && null != mHairfie.author)
-            authorNameTextView.setText(mHairfie.author.getFullname());
-
+        if (null != authorNameTextView) {
+            if (null != mHairfie.author && null != mHairfie.businessMember && null != mHairfie.businessMember.user && mHairfie.businessMember.user.id.equals(mHairfie.author.id))
+                authorNameTextView.setText(mHairfie.businessMember.getAbbreviatedName());
+            else if (null != mHairfie.author)
+                authorNameTextView.setText(mHairfie.author.getAbbreviatedName());
+        }
 
         TextView authorNumHairfiesTextView = (TextView) findViewById(R.id.author_num_hairfies);
         if (null != authorNumHairfiesTextView && null != mHairfie.author)
