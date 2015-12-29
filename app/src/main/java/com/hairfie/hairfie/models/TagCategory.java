@@ -63,7 +63,12 @@ public class TagCategory {
 
                     HashSet<TagCategory> categorySet = new HashSet<>();
 
+                    // We'll rebuild Tag.sCachedTags
+                    Tag.sCachedTags.clear();
+
                     for (Tag tag : object) {
+                        Tag.sCachedTags.add(tag);
+
                         if (null == tag.category)
                             continue;
 

@@ -22,7 +22,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 /**
  * Created by stephh on 03/12/15.
@@ -56,11 +59,11 @@ public class Hairfie implements Parcelable {
         return list;
     }
 
-    public static Call latest(int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
-        return latest((JSONObject) null, limit, skip, callback);
+    public static Call latest(List<Category> categories, int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
+        return latest((JSONObject) null, categories, limit, skip, callback);
     }
 
-    public static Call latest(BusinessMember businessMember, int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
+    public static Call latest(BusinessMember businessMember, List<Category> categories, int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
         JSONObject where = new JSONObject();
         if (null != businessMember)
             try {
@@ -69,10 +72,10 @@ public class Hairfie implements Parcelable {
                 Log.e(Application.TAG, "Could not create JSON", e);
                 return null;
             }
-        return latest(where, limit, skip, callback);
+        return latest(where, categories, limit, skip, callback);
     }
 
-    public static Call latest(Business business, int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
+    public static Call latest(Business business, List<Category> categories, int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
         JSONObject where = new JSONObject();
         if (null != business)
             try {
@@ -81,10 +84,10 @@ public class Hairfie implements Parcelable {
                 Log.e(Application.TAG, "Could not create JSON", e);
                 return null;
             }
-        return latest(where, limit, skip, callback);
+        return latest(where, categories, limit, skip, callback);
     }
 
-    private static Call latest(JSONObject where, int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
+    private static Call latest(JSONObject where, List<Category> categories, int limit, int skip, ResultCallback.Single<List<Hairfie>> callback) {
         try {
             JSONObject filter = new JSONObject();
 
@@ -94,8 +97,30 @@ public class Hairfie implements Parcelable {
             if (null != where)
                 filter.put("where", where);
 
+            // Build the category string
+            String tagString = "";
+            if (null != categories) {
+                Set<Tag> tags = new HashSet<>();
+                for (Category category : categories)
+                    tags.addAll(category.getTags());
+
+                int i = 0;
+                StringBuilder sb = new StringBuilder();
+                for (Tag tag : tags) {
+                    if (i > 0)
+                        sb.append("&");
+
+                    sb.append(Uri.encode(String.format(Locale.ENGLISH, "tags[%d]", i)));
+                    sb.append("=");
+                    sb.append(Uri.encode(tag.name));
+                    i++;
+
+                }
+                tagString = sb.toString();
+            }
+
             Request request = new Request.Builder()
-                    .url(Config.instance.getAPIRoot() + "hairfies?filter=" + Uri.encode(filter.toString()))
+                    .url(Config.instance.getAPIRoot() + "hairfies?filter=" + Uri.encode(filter.toString()) + "&" + tagString)
                     .build();
 
 

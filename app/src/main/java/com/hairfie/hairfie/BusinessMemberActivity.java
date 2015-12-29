@@ -98,7 +98,7 @@ public class BusinessMemberActivity extends AppCompatActivity implements Hairfie
         // View pager
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         final BusinessMemberInfoFragment infoFragment = BusinessMemberInfoFragment.newInstance(mBusinessMember, mBusiness);
-        final HairfieGridFragment hairfiesFragment = HairfieGridFragment.newInstance(2, null, mBusinessMember);
+        final HairfieGridFragment hairfiesFragment = HairfieGridFragment.newInstance(2, null, null, mBusinessMember);
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {

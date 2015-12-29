@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity
         mListFragment = new BusinessListFragment();
         mListFragment.setAdapter(mAdapter);
 
-        mHairfiesFragment = HairfieGridFragment.newInstance(2, null, null);
+        mHairfiesFragment = HairfieGridFragment.newInstance(2, mCategories, null, null);
 
         mContainer.setAdapter(mPagerAdapter);
         mContainer.setCurrentItem(1);
@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onComplete(@Nullable List<Business> object, @Nullable ResultCallback.Error error) {
                 if (null != error) {
-                    Log.e(Application.TAG, "Could not fetch managed businesses: "+error.message, error.cause);
+                    Log.e(Application.TAG, "Could not fetch managed businesses: " + error.message, error.cause);
                     return;
                 }
 
@@ -345,6 +345,10 @@ public class MainActivity extends AppCompatActivity
         mCategories = intent.getParcelableArrayListExtra(EXTRA_CATEGORIES);
         mLocationName = intent.getCharSequenceExtra(EXTRA_LOCATION_NAME);
 
+        if (null != mHairfiesFragment) {
+            mHairfiesFragment.setCategories(mCategories);
+            mHairfiesFragment.reload();
+        }
         if (null == mLocationName || mLocationName.length() == 0) {
             Location lastLocation = Application.getInstance().getLastLocation();
             if (null != lastLocation)

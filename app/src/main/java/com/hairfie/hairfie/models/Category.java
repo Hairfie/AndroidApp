@@ -34,6 +34,18 @@ public class Category implements Parcelable {
     public String name;
     public Picture picture;
     public int position;
+    protected String[] tags;
+
+    public List<Tag> getTags() {
+        List<Tag> result = new ArrayList<>();
+        for (int i = 0; tags != null && i < tags.length; i++) {
+            String tagId = tags[i];
+            Tag tag = Tag.findById(tagId);
+            if (null != tag)
+                result.add(tag);
+        }
+        return result;
+    }
 
     public Category() {
 

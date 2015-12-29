@@ -136,7 +136,7 @@ public class BusinessActivity extends AppCompatActivity implements BusinessInfoF
         // Info fragment
         final BusinessInfoFragment infoFragment = BusinessInfoFragment.newInstance(mBusiness);
         final BusinessReviewsFragment reviewsFragment = BusinessReviewsFragment.newInstance(mBusiness);
-        final HairfieGridFragment hairfiesFragment = HairfieGridFragment.newInstance(2, mBusiness, null);
+        final HairfieGridFragment hairfiesFragment = HairfieGridFragment.newInstance(2, null, mBusiness, null);
         final BusinessServicesFragment pricesFragment = BusinessServicesFragment.newInstance(mBusiness);
 
         // View pager

@@ -3,6 +3,7 @@ package com.hairfie.hairfie;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.hairfie.hairfie.helpers.CircleTransform;
 import com.hairfie.hairfie.models.Business;
 import com.hairfie.hairfie.models.BusinessMember;
+import com.hairfie.hairfie.models.Category;
 import com.hairfie.hairfie.models.Hairfie;
 import com.hairfie.hairfie.models.Picture;
 import com.hairfie.hairfie.models.ResultCallback;
@@ -40,11 +42,15 @@ public class HairfieGridFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String ARG_BUSINESS= "business";
     private static final String ARG_BUSINESSMEMBER= "business-member";
+    private static final String ARG_CATEGORIES= "categories";
+
     // TODO: Customize parameters
     private int mColumnCount = 2;
     private Business mBusiness;
     private BusinessMember mBusinessMember;
     private OnHairfieGridFragmentInteractionListener mListener;
+    private HairfieRecyclerViewAdapter mAdapter;
+    private List<Category> mCategories;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -55,9 +61,11 @@ public class HairfieGridFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static HairfieGridFragment newInstance(int columnCount, Business business, BusinessMember businessMember) {
+    public static HairfieGridFragment newInstance(int columnCount, List<Category> categories, Business business, BusinessMember businessMember) {
         HairfieGridFragment fragment = new HairfieGridFragment();
         Bundle args = new Bundle();
+        if (null != categories)
+            args.putParcelableArrayList(ARG_CATEGORIES, new ArrayList<Category>(categories));
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         args.putParcelable(ARG_BUSINESS, business);
         args.putParcelable(ARG_BUSINESSMEMBER, businessMember);
@@ -73,7 +81,16 @@ public class HairfieGridFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
             mBusiness = (Business)getArguments().getParcelable(ARG_BUSINESS);
             mBusinessMember = (BusinessMember)getArguments().getParcelable(ARG_BUSINESSMEMBER);
+            ArrayList<Parcelable> parcelables = getArguments().getParcelableArrayList(ARG_CATEGORIES);
+            mCategories = new ArrayList<>();
+            if (null != parcelables) {
+                for (Parcelable parcelable : parcelables)
+                    if (parcelable instanceof Category)
+                        mCategories.add((Category)parcelable);
+
+            }
         }
+
     }
 
     @Override
@@ -90,7 +107,8 @@ public class HairfieGridFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new HairfieRecyclerViewAdapter(mListener));
+            mAdapter = new HairfieRecyclerViewAdapter(mListener);
+            recyclerView.setAdapter(mAdapter);
         }
         return view;
     }
@@ -112,6 +130,18 @@ public class HairfieGridFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+    public void setCategories(List<Category> categories) {
+        mCategories = new ArrayList<>(categories);
+    }
+
+    public void reload() {
+        if (null != mAdapter) {
+            mAdapter.reset();
+            mAdapter.loadNextItems();
+        }
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -180,11 +210,11 @@ public class HairfieGridFragment extends Fragment {
                 }
             };
             if (null != mBusiness)
-                mCurrentCall = Hairfie.latest(mBusiness, limit, mValues.size(), callback);
+                mCurrentCall = Hairfie.latest(mBusiness, mCategories, limit, mValues.size(), callback);
             else if (null != mBusinessMember)
-                mCurrentCall = Hairfie.latest(mBusinessMember, limit, mValues.size(), callback);
+                mCurrentCall = Hairfie.latest(mBusinessMember, mCategories, limit, mValues.size(), callback);
             else
-                mCurrentCall = Hairfie.latest(limit, mValues.size(), callback);
+                mCurrentCall = Hairfie.latest(mCategories, limit, mValues.size(), callback);
 
         }
 
