@@ -128,7 +128,7 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
                     Application.getPicasso().load(R.drawable.default_user_picture).transform(new CircleTransform()).fit().centerCrop().into(pictureImageView);
             }
             if (null != nameTextView)
-                nameTextView.setText(mItem.author != null ? mItem.author.getAbbreviatedName() : "");
+                nameTextView.setText(mItem.getAbbreviatedName());
 
             if (null != starLayout)
                 starLayout.setRating(mItem.rating / 100.0f);

@@ -342,15 +342,6 @@ public class User {
             return StringUtils.join(tokens, " ");
         }
 
-        public String getAbbreviatedName() {
-            List<String> tokens = new ArrayList<String>();
-            if (null != firstName)
-                tokens.add(firstName);
-            if (null != lastName && lastName.length() > 0)
-                tokens.add(String.format(Locale.ENGLISH, "%s.", lastName.substring(0, 1)));
-
-            return StringUtils.join(tokens, " ");
-        }
     }
 
 

@@ -10,11 +10,13 @@ import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Request;
 
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by stephh on 11/12/15.
@@ -27,6 +29,17 @@ public class Review {
     public Float rating;
     public String comment;
     public Date createdAt;
+
+    public String getAbbreviatedName() {
+        List<String> tokens = new ArrayList<String>();
+        if (null != firstName)
+            tokens.add(firstName);
+        if (null != lastName && lastName.length() > 0)
+            tokens.add(String.format(Locale.ENGLISH, "%s.", lastName.substring(0, 1)));
+
+        return StringUtils.join(tokens, " ");
+    }
+
 
     public static Call fetch(Business business, int limit, int skip, ResultCallback.Single<List<Review>> callback) {
         JsonObject where = new JsonObject();
