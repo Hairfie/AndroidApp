@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.hairfie.hairfie.models.Business;
 import com.hairfie.hairfie.models.Review;
@@ -21,6 +22,7 @@ public class BusinessReviewsFragment extends Fragment {
 
     private Business mBusiness;
     private RecyclerView mRecyclerView;
+    private ProgressBar mProgressBar;
 
     public BusinessReviewsFragment() {
         // Required empty public constructor
@@ -56,15 +58,24 @@ public class BusinessReviewsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_business_reviews, container, false);
 
+        mRecyclerView = (RecyclerView)view.findViewById(R.id.list);
+        mProgressBar = (ProgressBar)view.findViewById(R.id.progress);
         // Set the adapter
-        if (view instanceof RecyclerView) {
+        if (null != mRecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            mRecyclerView = recyclerView;
 
             LinearLayoutManager manager = new LinearLayoutManager(context);
-            recyclerView.setLayoutManager(manager);
-            recyclerView.setAdapter(new ReviewRecyclerViewAdapter(mBusiness));
+            mRecyclerView.setLayoutManager(manager);
+            ReviewRecyclerViewAdapter adapter = new ReviewRecyclerViewAdapter(mBusiness);
+            mRecyclerView.setAdapter(adapter);
+            adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                @Override
+                public void onChanged() {
+                    super.onChanged();
+                    if (null != mProgressBar)
+                        mProgressBar.setVisibility(View.GONE);
+                }
+            });
         }
         return view;
     }
