@@ -122,7 +122,7 @@
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_gravity="bottom"
-        android:background="@color/colorAccent"
+        android:background="#00B0B9"
         android:drawableLeft="@drawable/icon_phone"
         android:gravity="center"
         android:drawablePadding="10dp"
