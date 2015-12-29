@@ -26,6 +26,7 @@ public class BusinessMember implements Parcelable {
     public String email;
     public String phoneNumber;
     public Integer numHairfies;
+    public Picture picture;
 
     public int describeContents() {
         return 0;
@@ -46,6 +47,8 @@ public class BusinessMember implements Parcelable {
 
 
     public Picture getPicture() {
+        if (null != picture)
+            return picture;
         if (null != user)
             return user.picture;
         return null;
