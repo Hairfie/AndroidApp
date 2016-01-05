@@ -297,7 +297,7 @@ public class BusinessInfoFragment extends Fragment {
     }
 
     void updateProgressView() {
-        mProgressBar.setVisibility(mHairdressersFetched && mSimilarBusinessesFetched ? View.GONE : View.VISIBLE);
+        mProgressBar.setVisibility(mHairdressersFetched && (mBusiness.isPremium() || mSimilarBusinessesFetched) ? View.GONE : View.VISIBLE);
     }
 
 }
