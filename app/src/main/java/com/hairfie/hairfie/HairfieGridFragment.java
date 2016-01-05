@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.hairfie.hairfie.helpers.CircleTransform;
@@ -51,6 +52,8 @@ public class HairfieGridFragment extends Fragment {
     private OnHairfieGridFragmentInteractionListener mListener;
     private HairfieRecyclerViewAdapter mAdapter;
     private List<Category> mCategories;
+
+    private ProgressBar mProgressBar;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -98,10 +101,13 @@ public class HairfieGridFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_hairfie_list, container, false);
 
+        mProgressBar = (ProgressBar)view.findViewById(R.id.progress);
+
+        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.list);
+
         // Set the adapter
-        if (view instanceof RecyclerView) {
+        if (null != recyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
@@ -196,6 +202,7 @@ public class HairfieGridFragment extends Fragment {
                 @Override
                 public void onComplete(@Nullable List<Hairfie> object, @Nullable ResultCallback.Error error) {
                     mCurrentCall = null;
+                    mProgressBar.setVisibility(View.GONE);
                     if (null != error) {
                         Log.w(Application.TAG, "Could not get hairfies", error.cause);
                         return;
