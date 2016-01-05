@@ -134,10 +134,10 @@ public class BusinessInfoFragment extends Fragment {
             }
         }
 
+
         fetchHairdressers();
-
-
         fetchSimilarBusinesses();
+
         return view;
     }
 
@@ -277,7 +277,8 @@ public class BusinessInfoFragment extends Fragment {
                 if (counter >= 3)
                     break;
 
-                View hairdresserView = getActivity().getLayoutInflater().inflate(R.layout.fragment_business, null, false);
+                LayoutInflater layoutInflater = (LayoutInflater)Application.getInstance().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View hairdresserView = layoutInflater.inflate(R.layout.fragment_business, null, false);
                 BusinessRecyclerViewAdapter.ViewHolder holder = new BusinessRecyclerViewAdapter.ViewHolder(hairdresserView);
                 holder.setItem(business, Application.getInstance().getLastLocation(), false);
                 container.addView(hairdresserView);
