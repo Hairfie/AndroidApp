@@ -203,6 +203,8 @@ public class HairfiePictureActivity extends AppCompatActivity {
             // Add to pictures
             mPictureFiles.add(pictureFile);
 
+            croppedBitmap.recycle();
+
             // Select
             mSelectedPictureFile = pictureFile;
 
@@ -353,12 +355,35 @@ public class HairfiePictureActivity extends AppCompatActivity {
         mCamera.takePicture(null, null, new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
+
+                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                Bitmap scaledBitmap;
+
+                // Resize
+                int hairfieSize = Config.instance.getHairfiePixelSize();
+                if (bitmap.getWidth() > hairfieSize
+                        && bitmap.getHeight() > hairfieSize) {
+
+                    int width = bitmap.getWidth(), height = bitmap.getHeight();
+                    if (width < height) {
+                        height = (int)((float)hairfieSize * (float)height / (float)width);
+                        width = hairfieSize;
+                    } else {
+                        width = (int)((float)hairfieSize * (float)width / (float)height);
+                        height = hairfieSize;
+                    }
+
+                    scaledBitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+                    bitmap.recycle();
+                } else {
+                    scaledBitmap = bitmap;
+                }
+
                 Matrix matrix = new Matrix();
                 matrix.postRotate(mWhichCamera == Camera.CameraInfo.CAMERA_FACING_BACK ? 90 : -90);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
                 GalleryUtil.insertImage(getContentResolver(), rotatedBitmap, "", "");
-                bitmap.recycle();
+                scaledBitmap.recycle();
                 bitmapPicked(rotatedBitmap);
                 updateUserInterface();
 
