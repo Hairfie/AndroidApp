@@ -1,11 +1,21 @@
-<android.support.v7.widget.RecyclerView
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.hairfie.hairfie.BusinessActivity"
-    tools:showIn="@layout/activity_business"
-    tools:listItem="@layout/fragment_service"
-    android:id="@+id/list"
-    android:clipToPadding="false"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+    tools:showIn="@layout/activity_business">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        tools:listItem="@layout/fragment_service" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress"
+        android:indeterminate="false"/>
+</FrameLayout>

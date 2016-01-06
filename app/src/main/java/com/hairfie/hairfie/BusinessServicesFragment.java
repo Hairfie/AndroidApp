@@ -4,21 +4,27 @@ package com.hairfie.hairfie;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.hairfie.hairfie.helpers.RoundedCornersTransform;
 import com.hairfie.hairfie.models.Business;
+import com.hairfie.hairfie.models.ResultCallback;
 import com.hairfie.hairfie.models.Service;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -35,6 +41,11 @@ public class BusinessServicesFragment extends Fragment {
 
     private Business mBusiness;
 
+    private ProgressBar mProgress;
+
+    private List<Service> mServices = new ArrayList<>();
+
+    private RecyclerView.Adapter<ViewHolder> mAdapter;
 
     public BusinessServicesFragment() {
         // Required empty public constructor
@@ -69,35 +80,54 @@ public class BusinessServicesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_business_services, container, false);
+
+        mProgress = (ProgressBar)view.findViewById(R.id.progress);
+        mAdapter = new RecyclerView.Adapter<ViewHolder>() {
+            @Override
+            public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.fragment_service, parent, false);
+                return new ViewHolder(view);
+            }
+
+            @Override
+            public void onBindViewHolder(ViewHolder holder, int position) {
+
+                holder.setItem(mServices.get(position));
+
+            }
+
+            @Override
+            public int getItemCount() {
+                return mServices.size();
+            }
+        };
+        mRecyclerView = (RecyclerView)view.findViewById(R.id.list);
         // Set the adapter
-        if (view instanceof RecyclerView) {
+        if (null != mRecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            mRecyclerView = recyclerView;
 
             LinearLayoutManager manager = new LinearLayoutManager(context);
-            recyclerView.setLayoutManager(manager);
-            recyclerView.setAdapter(new RecyclerView.Adapter<ViewHolder>() {
-                @Override
-                public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                    View view = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.fragment_service, parent, false);
-                    return new ViewHolder(view);
-                }
-
-                @Override
-                public void onBindViewHolder(ViewHolder holder, int position) {
-
-                    holder.setItem(mBusiness.services[position]);
-
-                }
-
-                @Override
-                public int getItemCount() {
-                    return mBusiness.services != null ? mBusiness.services.length : 0;
-                }
-            });
+            mRecyclerView.setLayoutManager(manager);
+            mRecyclerView.setAdapter(mAdapter);
         }
+
+        // Fetch services
+        mProgress.setVisibility(View.VISIBLE);
+        Service.forBusiness(mBusiness, new ResultCallback.Single<List<Service>>() {
+            @Override
+            public void onComplete(@Nullable List<Service> object, @Nullable ResultCallback.Error error) {
+                mProgress.setVisibility(View.GONE);
+                if (null != object) {
+                    mServices.clear();
+                    mServices.addAll(object);
+                    mAdapter.notifyDataSetChanged();
+                }
+                if (null != error) {
+                    Log.e(Application.TAG, "Could not get services: "+error.message);
+                }
+            }
+        });
         return view;
     }
 

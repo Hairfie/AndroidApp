@@ -43,7 +43,6 @@ public class Business implements Parcelable {
     public Integer numReviews;
     public Float rating;
     public Timetable timetable;
-    public Service[] services;
     public String accountType;
 
     public static Call listSimilar(Business business, ResultCallback.Single<List<Business>>callback) {
