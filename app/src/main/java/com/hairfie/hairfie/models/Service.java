@@ -18,7 +18,7 @@ import java.util.List;
 public class Service {
     public String businessId;
     public Date createdAt;
-    public int durationMinutes;
+    public int durationMinutes = 0;
     public String id;
     public boolean isManClassicPrice;
     public boolean isWomanClassicPrice;

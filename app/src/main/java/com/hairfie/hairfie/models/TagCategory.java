@@ -25,7 +25,7 @@ public class TagCategory {
     public transient List<Tag> tags = new ArrayList<>();
     public String id;
     public String name;
-    public int position;
+    public int position = 0;
 
     @Override
     public boolean equals(Object o) {

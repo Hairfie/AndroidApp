@@ -39,9 +39,9 @@ public class Business implements Parcelable {
     public String phoneNumber;
     public Address address;
     public Picture[] pictures;
-    public Integer numHairfies;
-    public Integer numReviews;
-    public Float rating;
+    public Integer numHairfies = 0;
+    public Integer numReviews = 0;
+    public Float rating = 0.0f;
     public Timetable timetable;
     public String accountType;
 

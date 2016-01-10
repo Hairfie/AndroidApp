@@ -344,8 +344,8 @@ public class User {
         public String locale;
         public String language;
         public boolean newsletter;
-        public Integer numHairfies;
-        public Integer numBusinessReviews;
+        public Integer numHairfies = 0;
+        public Integer numBusinessReviews = 0;
         public Picture picture;
 
         public String toString() {

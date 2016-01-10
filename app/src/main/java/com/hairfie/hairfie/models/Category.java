@@ -33,7 +33,7 @@ public class Category implements Parcelable {
     public String id;
     public String name;
     public Picture picture;
-    public int position;
+    public int position = 0;
     protected String[] tags;
 
     public List<Tag> getTags() {

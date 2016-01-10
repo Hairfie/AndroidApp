@@ -26,7 +26,7 @@ public class BusinessMember implements Parcelable {
     public String lastName;
     public String email;
     public String phoneNumber;
-    public Integer numHairfies;
+    public Integer numHairfies = 0;
     public Picture picture;
 
     public int describeContents() {

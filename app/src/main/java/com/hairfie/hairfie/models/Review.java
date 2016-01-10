@@ -26,7 +26,7 @@ public class Review {
     public User.Profile author;
     public String firstName;
     public String lastName;
-    public Float rating;
+    public Float rating = 0.0f;
     public String comment;
     public Date createdAt;
 

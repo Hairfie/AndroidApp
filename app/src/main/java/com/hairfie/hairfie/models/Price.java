@@ -16,7 +16,7 @@ public class Price {
         sCurrencyFormat.setMaximumFractionDigits(0);
     }
     public String currency;
-    public Double amount;
+    public Double amount = 0.0d;
     public String localizedString() {
         Currency cur = Currency.getInstance(currency);
         if (null != cur) {

@@ -35,10 +35,10 @@ public class Hairfie implements Parcelable {
     public String id;
     public Picture picture;
     public Price price;
-    public Integer numLikes;
+    public Integer numLikes = 0;
     public User.Profile author;
     public Picture[] pictures;
-    public boolean displayBusiness;
+    public boolean displayBusiness = false;
     public Business business;
     public String landingPageUrl;
     public Tag[] tags;

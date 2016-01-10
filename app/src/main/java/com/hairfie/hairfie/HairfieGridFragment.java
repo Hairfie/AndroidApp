@@ -138,7 +138,7 @@ public class HairfieGridFragment extends Fragment {
     }
 
     public void setCategories(List<Category> categories) {
-        mCategories = new ArrayList<>(categories);
+        mCategories = categories != null ? new ArrayList<>(categories) : new ArrayList<Category>();
     }
 
     public void reload() {

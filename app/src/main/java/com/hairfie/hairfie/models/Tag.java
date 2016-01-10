@@ -30,7 +30,7 @@ public class Tag {
 
     public String id;
     public String name;
-    public int position;
+    public int position = 0;
     public TagCategory category;
 
     @Override
