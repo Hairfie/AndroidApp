@@ -13,19 +13,19 @@ import java.util.Date;
  */
 public class Timetable implements Parcelable {
     @SerializedName("MON")
-    public TimeWindow[] monday;
+    public TimeWindow[] monday = {};
     @SerializedName("TUE")
-    public TimeWindow[] tuesday;
+    public TimeWindow[] tuesday = {};
     @SerializedName("WED")
-    public TimeWindow[] wednesday;
+    public TimeWindow[] wednesday = {};
     @SerializedName("THU")
-    public TimeWindow[] thursday;
+    public TimeWindow[] thursday = {};
     @SerializedName("FRI")
-    public TimeWindow[] friday;
+    public TimeWindow[] friday = {};
     @SerializedName("SAT")
-    public TimeWindow[] saturday;
+    public TimeWindow[] saturday = {};
     @SerializedName("SUN")
-    public TimeWindow[] sunday;
+    public TimeWindow[] sunday = {};
 
     public int describeContents() {
         return 0;
@@ -77,6 +77,6 @@ public class Timetable implements Parcelable {
             default:
                 return false;
         }
-        return windows.length > 0;
+        return windows != null && windows.length > 0;
     }
 }
