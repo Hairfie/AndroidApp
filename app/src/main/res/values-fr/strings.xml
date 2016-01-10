@@ -88,6 +88,7 @@
     <string name="saturday">Samedi</string>
     <string name="sunday">Dimanche</string>
     <string name="workplace">Salon</string>
+    <string name="hairdressers_home">← Hairdressers →</string>
     <string name="hairdressers">Coiffeurs</string>
     <string name="similar_businesses">Salons similaires</string>
     <string name="share">Partager</string>

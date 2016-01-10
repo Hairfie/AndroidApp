@@ -479,7 +479,7 @@ public class MainActivity extends AppCompatActivity
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 1:
-                    return getString(R.string.hairdressers);
+                    return getString(R.string.hairdressers_home);
                 case 0:
                     return getString(R.string.map);
                 case 2:
