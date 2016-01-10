@@ -59,6 +59,10 @@ public class Business implements Parcelable {
     }
 
     public static Call ownedBy(User.Profile profile, ResultCallback.Single<List<Business>>callback) {
+        if (null == profile || null == profile.id) {
+            return null;
+        }
+
         String url = Config.instance.getAPIRoot() + "users/"+ profile.id + "/managed-businesses";
         Request request = new Request.Builder()
                 .url(url)
