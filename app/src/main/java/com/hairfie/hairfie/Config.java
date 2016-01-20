@@ -11,7 +11,7 @@ public class Config {
         return "http://api.hairfie.com/v1.2/";
     }
     public int getHairfiePixelSize() {
-        return 500;
+        return 640;
     }
     public String getGoogleAnalyticsTrackingId() {
         return "UA-55125713-5";

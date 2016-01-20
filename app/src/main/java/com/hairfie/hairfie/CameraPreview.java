@@ -76,10 +76,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         Camera.Parameters cameraParameters = null != mCamera ? mCamera.getParameters() : null;
-        Camera.Size cameraSize = null != cameraParameters ? cameraParameters.getPictureSize() : null;
+        Camera.Size cameraSize = null != cameraParameters ? cameraParameters.getPreviewSize() : null;
         if (null != cameraSize && 0 != cameraSize.width && 0 != cameraSize.height) {
             int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-            float aspectRatio = (float)cameraSize.height / (float)cameraSize.width; // Swap height and width because we rotate 90
+
+            // We invert the aspect ratio because we setDisplayOrientation(90) earlier
+            float aspectRatio = (float)cameraSize.height / (float)cameraSize.width;
             int heightSize = (int)  ((float)widthSize/aspectRatio);
             setMeasuredDimension(widthSize, heightSize);
         } else {
