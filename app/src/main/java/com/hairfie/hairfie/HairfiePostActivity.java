@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hairfie.hairfie.helpers.DebugUtils;
 import com.hairfie.hairfie.models.Business;
 import com.hairfie.hairfie.models.BusinessMember;
 import com.hairfie.hairfie.models.Hairfie;
@@ -216,6 +217,9 @@ public class HairfiePostActivity extends AppCompatActivity {
         }
 
         File pictureToUpload = mPictureFiles.get(mPictures.size());
+
+        //DebugUtils.printFileImageInfo(pictureToUpload.getAbsolutePath());
+
         Picture.upload(pictureToUpload, Picture.HAIRFIES_CONTAINER, new ResultCallback.Single<Picture>() {
 
             @Override
